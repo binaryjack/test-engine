@@ -6,8 +6,12 @@
   "scripts": {
     "install:all": "node scripts/install-all.js",
     "convert:challenges": "node scripts/convert-challenges.ts",
-    "test-machine": "cd test-machine/frontend && npm run dev",
-    "test-machine:backend": "cd test-machine/backend && npm run dev",
+    "dev": "node scripts/dev-all.js",
+    "dev:test-machine": "node scripts/dev-all.js",
+    "dev:backend": "cd test-machine/backend && pnpm dev",
+    "dev:frontend": "cd test-machine/frontend && pnpm dev",
+    "test-machine": "cd test-machine/frontend && pnpm dev",
+    "test-machine:backend": "cd test-machine/backend && pnpm dev",
     "start:mid-useState-form": "cd \"mid/01-hooks/challenges/01-useState-form\" && npm run dev",
     "start:mid-useEffect-data-fetching": "cd \"mid/01-hooks/challenges/02-useEffect-data-fetching\" && npm run dev",
     "start:mid-useRef-focus": "cd \"mid/01-hooks/challenges/03-useRef-focus\" && npm run dev",
@@ -34,6 +38,14 @@
     "start:senior-accessible-modal": "cd \"senior/06-accessibility/challenges/01-accessible-modal\" && npm run dev",
     "start:senior-test-counter-hook": "cd \"senior/07-testing/challenges/01-test-counter-hook\" && npm run dev",
     "start:senior-test-async-component": "cd \"senior/07-testing/challenges/02-test-async-component\" && npm run dev"
+  },
+  "scripts:help": {
+    "dev": "Start both backend and frontend in parallel (recommended way to start!)",
+    "dev:test-machine": "Alias for 'dev' - start backend + frontend together",
+    "dev:backend": "Start only backend server on http://localhost:3001",
+    "dev:frontend": "Start only frontend on http://localhost:5174",
+    "start:mid-*": "Start individual MID-level challenge",
+    "start:senior-*": "Start individual SENIOR-level challenge"
   },
   "workspaces": [
     "mid/*/challenges/*",

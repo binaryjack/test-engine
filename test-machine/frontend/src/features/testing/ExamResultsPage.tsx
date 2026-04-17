@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { useAppSelector } from '../../shared/hooks/useStore.js'
+import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
+import { loadResultRequest } from './store/exam.slice.js'
 import type { Question, ExamAnswer } from '../../shared/types/index.js'
 
 function AnswerRow({ q, answer }: { q: Question; answer: ExamAnswer | undefined }) {
@@ -37,25 +38,21 @@ function AnswerRow({ q, answer }: { q: Question; answer: ExamAnswer | undefined 
 
 export function ExamResultsPage() {
   const { id } = useParams<{ id: string }>()
-  const { result } = useAppSelector(s => s.exam)
+  const dispatch = useAppDispatch()
+  const { result, loading, error } = useAppSelector(s => s.exam)
 
-  // If navigated directly (no redux state), show loading / fetch
-  const [fetched, setFetched] = React.useState(false)
-  const [examResult, setExamResult] = React.useState(result)
-
+  // Load result from Redux if not already in state
   React.useEffect(() => {
-    if (!result && id && !fetched) {
-      fetch(`${import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'}/exams/${id}/results`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('tm_token')}` }
-      })
-        .then(r => r.json())
-        .then(res => { if (res.success) setExamResult(res.data) })
-        .finally(() => setFetched(true))
+    if (!result && id) {
+      dispatch(loadResultRequest(id))
     }
-  }, [id, result, fetched])
+  }, [id, result, dispatch])
 
-  const data = examResult ?? result
-  if (!data) return <div className="text-slate-400">Loading results…</div>
+  if (loading) return <div className="text-slate-400">Loading results…</div>
+  if (error) return <div className="text-red-400">Error: {error}</div>
+  if (!result) return <div className="text-slate-400">No results found</div>
+
+  const data = result
 
   const scoreColor = data.score >= 70 ? 'text-green-400' : data.score >= 50 ? 'text-yellow-400' : 'text-red-400'
 

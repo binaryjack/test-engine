@@ -7,9 +7,20 @@ import {
   generateSuccess,
   examFailure,
   submitRequest,
-  submitSuccess
+  submitSuccess,
+  loadResultRequest,
+  loadResultSuccess
 } from './exam.slice.js'
 import type { RootState } from '../../../store/index.js'
+
+function* handleLoadResult(action: PayloadAction<string>) {
+  const res: ApiResponse<ExamResult> = yield call(examApi.getResult, action.payload)
+  if (res.success && res.data) {
+    yield put(loadResultSuccess(res.data))
+  } else {
+    yield put(examFailure(res.error ?? 'Failed to load results'))
+  }
+}
 
 function* handleGenerate(action: PayloadAction<GenerateExamInput>) {
   const sessionRes: ApiResponse<ExamSession> = yield call(examApi.generate, action.payload)
@@ -57,4 +68,5 @@ function* handleSubmit() {
 export function* examSaga() {
   yield takeLatest(generateRequest.type, handleGenerate)
   yield takeLatest(submitRequest.type, handleSubmit)
+  yield takeLatest(loadResultRequest.type, handleLoadResult)
 }

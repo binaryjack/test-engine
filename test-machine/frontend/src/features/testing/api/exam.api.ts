@@ -26,5 +26,8 @@ export const examApi = {
     http.post<ApiResponse<ExamResult>>(`/exams/${sessionId}/submit`, input),
 
   getResults: (sessionId: string) =>
+    http.get<ApiResponse<ExamResult>>(`/exams/${sessionId}/results`),
+
+  getResult: (sessionId: string) =>
     http.get<ApiResponse<ExamResult>>(`/exams/${sessionId}/results`)
 }

@@ -74,6 +74,14 @@ const examSlice = createSlice({
       state.loading = false
       state.result = action.payload
     },
+    loadResultRequest(state, _action: PayloadAction<string>) {
+      state.loading = true
+      state.error = null
+    },
+    loadResultSuccess(state, action: PayloadAction<ExamResult>) {
+      state.loading = false
+      state.result = action.payload
+    },
     clearExam(state) {
       Object.assign(state, initialState)
     }
@@ -91,6 +99,8 @@ export const {
   goToQuestion,
   submitRequest,
   submitSuccess,
+  loadResultRequest,
+  loadResultSuccess,
   clearExam
 } = examSlice.actions
 

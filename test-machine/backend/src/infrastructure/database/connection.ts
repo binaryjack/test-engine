@@ -3,17 +3,36 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import path from 'path'
 
 const require = createRequire(import.meta.url)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const initSqlJs = require('sql.js') as (config?: any) => Promise<any>
+
+/**
+ * SQL.js type definitions
+ * sql.js doesn't have complete TypeScript types, so we define minimal interfaces
+ */
+interface SqlStatement {
+  bind(params: unknown[]): boolean
+  step(): boolean
+  getAsObject(): Record<string, unknown>
+  free(): void
+}
+
+interface SqlDatabase {
+  prepare(sql: string): SqlStatement
+  run(sql: string, params: unknown[]): void
+  export(): Uint8Array
+}
+
+interface SqlJs {
+  Database: new (data?: ArrayLike<number>) => SqlDatabase
+}
+
+const initSqlJs = require('sql.js') as (config?: Record<string, unknown>) => Promise<SqlJs>
 
 const DB_DIR = path.resolve(process.cwd(), 'data')
 const DB_PATH = path.join(DB_DIR, 'test-machine.db')
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let _db: any = null
+let _db: SqlDatabase | null = null
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getDb(): Promise<any> {
+export async function getDb(): Promise<SqlDatabase> {
   if (_db) return _db
 
   const SQL = await initSqlJs()
@@ -44,16 +63,14 @@ export function persistDb(): void {
 }
 
 // Helper: run a statement and persist
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function runSql(sql: string, params: any[] = []): void {
+export function runSql(sql: string, params: unknown[] = []): void {
   if (!_db) throw new Error('DB not initialised — call getDb() first')
   _db.run(sql, params)
   persistDb()
 }
 
 // Helper: query returning all rows as objects
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function querySql<T = Record<string, unknown>>(sql: string, params: any[] = []): T[] {
+export function querySql<T = Record<string, unknown>>(sql: string, params: unknown[] = []): T[] {
   if (!_db) throw new Error('DB not initialised — call getDb() first')
   const stmt = _db.prepare(sql)
   stmt.bind(params)
@@ -66,8 +83,7 @@ export function querySql<T = Record<string, unknown>>(sql: string, params: any[]
 }
 
 // Helper: query returning a single row or null
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function queryOneSql<T = Record<string, unknown>>(sql: string, params: any[] = []): T | null {
+export function queryOneSql<T = Record<string, unknown>>(sql: string, params: unknown[] = []): T | null {
   const rows = querySql<T>(sql, params)
   return rows.length > 0 ? rows[0] : null
 }
@@ -77,7 +93,6 @@ export function queryOneSql<T = Record<string, unknown>>(sql: string, params: an
  * Disables file persistence for the lifetime of that DB.
  * Call with `null` to reset to the uninitialised state.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function _initTestDb(db: any | null): void {
+export function _initTestDb(db: SqlDatabase | null): void {
   _db = db
 }

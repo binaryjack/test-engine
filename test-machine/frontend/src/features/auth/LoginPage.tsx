@@ -10,19 +10,18 @@ export function LoginPage() {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
 
+  // Navigate on success
+  React.useEffect(() => {
+    if (token) navigate('/dashboard', { replace: true })
+  }, [token, navigate])
+
   // Already logged in
   if (token) return <Navigate to="/dashboard" replace />
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     dispatch(loginRequest({ email, password }))
-    // Navigate after success handled by root guard — but we can also detect token change
   }
-
-  // Navigate on success
-  React.useEffect(() => {
-    if (token) navigate('/dashboard', { replace: true })
-  }, [token, navigate])
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center px-4">

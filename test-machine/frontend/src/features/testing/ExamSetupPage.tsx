@@ -2,33 +2,24 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
 import { generateRequest } from './store/exam.slice.js'
-
-// Minimal inline technology list until admin seeds data
-const DEFAULT_TECHNOLOGIES = [
-  { id: '', name: 'Loading…', levels: [] }
-]
+import { loadTechnologiesRequest } from '../admin/store/admin.slice.js'
 
 export function ExamSetupPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { session, loading, error } = useAppSelector(s => s.exam)
+  const { technologies, loading: adminLoading } = useAppSelector(s => s.admin)
 
-  const [technologies, setTechnologies] = React.useState<{ id: string; name: string; levels: string[] }[]>([])
   const [selectedTech, setSelectedTech] = React.useState('')
   const [selectedLevel, setSelectedLevel] = React.useState('')
   const [count, setCount] = React.useState(20)
 
-  // Load technologies from API directly (no redux slice for this simple list)
+  // Load technologies from admin store on mount
   React.useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api'}/technologies`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('tm_token')}` }
-    })
-      .then(r => r.json())
-      .then(res => {
-        if (res.success) setTechnologies(res.data)
-      })
-      .catch(() => {})
-  }, [])
+    if (technologies.length === 0) {
+      dispatch(loadTechnologiesRequest())
+    }
+  }, [dispatch, technologies.length])
 
   // Navigate to session once generated
   React.useEffect(() => {
@@ -57,8 +48,9 @@ export function ExamSetupPage() {
             value={selectedTech}
             onChange={e => { setSelectedTech(e.target.value); setSelectedLevel('') }}
             required
+            disabled={adminLoading || technologies.length === 0}
           >
-            <option value="">Select technology…</option>
+            <option value="">{adminLoading ? 'Loading…' : 'Select technology…'}</option>
             {technologies.map(t => (
               <option key={t.id} value={t.id}>{t.name}</option>
             ))}
@@ -106,7 +98,7 @@ export function ExamSetupPage() {
         <button
           type="submit"
           className="btn-primary w-full"
-          disabled={loading || !selectedTech || !selectedLevel}
+          disabled={loading || adminLoading || !selectedTech || !selectedLevel}
         >
           {loading ? 'Generating…' : 'Start Exam'}
         </button>
