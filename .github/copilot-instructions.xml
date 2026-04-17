@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<copilotInstructions>
+  <metadata>
+    <name>Test Engine Copilot Rules</name>
+    <description>Strict enforcement rules for React Training Project</description>
+    <strictMode>ULTRA_HIGH</strictMode>
+    <lastUpdated>2026-04-17</lastUpdated>
+    <version>1.0.0</version>
+  </metadata>
+
+  <projectOverview>
+    <description>Frontend learning-oriented training project using React 19, Vite, TypeScript, Node.js Express backend, and SQLite database.</description>
+    <stack>
+      <frontend>
+        <framework>React 19</framework>
+        <bundler>Vite</bundler>
+        <language>TypeScript</language>
+        <stateManagement>Redux + Redux-Saga</stateManagement>
+      </frontend>
+      <backend>
+        <framework>Node.js Express</framework>
+        <language>TypeScript</language>
+        <database>SQLite</database>
+      </backend>
+    </stack>
+  </projectOverview>
+
+  <generalRules strict="MANDATORY" violationLevel="CRITICAL">
+    <rule id="GR-001">
+      <name>TypeScript Only</name>
+      <requirement>All code MUST be written in TypeScript. NO EXCEPTIONS.</requirement>
+      <enforcement>Reject any JavaScript files (.js). Accept only .ts and .tsx files.</enforcement>
+      <violation>CRITICAL - Immediate code review failure</violation>
+    </rule>
+    
+    <rule id="GR-002">
+      <name>Feature Slice Pattern</name>
+      <requirement>MANDATORY organization of all code using the feature slice pattern.</requirement>
+      <enforcement>Every feature must follow the exact directory structure defined below.</enforcement>
+      <violation>CRITICAL - Feature must be restructured before merge</violation>
+    </rule>
+    
+    <rule id="GR-003">
+      <name>No Direct API Calls</name>
+      <requirement>Components MUST NEVER call API directly. ALWAYS use Redux + Saga.</requirement>
+      <enforcement>Scan all component files for fetch, axios, or direct HTTP calls.</enforcement>
+      <violation>CRITICAL - Code rejection required, refactor using Saga middleware</violation>
+    </rule>
+  </generalRules>
+
+  <fileOrganization strict="MANDATORY">
+    <description>Each feature MUST follow this exact directory structure with no deviations.</description>
+    <structure>
+      <item>pages/</item>
+      <item indent="1">&lt;feature&gt;/</item>
+      <item indent="2">components/</item>
+      <item indent="2">store/</item>
+      <item indent="3">&lt;feature&gt;.slice.ts</item>
+      <item indent="3">&lt;feature&gt;.saga.ts</item>
+      <item indent="2">api/</item>
+      <item indent="3">&lt;feature&gt;.api.ts</item>
+      <item indent="2">&lt;Feature&gt;List.tsx</item>
+      <item indent="2">&lt;Feature&gt;Form.tsx</item>
+    </structure>
+    <enforcement>
+      <check>Verify every feature has all required files.</check>
+      <check>File names must match feature name exactly (case-sensitive).</check>
+      <check>No extra files allowed in feature directories.</check>
+    </enforcement>
+    <violation>HIGH - Feature structure must be corrected</violation>
+  </fileOrganization>
+
+  <reduxArchitecture strict="MANDATORY">
+    <actions>
+      <requirement>Define clear, specific action types in slices.</requirement>
+      <requirement>Action names MUST follow convention: FEATURE_NAME/ACTION_TYPE</requirement>
+      <enforcement>Every action must be explicitly defined in the slice.</enforcement>
+      <violation>HIGH - Action must be properly defined</violation>
+    </actions>
+    
+    <reducers>
+      <requirement>Keep reducers pure and simple. NO side effects.</requirement>
+      <requirement>Reducers must only handle state mutations using Immer.</requirement>
+      <enforcement>No async logic, no API calls, no external dependencies.</enforcement>
+      <violation>HIGH - Reducer must be refactored to remove side effects</violation>
+    </reducers>
+    
+    <sagas>
+      <requirement>MANDATORY: Handle ALL side effects (API calls) in saga middleware.</requirement>
+      <requirement>Every API call must be wrapped in a saga.</requirement>
+      <requirement>Sagas must handle success, error, and loading states.</requirement>
+      <enforcement>No async/await in components or reducers. Saga-only.</enforcement>
+      <violation>CRITICAL - Must refactor to use Saga</violation>
+    </sagas>
+    
+    <selectors>
+      <requirement>MANDATORY: Use selectors for accessing state.</requirement>
+      <requirement>Never access state directly in components.</requirement>
+      <requirement>Selectors must be memoized when selecting computed values.</requirement>
+      <enforcement>All state access through useSelector must use selector functions.</enforcement>
+      <violation>MEDIUM - Refactor to use proper selector</violation>
+    </selectors>
+  </reduxArchitecture>
+
+  <componentGuidelines strict="MANDATORY">
+    <rule id="CG-001">
+      <name>Functional Components Only</name>
+      <requirement>ONLY functional components with hooks. NO class components.</requirement>
+      <enforcement>Reject any class component definitions.</enforcement>
+      <violation>CRITICAL - Must be converted to functional component</violation>
+    </rule>
+    
+    <rule id="CG-002">
+      <name>Component Size</name>
+      <requirement>Keep components small and focused. Max 300 lines per component.</requirement>
+      <enforcement>Components exceeding 300 lines must be split.</enforcement>
+      <violation>HIGH - Component must be refactored</violation>
+    </rule>
+    
+    <rule id="CG-003">
+      <name>Form Validation</name>
+      <requirement>Minimal validation for forms (this is a training project).</requirement>
+      <requirement>Validation must be consistent across all forms.</requirement>
+      <enforcement>Use schema-based validation (Zod recommended).</enforcement>
+      <violation>MEDIUM - Add consistent validation</violation>
+    </rule>
+    
+    <rule id="CG-004">
+      <name>TypeScript Interfaces</name>
+      <requirement>MANDATORY: Use TypeScript interfaces for ALL props and state.</requirement>
+      <requirement>Never use 'any' type. Use proper typing.</requirement>
+      <enforcement>Enable noImplicitAny and strict mode in tsconfig.</enforcement>
+      <violation>HIGH - Must add proper type definitions</violation>
+    </rule>
+  </componentGuidelines>
+
+  <apiCommunication strict="MANDATORY">
+    <rule id="API-001">
+      <name>Saga Middleware Only</name>
+      <requirement>ALL API calls MUST go through saga middleware.</requirement>
+      <enforcement>No fetch, axios, or any HTTP client in components or reducers.</enforcement>
+      <violation>CRITICAL - Must refactor to use Saga</violation>
+    </rule>
+    
+    <rule id="API-002">
+      <name>Typed Responses</name>
+      <requirement>API functions MUST return typed responses.</requirement>
+      <requirement>Define interfaces for all API response shapes.</requirement>
+      <enforcement>Use strict TypeScript typing for all responses.</enforcement>
+      <violation>HIGH - Must add proper type definitions</violation>
+    </rule>
+    
+    <rule id="API-003">
+      <name>Error Handling</name>
+      <requirement>Handle errors consistently across all features.</requirement>
+      <requirement>All API calls must have try-catch and dispatch error actions.</requirement>
+      <enforcement>Every saga must handle success, error, and loading states.</enforcement>
+      <violation>HIGH - Add comprehensive error handling</violation>
+    </rule>
+  </apiCommunication>
+
+  <backendGuidelines strict="MANDATORY">
+    <rule id="BE-001">
+      <name>RESTful API Endpoints</name>
+      <requirement>All endpoints MUST follow RESTful conventions.</requirement>
+      <enforcement>Use correct HTTP methods (GET, POST, PUT, DELETE).</enforcement>
+      <violation>HIGH - Endpoint must follow REST standards</violation>
+    </rule>
+    
+    <rule id="BE-002">
+      <name>Response Format</name>
+      <requirement>MANDATORY: All responses must follow this format:</requirement>
+      <responseFormat>{{ "success": boolean, "data"?: any, "error"?: string }}</responseFormat>
+      <enforcement>Every endpoint must return this exact structure.</enforcement>
+      <violation>CRITICAL - Response format must be corrected</violation>
+    </rule>
+    
+    <rule id="BE-003">
+      <name>Express Middleware</name>
+      <requirement>Use Express middleware for error handling and validation.</requirement>
+      <requirement>Centralized error handling middleware is MANDATORY.</requirement>
+      <enforcement>All errors must pass through middleware before sending response.</enforcement>
+      <violation>HIGH - Add proper middleware</violation>
+    </rule>
+    
+    <rule id="BE-004">
+      <name>Database</name>
+      <requirement>SQLite for data persistence.</requirement>
+      <requirement>All database queries must use parameterized statements.</requirement>
+      <enforcement>No raw SQL concatenation. Use prepared statements.</enforcement>
+      <violation>CRITICAL - SQL injection vulnerability</violation>
+    </rule>
+  </backendGuidelines>
+
+  <codeQuality strict="MANDATORY">
+    <rule id="CQ-001">
+      <name>ESLint Compliance</name>
+      <requirement>MANDATORY: Follow ESLint rules strictly with zero warnings.</requirement>
+      <enforcement>No warnings allowed. All must be treated as errors.</enforcement>
+      <violation>MEDIUM - Must fix all ESLint issues</violation>
+    </rule>
+    
+    <rule id="CQ-002">
+      <name>Naming Conventions</name>
+      <requirement>Use meaningful variable and function names.</requirement>
+      <requirement>NO single-letter variables except in loops.</requirement>
+      <requirement>Use camelCase for variables/functions, PascalCase for components/classes.</requirement>
+      <enforcement>Automatic review of naming patterns.</enforcement>
+      <violation>LOW - Rename for clarity</violation>
+    </rule>
+    
+    <rule id="CQ-003">
+      <name>Function Size</name>
+      <requirement>Keep functions small and single-purpose.</requirement>
+      <requirement>Functions should do one thing only.</requirement>
+      <requirement>Max 50 lines per function (excluding tests).</requirement>
+      <enforcement>Functions exceeding 50 lines must be split.</enforcement>
+      <violation>MEDIUM - Function must be refactored</violation>
+    </rule>
+    
+    <rule id="CQ-004">
+      <name>Code Comments</name>
+      <requirement>Add comments ONLY when necessary for complex logic.</requirement>
+      <requirement>Code should be self-documenting through clear naming.</requirement>
+      <enforcement>Excessive comments indicate poor code clarity.</enforcement>
+      <violation>LOW - Remove unnecessary comments or improve code clarity</violation>
+    </rule>
+  </codeQuality>
+
+  <typeScriptStrictMode strict="MANDATORY">
+    <setting name="strict">true</setting>
+    <setting name="noImplicitAny">true</setting>
+    <setting name="noImplicitThis">true</setting>
+    <setting name="noUnusedLocals">true</setting>
+    <setting name="noUnusedParameters">true</setting>
+    <setting name="noImplicitReturns">true</setting>
+    <setting name="noFallthroughCasesInSwitch">true</setting>
+    <setting name="strictNullChecks">true</setting>
+    <setting name="strictFunctionTypes">true</setting>
+    <setting name="strictBindCallApply">true</setting>
+    <setting name="strictPropertyInitialization">true</setting>
+    <enforcement>All TypeScript compiler options MUST be set as specified above.</enforcement>
+  </typeScriptStrictMode>
+
+  <violationLevels>
+    <level name="CRITICAL">
+      <description>Code rejection required. Feature must be refactored before merge.</description>
+      <examples>
+        <example>JavaScript files in TypeScript-only project</example>
+        <example>Direct API calls in components</example>
+        <example>Class components instead of functional</example>
+        <example>Response format violation</example>
+      </examples>
+    </level>
+    
+    <level name="HIGH">
+      <description>Code review required. Must be fixed before merge.</description>
+      <examples>
+        <example>Missing type definitions</example>
+        <example>Incorrect file structure</example>
+        <example>Reducer with side effects</example>
+        <example>Missing error handling</example>
+      </examples>
+    </level>
+    
+    <level name="MEDIUM">
+      <description>Should be fixed. Can be noted for improvement.</description>
+      <examples>
+        <example>ESLint warnings</example>
+        <example>Function exceeds size limit</example>
+        <example>Poor naming conventions</example>
+      </examples>
+    </level>
+    
+    <level name="LOW">
+      <description>Optional improvements. Not blocking.</description>
+      <examples>
+        <example>Excessive comments</example>
+        <example>Minor naming suggestions</example>
+      </examples>
+    </level>
+  </violationLevels>
+
+  <enforcement>
+    <description>These rules are NON-NEGOTIABLE in ULTRA_HIGH strict mode.</description>
+    <requirement>ALL CRITICAL violations result in code rejection.</requirement>
+    <requirement>ALL HIGH violations must be resolved before merge.</requirement>
+    <requirement>Code reviews MUST validate every rule listed above.</requirement>
+    <requirement>No exceptions granted except by explicit project lead approval.</requirement>
+  </enforcement>
+</copilotInstructions>
