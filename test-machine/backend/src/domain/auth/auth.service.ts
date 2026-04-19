@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
-import { querySql, queryOneSql, runSql } from '../../infrastructure/database/connection.js'
+import { queryOneSql, querySql, runSql } from '../../infrastructure/database/connection.js'
 import { User, UserDto, UserRole } from '../types.js'
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'dev-secret-change-in-production'
