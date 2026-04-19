@@ -7,7 +7,9 @@ import { AppLayout } from './shared/components/AppLayout.js'
 import { ProtectedRoute } from './shared/components/ProtectedRoute.js'
 
 // Auth
+import { ForgotPasswordPage } from './features/auth/ForgotPasswordPage.js'
 import { LoginPage } from './features/auth/LoginPage.js'
+import { PasswordResetPage } from './features/auth/PasswordResetPage.js'
 import { RegisterPage } from './features/auth/RegisterPage.js'
 
 // Candidate
@@ -52,7 +54,8 @@ export default function App() {
           {/* Public */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<Navigate to="/login" replace />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<PasswordResetPage />} />
 
           {/* Redirect root */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

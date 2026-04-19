@@ -11,12 +11,26 @@ export function ForgotPasswordPage() {
     e.preventDefault()
     setLoading(true)
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    console.log('Password reset initiated for:', email)
-    setSubmitted(true)
-    setLoading(false)
+    try {
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
+      
+      if (response.ok) {
+        console.log('Password reset initiated for:', email)
+        navigate('/reset-password')
+      } else {
+        console.error('Failed to send reset link')
+      }
+    } catch (error) {
+      console.error('Error sending reset link:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

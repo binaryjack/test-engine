@@ -78,6 +78,36 @@ export function me(userId: string): UserDto {
   return toDto(user)
 }
 
+export async function resetPassword(userId: string, newPassword: string): Promise<UserDto> {
+  const user = queryOneSql<User>('SELECT * FROM users WHERE id = ?', [userId])
+  if (!user) throw Object.assign(new Error('User not found'), { status: 404 })
+
+  const passwordHash = await bcrypt.hash(newPassword, 12)
+  
+  runSql(
+    'UPDATE users SET passwordHash = ? WHERE id = ?',
+    [passwordHash, userId]
+  )
+
+  const updatedUser = queryOneSql<User>('SELECT * FROM users WHERE id = ?', [userId])!
+  return toDto(updatedUser)
+}
+
+export async function resetPasswordByEmail(email: string, newPassword: string): Promise<UserDto> {
+  const user = queryOneSql<User>('SELECT * FROM users WHERE email = ?', [email.toLowerCase()])
+  if (!user) throw Object.assign(new Error('User not found'), { status: 404 })
+
+  const passwordHash = await bcrypt.hash(newPassword, 12)
+  
+  runSql(
+    'UPDATE users SET passwordHash = ? WHERE id = ?',
+    [passwordHash, user.id]
+  )
+
+  const updatedUser = queryOneSql<User>('SELECT * FROM users WHERE id = ?', [user.id])!
+  return toDto(updatedUser)
+}
+
 export function verifyToken(token: string): TokenPayload {
   return jwt.verify(token, JWT_SECRET) as TokenPayload
 }
