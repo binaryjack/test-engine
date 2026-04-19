@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { ExamSession, Question, ExamResult } from '../../../shared/types/index.js'
+import type { ExamResult, ExamSession, Question } from '../../../shared/types/index.js'
 import type { GenerateExamInput } from '../api/exam.api.js'
 
 interface ExamState {
@@ -82,6 +82,10 @@ const examSlice = createSlice({
       state.loading = false
       state.result = action.payload
     },
+    retakeFailedRequest(state, _action: PayloadAction<string>) {
+      state.loading = true
+      state.error = null
+    },
     clearExam(state) {
       Object.assign(state, initialState)
     }
@@ -101,6 +105,7 @@ export const {
   submitSuccess,
   loadResultRequest,
   loadResultSuccess,
+  retakeFailedRequest,
   clearExam
 } = examSlice.actions
 

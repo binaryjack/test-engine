@@ -72,3 +72,13 @@ examsRouter.get('/:id/results', authenticate, (req: AuthRequest, res) => {
     res.status(e.status ?? 500).json({ success: false, error: e.message })
   }
 })
+
+examsRouter.post('/:id/retake-failed', authenticate, (req: AuthRequest, res) => {
+  try {
+    const session = examService.generateRetakeExam(req.params.id as string, req.user!.sub)
+    res.status(201).json({ success: true, data: session })
+  } catch (err: unknown) {
+    const e = err as Error & { status?: number }
+    res.status(e.status ?? 500).json({ success: false, error: e.message })
+  }
+})

@@ -1,8 +1,8 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
-import { loadResultRequest } from './store/exam.slice.js'
-import type { Question, ExamAnswer } from '../../shared/types/index.js'
+import type { ExamAnswer, Question } from '../../shared/types/index.js'
+import { loadResultRequest, retakeFailedRequest } from './store/exam.slice.js'
 
 function AnswerRow({ q, answer }: { q: Question; answer: ExamAnswer | undefined }) {
   const isCorrect = answer?.isCorrect ?? false
@@ -38,8 +38,10 @@ function AnswerRow({ q, answer }: { q: Question; answer: ExamAnswer | undefined 
 
 export function ExamResultsPage() {
   const { id } = useParams<{ id: string }>()
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { result, loading, error } = useAppSelector(s => s.exam)
+  const { result, loading, error, session } = useAppSelector(s => s.exam)
+  const [retaking, setRetaking] = React.useState(false)
 
   // Load result from Redux if not already in state
   React.useEffect(() => {
@@ -53,8 +55,19 @@ export function ExamResultsPage() {
   if (!result) return <div className="text-slate-400">No results found</div>
 
   const data = result
-
+  const failedCount = data.totalQuestions - data.correctAnswers
   const scoreColor = data.score >= 70 ? 'text-green-400' : data.score >= 50 ? 'text-yellow-400' : 'text-red-400'
+
+  const handleRetakeFailed = () => {
+    if (failedCount === 0) return
+    if (!session?.id) return
+    setRetaking(true)
+    dispatch(retakeFailedRequest(session.id))
+    // Navigate to exam after a short delay to allow dispatch to process
+    setTimeout(() => {
+      navigate('/exam')
+    }, 100)
+  }
 
   return (
     <div className="space-y-8">
@@ -67,8 +80,18 @@ export function ExamResultsPage() {
         <div className="text-slate-500 text-sm mt-1">
           {data.score >= 70 ? 'Great job! You passed.' : 'Keep practicing — you\'ll get there!'}
         </div>
-        <div className="flex justify-center gap-3 mt-4">
+        <div className="flex justify-center gap-3 mt-4 flex-wrap">
           <Link to="/exam" className="btn-primary">New Exam</Link>
+          {failedCount > 0 && (
+            <button
+              onClick={handleRetakeFailed}
+              disabled={retaking}
+              className="btn-secondary"
+              title="Retake only the questions you got wrong"
+            >
+              {retaking ? 'Loading...' : `Retake ${failedCount} Failed Question${failedCount !== 1 ? 's' : ''}`}
+            </button>
+          )}
           <Link to="/dashboard" className="btn-secondary">Dashboard</Link>
         </div>
       </div>

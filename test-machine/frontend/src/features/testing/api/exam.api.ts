@@ -1,5 +1,5 @@
+import type { ApiResponse, ExamResult, ExamSession, Question } from '../../../shared/types/index.js'
 import { http } from '../../../shared/utils/http.js'
-import type { ApiResponse, Question, ExamSession, ExamResult } from '../../../shared/types/index.js'
 
 export interface GenerateExamInput {
   technologyId: string
@@ -29,5 +29,8 @@ export const examApi = {
     http.get<ApiResponse<ExamResult>>(`/exams/${sessionId}/results`),
 
   getResult: (sessionId: string) =>
-    http.get<ApiResponse<ExamResult>>(`/exams/${sessionId}/results`)
+    http.get<ApiResponse<ExamResult>>(`/exams/${sessionId}/results`),
+
+  retakeFailed: (sessionId: string) =>
+    http.post<ApiResponse<ExamSession>>(`/exams/${sessionId}/retake-failed`, {})
 }

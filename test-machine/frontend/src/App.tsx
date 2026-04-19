@@ -1,11 +1,10 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import { Provider } from 'react-redux'
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import { store } from './store/index.js'
 
 // Shared
-import { ProtectedRoute } from './shared/components/ProtectedRoute.js'
 import { AppLayout } from './shared/components/AppLayout.js'
+import { ProtectedRoute } from './shared/components/ProtectedRoute.js'
 
 // Auth
 import { LoginPage } from './features/auth/LoginPage.js'
@@ -14,15 +13,15 @@ import { RegisterPage } from './features/auth/RegisterPage.js'
 // Candidate
 import { DashboardPage } from './features/analytics/DashboardPage.js'
 import { ProfilePage } from './features/analytics/ProfilePage.js'
-import { ExamSetupPage } from './features/testing/ExamSetupPage.js'
-import { ExamSessionPage } from './features/testing/ExamSessionPage.js'
 import { ExamResultsPage } from './features/testing/ExamResultsPage.js'
+import { ExamSessionPage } from './features/testing/ExamSessionPage.js'
+import { ExamSetupPage } from './features/testing/ExamSetupPage.js'
 
 // Admin
 import { AdminLayout } from './features/admin/AdminLayout.js'
 import { AdminOverviewPage } from './features/admin/AdminOverviewPage.js'
-import { AdminTechnologiesPage } from './features/admin/AdminTechnologiesPage.js'
 import { AdminQuestionsPage } from './features/admin/AdminQuestionsPage.js'
+import { AdminTechnologiesPage } from './features/admin/AdminTechnologiesPage.js'
 import { AdminUsersPage } from './features/admin/AdminUsersPage.js'
 
 function ProtectedLayout({ requireRole }: { requireRole?: 'admin' | 'candidate' }) {
@@ -53,6 +52,10 @@ export default function App() {
           {/* Public */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<Navigate to="/login" replace />} />
+
+          {/* Redirect root */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
           {/* Redirect root */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

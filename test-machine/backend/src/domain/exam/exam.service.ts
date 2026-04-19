@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
-import { querySql, queryOneSql, runSql } from '../../infrastructure/database/connection.js'
-import { ExamSession, ExamAnswer, ExamSessionDto, ExamAnswerDto, QuestionDto } from '../types.js'
-import { listQuestions, getQuestion } from '../question/question.service.js'
+import { queryOneSql, querySql, runSql } from '../../infrastructure/database/connection.js'
+import { getQuestion, listQuestions } from '../question/question.service.js'
+import { ExamAnswer, ExamAnswerDto, ExamSession, ExamSessionDto, QuestionDto } from '../types.js'
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -194,6 +194,51 @@ export function getResults(sessionId: string, userId: string): ExamResult {
     correctAnswers: correct,
     breakdown: session.breakdown ? JSON.parse(session.breakdown) : {}
   }
+}
+
+// ── retake with failed questions ────────────────────────────────────────────
+
+export function generateRetakeExam(previousSessionId: string, userId: string): ExamSessionDto {
+  const previousSession = queryOneSql<ExamSession>(
+    'SELECT * FROM exam_sessions WHERE id = ?',
+    [previousSessionId]
+  )
+  if (!previousSession) {
+    throw Object.assign(new Error('Previous exam session not found'), { status: 404 })
+  }
+  if (previousSession.userId !== userId) {
+    throw Object.assign(new Error('Forbidden'), { status: 403 })
+  }
+  if (!previousSession.submittedAt) {
+    throw Object.assign(new Error('Previous exam not yet submitted'), { status: 422 })
+  }
+
+  // Get all answers from the previous session
+  const previousAnswers = querySql<ExamAnswer>(
+    'SELECT * FROM exam_answers WHERE sessionId = ?',
+    [previousSessionId]
+  ).map(answerToDto)
+
+  // Get failed question IDs
+  const failedQuestionIds = previousAnswers
+    .filter(a => !a.isCorrect)
+    .map(a => a.questionId)
+
+  if (failedQuestionIds.length === 0) {
+    throw Object.assign(new Error('No failed questions to retake'), { status: 422 })
+  }
+
+  // Create new exam session with only failed questions
+  const id = uuidv4()
+  const now = new Date().toISOString()
+
+  runSql(
+    `INSERT INTO exam_sessions (id, userId, technologyId, level, questionIds, startedAt)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, userId, previousSession.technologyId, previousSession.level, JSON.stringify(failedQuestionIds), now]
+  )
+
+  return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)
 }
 
 function normalizeAnswer(answer: string): string {
