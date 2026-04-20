@@ -5,7 +5,7 @@ export const QuestionSchema = z.object({
   level: z.string().min(1).max(32),
   topic: z.string().min(1).max(128),
   subtopic: z.string().max(128).optional().default(''),
-  type: z.enum(['mcq', 'coding']),
+  type: z.enum(['mcq', 'coding', 'theory', 'debug']),
   prompt: z.string().min(1),
   options: z.array(z.string()).nullable().optional(),
   answer: z.string().min(1),

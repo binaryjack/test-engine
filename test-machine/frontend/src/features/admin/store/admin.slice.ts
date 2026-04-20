@@ -32,6 +32,10 @@ const adminSlice = createSlice({
     loadTechnologiesSuccess(state, action: PayloadAction<Technology[]>) {
       state.loading = false; state.technologies = action.payload
     },
+    loadPublicTechnologiesRequest(state) { state.loading = true },
+    loadPublicTechnologiesSuccess(state, action: PayloadAction<Technology[]>) {
+      state.loading = false; state.technologies = action.payload
+    },
     loadQuestionsRequest(state, _action: PayloadAction<{ technologyId?: string; level?: string; topic?: string } | undefined>) {
       state.loading = true
     },
@@ -66,6 +70,8 @@ export const {
   loadStatsSuccess,
   loadTechnologiesRequest,
   loadTechnologiesSuccess,
+  loadPublicTechnologiesRequest,
+  loadPublicTechnologiesSuccess,
   loadQuestionsRequest,
   loadQuestionsSuccess,
   loadUsersRequest,

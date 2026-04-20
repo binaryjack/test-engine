@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
 import type { ExamAnswer, Question } from '../../shared/types/index.js'
-import { loadResultRequest, retakeFailedRequest } from './store/exam.slice.js'
+import { loadResultRequest, generateSuccess } from './store/exam.slice.js'
 
 function AnswerRow({ q, answer }: { q: Question; answer: ExamAnswer | undefined }) {
   const isCorrect = answer?.isCorrect ?? false
@@ -41,6 +41,7 @@ export function ExamResultsPage() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { result, loading, error, session } = useAppSelector(s => s.exam)
+  const { token } = useAppSelector(s => s.auth)
   const [retaking, setRetaking] = React.useState(false)
 
   // Load result from Redux if not already in state
@@ -58,15 +59,61 @@ export function ExamResultsPage() {
   const failedCount = data.totalQuestions - data.correctAnswers
   const scoreColor = data.score >= 70 ? 'text-green-400' : data.score >= 50 ? 'text-yellow-400' : 'text-red-400'
 
-  const handleRetakeFailed = () => {
+  const handleRetakeFailed = async () => {
     if (failedCount === 0) return
-    if (!session?.id) return
+    const prevSessionId = data.session?.id ?? session?.id
+    if (!prevSessionId) return
+    if (!token) return
     setRetaking(true)
-    dispatch(retakeFailedRequest(session.id))
-    // Navigate to exam after a short delay to allow dispatch to process
-    setTimeout(() => {
-      navigate('/exam')
-    }, 100)
+    try {
+      const response = await fetch(`/api/exams/${prevSessionId}/retake-failed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success && data.data?.id) {
+          const newSession = data.data
+          // Load questions for the new session
+          const questionsResponse = await fetch(
+            `/api/questions?technologyId=${newSession.technologyId}&level=${newSession.level}`,
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }
+          )
+          
+          if (questionsResponse.ok) {
+            const questionsData = await questionsResponse.json()
+            if (questionsData.success && questionsData.data) {
+              const allQuestions = questionsData.data
+              // Filter to only the questions in this session
+              const sessionQuestions = allQuestions.filter((q: Question) => 
+                newSession.questionIds.includes(q.id)
+              )
+              
+              // Dispatch to load the session into Redux
+              dispatch(generateSuccess({ session: newSession, questions: sessionQuestions }))
+              // Navigate to new session
+              navigate(`/exam/session/${newSession.id}`, { replace: true })
+              return
+            }
+          }
+        }
+        setRetaking(false)
+      } else {
+        console.error('Failed to retake exam')
+        setRetaking(false)
+      }
+    } catch (error) {
+      console.error('Error retaking exam:', error)
+      setRetaking(false)
+    }
   }
 
   return (

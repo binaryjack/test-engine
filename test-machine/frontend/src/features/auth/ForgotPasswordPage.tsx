@@ -22,6 +22,8 @@ export function ForgotPasswordPage() {
       
       if (response.ok) {
         console.log('Password reset initiated for:', email)
+        // Store email in sessionStorage so reset page can access it
+        sessionStorage.setItem('resetEmail', email)
         navigate('/reset-password')
       } else {
         console.error('Failed to send reset link')

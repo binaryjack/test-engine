@@ -7,20 +7,32 @@ export interface GenerateExamInput {
   count?: number
   seed?: number
 }
+export interface GenerateExamInputExtended {
+  technologyId?: string
+  technologyIds?: string[]
+  level: string
+  count?: number
+  seed?: number
+}
 
 export interface SubmitExamInput {
   answers: { questionId: string; userAnswer: string; timeSpent?: number }[]
 }
 
 export const examApi = {
-  generate: (input: GenerateExamInput) =>
+  generate: (input: GenerateExamInputExtended) =>
     http.post<ApiResponse<ExamSession>>('/exams/generate', input),
 
   getSession: (id: string) =>
     http.get<ApiResponse<ExamSession>>(`/exams/${id}`),
 
-  getQuestions: (technologyId: string, level: string) =>
-    http.get<ApiResponse<Question[]>>(`/questions?technologyId=${technologyId}&level=${level}`),
+  getQuestions: (technologyId?: string, level?: string) => {
+    const qs = new URLSearchParams()
+    if (technologyId) qs.set('technologyId', technologyId)
+    if (level) qs.set('level', level)
+    const q = qs.toString()
+    return http.get<ApiResponse<Question[]>>(`/questions${q ? `?${q}` : ''}`)
+  },
 
   submit: (sessionId: string, input: SubmitExamInput) =>
     http.post<ApiResponse<ExamResult>>(`/exams/${sessionId}/submit`, input),

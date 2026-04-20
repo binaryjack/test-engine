@@ -29,18 +29,29 @@ function* handleGenerate(action: PayloadAction<GenerateExamInput>) {
     yield put(examFailure(sessionRes.error ?? 'Failed to generate exam'))
     return
   }
-  const questionsRes: ApiResponse<Question[]> = yield call(
-    examApi.getQuestions,
-    action.payload.technologyId,
-    action.payload.level
-  )
-  if (!questionsRes.success || !questionsRes.data) {
-    yield put(examFailure(questionsRes.error ?? 'Failed to load questions'))
-    return
+  // Fetch questions for each requested technology (support multiple techs)
+  const techs: string[] = action.payload.technologyIds && action.payload.technologyIds.length > 0
+    ? action.payload.technologyIds
+    : action.payload.technologyId
+      ? [action.payload.technologyId]
+      : (sessionRes.data.technologyId ? [sessionRes.data.technologyId] : [])
+
+  let allQuestions: Question[] = []
+  if (techs.length === 0) {
+    const qRes: ApiResponse<Question[]> = yield call(examApi.getQuestions, undefined, action.payload.level)
+    if (!qRes.success || !qRes.data) { yield put(examFailure(qRes.error ?? 'Failed to load questions')); return }
+    allQuestions = qRes.data
+  } else {
+    for (const t of techs) {
+      const qRes: ApiResponse<Question[]> = yield call(examApi.getQuestions, t, action.payload.level)
+      if (!qRes.success || !qRes.data) { yield put(examFailure(qRes.error ?? 'Failed to load questions')); return }
+      allQuestions = allQuestions.concat(qRes.data)
+    }
   }
+
   // Filter to only the questions in this session
   const questionIds = sessionRes.data.questionIds
-  const questions = questionsRes.data.filter(q => questionIds.includes(q.id))
+  const questions = allQuestions.filter(q => questionIds.includes(q.id))
   yield put(generateSuccess({ session: sessionRes.data, questions }))
 }
 

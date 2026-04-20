@@ -5,6 +5,7 @@ import type { ApiResponse, Technology, Question, User } from '../../../shared/ty
 import {
   loadStatsRequest, loadStatsSuccess,
   loadTechnologiesRequest, loadTechnologiesSuccess,
+  loadPublicTechnologiesRequest, loadPublicTechnologiesSuccess,
   loadQuestionsRequest, loadQuestionsSuccess,
   loadUsersRequest, loadUsersSuccess,
   adminFailure,
@@ -23,6 +24,12 @@ function* handleLoadStats() {
 function* handleLoadTechnologies() {
   const res: ApiResponse<Technology[]> = yield call(adminApi.listAllTechnologies)
   if (res.success && res.data) yield put(loadTechnologiesSuccess(res.data))
+  else yield put(adminFailure(res.error ?? 'Failed'))
+}
+
+function* handleLoadPublicTechnologies() {
+  const res: ApiResponse<Technology[]> = yield call(adminApi.listPublicTechnologies)
+  if (res.success && res.data) yield put(loadPublicTechnologiesSuccess(res.data))
   else yield put(adminFailure(res.error ?? 'Failed'))
 }
 
@@ -50,6 +57,12 @@ function* handleCreateQuestion(action: PayloadAction<CreateQuestionInput>) {
   else yield put(adminFailure(res.error ?? 'Failed'))
 }
 
+function* handleUpdateQuestion(action: PayloadAction<{ id: string; data: Partial<CreateQuestionInput> }>) {
+  const res: ApiResponse<Question> = yield call(adminApi.updateQuestion, action.payload.id, action.payload.data)
+  if (res.success) yield put(loadQuestionsRequest(undefined))
+  else yield put(adminFailure(res.error ?? 'Failed'))
+}
+
 function* handleDeleteQuestion(action: PayloadAction<string>) {
   const res: ApiResponse<void> = yield call(adminApi.deleteQuestion, action.payload)
   if (res.success) yield put(questionDeleted(action.payload))
@@ -59,9 +72,11 @@ function* handleDeleteQuestion(action: PayloadAction<string>) {
 export function* adminSaga() {
   yield takeLatest(loadStatsRequest.type, handleLoadStats)
   yield takeLatest(loadTechnologiesRequest.type, handleLoadTechnologies)
+  yield takeLatest(loadPublicTechnologiesRequest.type, handleLoadPublicTechnologies)
   yield takeLatest(loadQuestionsRequest.type, handleLoadQuestions)
   yield takeLatest(loadUsersRequest.type, handleLoadUsers)
   yield takeLatest(createTechnologyRequest.type, handleCreateTechnology)
   yield takeLatest(createQuestionRequest.type, handleCreateQuestion)
+  yield takeLatest('admin/updateQuestionRequest', handleUpdateQuestion)
   yield takeLatest(deleteQuestionRequest.type, handleDeleteQuestion)
 }

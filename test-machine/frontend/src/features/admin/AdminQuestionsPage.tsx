@@ -5,6 +5,7 @@ import type { QuestionType, Difficulty } from '../../shared/types/index.js'
 
 const TYPES: QuestionType[] = ['mcq', 'theory', 'coding', 'debug']
 const DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard']
+const DIFFICULTY_MAP: Record<Difficulty, number> = { easy: 2, medium: 3, hard: 5 }
 
 export function AdminQuestionsPage() {
   const dispatch = useAppDispatch()
@@ -15,6 +16,7 @@ export function AdminQuestionsPage() {
   const [showForm, setShowForm] = React.useState(false)
 
   // Form state
+  const [editingId, setEditingId] = React.useState<string | null>(null)
   const [form, setForm] = React.useState({
     technologyId: '', level: '', topic: '', subtopic: '', type: 'mcq' as QuestionType,
     prompt: '', options: '', answer: '', difficulty: 'medium' as Difficulty,
@@ -35,7 +37,7 @@ export function AdminQuestionsPage() {
     const options = form.type === 'mcq'
       ? form.options.split('\n').map(s => s.trim()).filter(Boolean)
       : undefined
-    dispatch(createQuestionRequest({
+    const payload = {
       technologyId: form.technologyId,
       level: form.level,
       topic: form.topic,
@@ -44,11 +46,18 @@ export function AdminQuestionsPage() {
       prompt: form.prompt,
       options,
       answer: form.answer,
-      difficulty: form.difficulty,
+      difficulty: DIFFICULTY_MAP[form.difficulty as Difficulty] ?? 3,
       estimatedTime: form.estimatedTime,
       explanation: form.explanation || undefined
-    }))
+    }
+    if (editingId) {
+      // Update existing question
+      dispatch({ type: 'admin/updateQuestionRequest', payload: { id: editingId, data: payload } })
+    } else {
+      dispatch(createQuestionRequest(payload))
+    }
     setShowForm(false)
+    setEditingId(null)
   }
 
   const selectedTech = technologies.find(t => t.id === form.technologyId)
@@ -57,7 +66,7 @@ export function AdminQuestionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold text-white">Questions</h1>
-        <button className="btn-primary text-sm" onClick={() => setShowForm(v => !v)}>
+        <button className="btn-primary text-sm" onClick={() => { if (showForm) setEditingId(null); setShowForm(v => !v) }}>
           {showForm ? 'Cancel' : '+ Add Question'}
         </button>
       </div>
@@ -75,7 +84,7 @@ export function AdminQuestionsPage() {
       {/* Create form */}
       {showForm && (
         <form onSubmit={handleCreate} className="card space-y-4">
-          <h2 className="font-medium text-white">New Question</h2>
+          <h2 className="font-medium text-white">{editingId ? 'Edit Question' : 'New Question'}</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="label">Technology</label>
@@ -136,7 +145,7 @@ export function AdminQuestionsPage() {
             <textarea className="input text-sm" rows={3} value={form.explanation}
               onChange={e => setForm(f => ({ ...f, explanation: e.target.value }))} />
           </div>
-          <button type="submit" className="btn-primary text-sm" disabled={loading}>Create Question</button>
+          <button type="submit" className="btn-primary text-sm" disabled={loading}>{editingId ? 'Update Question' : 'Create Question'}</button>
         </form>
       )}
 
@@ -161,13 +170,40 @@ export function AdminQuestionsPage() {
                 <td className="py-2 pr-4 text-slate-400">{q.type}</td>
                 <td className="py-2 pr-4 text-slate-400">{q.difficulty}</td>
                 <td className="py-2">
-                  <button
-                    className="btn-danger text-xs"
-                    onClick={() => { if (confirm('Delete this question?')) dispatch(deleteQuestionRequest(q.id)) }}
-                    disabled={loading}
-                  >
-                    Delete
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      className="btn-secondary text-xs"
+                      onClick={() => {
+                          // Populate form and show it for editing
+                          const revMap: Record<number, Difficulty> = { 2: 'easy', 3: 'medium', 5: 'hard' }
+                          setForm({
+                            technologyId: q.technologyId,
+                            level: q.level,
+                            topic: q.topic,
+                            subtopic: q.subtopic ?? '',
+                            type: q.type as QuestionType,
+                            prompt: q.prompt,
+                            options: q.options ? q.options.join('\n') : '',
+                            answer: q.answer,
+                            difficulty: revMap[q.difficulty] ?? 'medium',
+                            estimatedTime: q.estimatedTime,
+                            explanation: q.explanation ?? ''
+                          })
+                          setEditingId(q.id)
+                          setShowForm(true)
+                        }}
+                      disabled={loading}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-danger text-xs"
+                      onClick={() => { if (confirm('Delete this question?')) dispatch(deleteQuestionRequest(q.id)) }}
+                      disabled={loading}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

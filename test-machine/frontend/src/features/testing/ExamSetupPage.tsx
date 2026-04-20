@@ -2,7 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
 import { generateRequest } from './store/exam.slice.js'
-import { loadTechnologiesRequest } from '../admin/store/admin.slice.js'
+import { loadPublicTechnologiesRequest } from '../admin/store/admin.slice.js'
+import { examApi } from './api/exam.api.js'
 
 export function ExamSetupPage() {
   const dispatch = useAppDispatch()
@@ -10,14 +11,15 @@ export function ExamSetupPage() {
   const { session, loading, error } = useAppSelector(s => s.exam)
   const { technologies, loading: adminLoading } = useAppSelector(s => s.admin)
 
-  const [selectedTech, setSelectedTech] = React.useState('')
+  const [selectedTechs, setSelectedTechs] = React.useState<string[]>([])
   const [selectedLevel, setSelectedLevel] = React.useState('')
   const [count, setCount] = React.useState(20)
+  const [availableCount, setAvailableCount] = React.useState(80)
 
   // Load technologies from admin store on mount
   React.useEffect(() => {
     if (technologies.length === 0) {
-      dispatch(loadTechnologiesRequest())
+      dispatch(loadPublicTechnologiesRequest())
     }
   }, [dispatch, technologies.length])
 
@@ -26,13 +28,43 @@ export function ExamSetupPage() {
     if (session && !loading) navigate(`/exam/session/${session.id}`)
   }, [session, loading, navigate])
 
-  const selectedTechObj = technologies.find(t => t.id === selectedTech)
+  const selectedTechObj = technologies.find(t => t.id === (selectedTechs[0] ?? ''))
 
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedTech || !selectedLevel) return
-    dispatch(generateRequest({ technologyId: selectedTech, level: selectedLevel, count }))
+    if (selectedTechs.length === 0 || !selectedLevel) return
+    const payload = selectedTechs.length > 1
+      ? { technologyIds: selectedTechs, level: selectedLevel, count }
+      : { technologyId: selectedTechs[0], level: selectedLevel, count }
+    dispatch(generateRequest(payload as any))
   }
+
+  // Compute available questions count for slider (across selected technologies and level)
+  React.useEffect(() => {
+    let cancelled = false
+    async function compute() {
+      try {
+        let total = 0
+        if (selectedTechs.length === 0) {
+          const res = await examApi.getQuestions(undefined, selectedLevel || undefined)
+          if (res.success && res.data) total = res.data.length
+        } else {
+          for (const tid of selectedTechs) {
+            const res = await examApi.getQuestions(tid, selectedLevel || undefined)
+            if (res.success && res.data) total += res.data.length
+          }
+        }
+        if (!cancelled) {
+          setAvailableCount(total || 1)
+          setCount(c => Math.min(c, total || 1))
+        }
+      } catch (err) {
+        // ignore
+      }
+    }
+    compute()
+    return () => { cancelled = true }
+  }, [selectedTechs, selectedLevel])
 
   return (
     <div className="max-w-lg mx-auto space-y-6">
@@ -42,15 +74,19 @@ export function ExamSetupPage() {
       )}
       <form onSubmit={handleStart} className="card space-y-5">
         <div>
-          <label className="label">Technology</label>
+          <label className="label">Technologies (hold Ctrl/Cmd to multi-select)</label>
           <select
-            className="input"
-            value={selectedTech}
-            onChange={e => { setSelectedTech(e.target.value); setSelectedLevel('') }}
+            className="input h-36"
+            multiple
+            value={selectedTechs}
+            onChange={e => {
+              const opts = Array.from(e.target.selectedOptions).map(o => o.value)
+              setSelectedTechs(opts)
+              setSelectedLevel('')
+            }}
             required
             disabled={adminLoading || technologies.length === 0}
           >
-            <option value="">{adminLoading ? 'Loading…' : 'Select technology…'}</option>
             {technologies.map(t => (
               <option key={t.id} value={t.id}>{t.name}</option>
             ))}
@@ -83,22 +119,22 @@ export function ExamSetupPage() {
           <label className="label">Number of Questions: {count}</label>
           <input
             type="range"
-            min={5}
-            max={80}
-            step={5}
+            min={1}
+            max={availableCount}
+            step={1}
             value={count}
             onChange={e => setCount(Number(e.target.value))}
             className="w-full accent-primary-500"
           />
           <div className="flex justify-between text-slate-500 text-xs mt-1">
-            <span>5</span><span>80</span>
+            <span>1</span><span>{availableCount}</span>
           </div>
         </div>
 
         <button
           type="submit"
           className="btn-primary w-full"
-          disabled={loading || adminLoading || !selectedTech || !selectedLevel}
+          disabled={loading || adminLoading || selectedTechs.length === 0 || !selectedLevel}
         >
           {loading ? 'Generating…' : 'Start Exam'}
         </button>

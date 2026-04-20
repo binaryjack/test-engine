@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
 import { loadStatsRequest, loadHistoryRequest } from './store/analytics.slice.js'
+import { loadResultRequest } from '../testing/store/exam.slice.js'
 import { format } from 'date-fns'
 
 export function DashboardPage() {
@@ -13,6 +14,10 @@ export function DashboardPage() {
     dispatch(loadStatsRequest())
     dispatch(loadHistoryRequest())
   }, [dispatch])
+
+  // Separate exams into completed with all correct, and those with potential retakes
+  const completedExams = history.filter(s => s.submittedAt)
+  const examsWithFailedQuestions = completedExams.filter(s => (s.score ?? 0) < 100)
 
   return (
     <div className="space-y-8">
@@ -49,6 +54,34 @@ export function DashboardPage() {
         </div>
         <Link to="/exam" className="btn-primary">Start Exam</Link>
       </div>
+
+      {/* Exams with failed questions - retake opportunity */}
+      {examsWithFailedQuestions.length > 0 && (
+        <div className="card border-l-4 border-l-yellow-500">
+          <h2 className="text-lg font-semibold text-white mb-4">Ready to Retake?</h2>
+          <p className="text-slate-400 text-sm mb-4">You have {examsWithFailedQuestions.length} exam{examsWithFailedQuestions.length !== 1 ? 's' : ''} with questions you can retake.</p>
+          <div className="space-y-2">
+            {examsWithFailedQuestions.slice(0, 5).map(session => (
+              <div key={session.id} className="flex items-center justify-between py-2 border-b border-slate-700 last:border-0">
+                <div>
+                  <span className="text-white text-sm font-medium">{session.technologyId} — {session.level}</span>
+                  <span className="text-slate-400 text-xs ml-2">
+                    {session.startedAt ? format(new Date(session.startedAt), 'dd MMM yyyy') : ''}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`badge ${(session.score ?? 0) >= 70 ? 'badge-senior' : 'badge-mid'}`}>
+                    {session.score}%
+                  </span>
+                  <Link to={`/exam/results/${session.id}`} className="text-yellow-400 text-xs hover:underline">
+                    View & Retake
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Weaknesses */}
       {stats && stats.topicWeaknesses.length > 0 && (

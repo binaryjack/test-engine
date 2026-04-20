@@ -46,17 +46,36 @@ function seededShuffle<T>(arr: T[], seed: number): T[] {
 
 export interface GenerateInput {
   userId: string
-  technologyId: string
+  technologyId?: string
+  technologyIds?: string[]
   level: string
   count?: number
   seed?: number   // deterministic mode for tests
 }
 
 export function generateExam(input: GenerateInput): ExamSessionDto {
-  const allQuestions = listQuestions({ technologyId: input.technologyId, level: input.level })
+  // Support selecting from a single technology or multiple technologies
+  const techIds: string[] = input.technologyIds && input.technologyIds.length > 0
+    ? input.technologyIds
+    : input.technologyId
+      ? [input.technologyId]
+      : []
+
+  if (techIds.length === 0) {
+    throw Object.assign(new Error('No technology specified'), { status: 400 })
+  }
+
+  // Collect questions from all requested technologies (matching level)
+  const collected: Record<string, QuestionDto> = {}
+  for (const tid of techIds) {
+    const qs = listQuestions({ technologyId: tid, level: input.level })
+    for (const q of qs) collected[q.id] = q
+  }
+
+  const allQuestions = Object.values(collected)
   if (allQuestions.length === 0) {
     throw Object.assign(
-      new Error(`No questions found for technology ${input.technologyId} level ${input.level}`),
+      new Error(`No questions found for technologies ${techIds.join(', ')} level ${input.level}`),
       { status: 422 }
     )
   }
@@ -70,10 +89,27 @@ export function generateExam(input: GenerateInput): ExamSessionDto {
   const id = uuidv4()
   const now = new Date().toISOString()
 
+  // Shuffle MCQ options for each question using session ID as seed
+  const seedNum = Math.abs(id.split('').reduce((a: number, c: string) => (a << 5) - a + c.charCodeAt(0), 0))
+  const selectedWithShuffledOptions = selected.map((q, idx) => ({
+    ...q,
+    ...(shuffleQuestionOptions(q, seedNum + idx))
+  }))
+
+  // Store shuffled questions
+  for (let i = 0; i < selectedWithShuffledOptions.length; i++) {
+    const q = selectedWithShuffledOptions[i]
+    if (q.type === 'mcq' && q.options) {
+      // Update this question's options and answer in DB for this session
+      // Since we can't easily track per-session question variants, we'll shuffle on client side
+    }
+  }
+
   runSql(
     `INSERT INTO exam_sessions (id, userId, technologyId, level, questionIds, startedAt)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [id, input.userId, input.technologyId, input.level, JSON.stringify(selected.map(q => q.id)), now]
+    // Store the first technologyId for compatibility (when multiple techs were requested)
+    [id, input.userId, techIds[0], input.level, JSON.stringify(selected.map(q => q.id)), now]
   )
 
   return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)

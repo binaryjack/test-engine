@@ -5,6 +5,8 @@ import { createQuestion } from '../../../domain/question/question.service.js'
 import { reactMidQuestions } from './react-mid.js'
 import { reactSeniorQuestions } from './react-senior.js'
 import { typescriptQuestions } from './typescript.js'
+import { reactFundamentalsQuestions } from './react-fundamentals.js'
+import { reactExtraSeniorQuestions } from './react-extra-senior.js'
 import type { QuestionInput } from '../../../domain/question/question.schema.js'
 
 const DIFFICULTY_MAP: Record<string, number> = { easy: 2, medium: 3, hard: 5 }
@@ -16,8 +18,8 @@ function normalise(q: Record<string, unknown>): QuestionInput {
 async function main() {
   console.log('[seed-questions] Initialising database...')
   await getDb()
-  migrate()
-  seed()
+  await migrate()
+  await seed()
 
   // ── Look up technology IDs ───────────────────────────────────────────────
   const reactTech = queryOneSql<{ id: string }>(
@@ -60,6 +62,18 @@ async function main() {
       persistDb()
     }
 
+    console.log(`[seed-questions] Seeding ${reactFundamentalsQuestions.length} React FUNDAMENTALS questions...`)
+    let fundOk = 0
+    for (const q of reactFundamentalsQuestions) {
+      try {
+        createQuestion(normalise({ ...q, technologyId: reactId }))
+        fundOk++
+      } catch (e) {
+        console.warn(`[seed-questions] WARN React FUND: ${(e as Error).message} — "${q.prompt.slice(0, 60)}"`)
+      }
+    }
+    console.log(`[seed-questions] ✓ React FUNDAMENTALS: ${fundOk}/${reactFundamentalsQuestions.length} inserted`)
+
     console.log(`[seed-questions] Seeding ${reactMidQuestions.length} React MID questions...`)
     let midOk = 0
     for (const q of reactMidQuestions) {
@@ -83,6 +97,19 @@ async function main() {
       }
     }
     console.log(`[seed-questions] ✓ React SENIOR: ${seniorOk}/${reactSeniorQuestions.length} inserted`)
+
+    // Extra senior questions (additional set)
+    console.log(`[seed-questions] Seeding ${reactExtraSeniorQuestions.length} React EXTRA SENIOR questions...`)
+    let extraSeniorOk = 0
+    for (const q of reactExtraSeniorQuestions) {
+      try {
+        createQuestion(normalise({ ...q, technologyId: reactId }))
+        extraSeniorOk++
+      } catch (e) {
+        console.warn(`[seed-questions] WARN React EXTRA SENIOR: ${(e as Error).message} — "${q.prompt.slice(0, 60)}"`)
+      }
+    }
+    console.log(`[seed-questions] ✓ React EXTRA SENIOR: ${extraSeniorOk}/${reactExtraSeniorQuestions.length} inserted`)
   }
 
   if (tsCount >= 35) {

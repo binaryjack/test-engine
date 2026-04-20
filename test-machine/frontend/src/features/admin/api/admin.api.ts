@@ -25,7 +25,7 @@ export interface CreateQuestionInput {
   prompt: string
   options?: string[]
   answer: string
-  difficulty: string
+  difficulty: number
   estimatedTime: number
   explanation?: string
   references?: string[]
@@ -40,6 +40,9 @@ export const adminApi = {
 
   listAllTechnologies: () =>
     http.get<ApiResponse<Technology[]>>('/technologies/all'),
+
+  listPublicTechnologies: () =>
+    http.get<ApiResponse<Technology[]>>('/technologies'),
 
   createTechnology: (input: CreateTechnologyInput) =>
     http.post<ApiResponse<Technology>>('/technologies', input),
@@ -60,6 +63,9 @@ export const adminApi = {
 
   createQuestion: (input: CreateQuestionInput) =>
     http.post<ApiResponse<Question>>('/questions', input),
+
+  updateQuestion: (id: string, input: Partial<CreateQuestionInput>) =>
+    http.put<ApiResponse<Question>>(`/questions/${id}`, input),
 
   updateQuestion: (id: string, input: Partial<CreateQuestionInput>) =>
     http.put<ApiResponse<Question>>(`/questions/${id}`, input),

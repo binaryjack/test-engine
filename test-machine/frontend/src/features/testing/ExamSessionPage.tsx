@@ -1,7 +1,27 @@
 import React from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
-import { setAnswer, nextQuestion, prevQuestion, goToQuestion, submitRequest } from './store/exam.slice.js'
+import { setAnswer, nextQuestion, prevQuestion, goToQuestion, submitRequest, generateSuccess, examFailure } from './store/exam.slice.js'
+import { examApi } from './api/exam.api.js'
+
+// Helper to shuffle array
+function shuffleArray<T>(arr: T[], seed: string): T[] {
+  const copy = [...arr]
+  // Use question ID as seed for consistent shuffling per question
+  let hash = 0
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash |= 0 // Convert to 32bit integer
+  }
+  // Fisher-Yates shuffle with seeded random
+  for (let i = copy.length - 1; i > 0; i--) {
+    hash = (hash * 9301 + 49297) % 233280
+    const j = Math.floor((hash / 233280) * (i + 1))
+    ;[copy[i], copy[j]] = [copy[j], copy[i]]
+  }
+  return copy
+}
 
 export function ExamSessionPage() {
   const { id } = useParams<{ id: string }>()
@@ -11,10 +31,54 @@ export function ExamSessionPage() {
 
   const startRef = React.useRef<number>(Date.now())
 
-  // If no session in store, redirect to setup
+  // If no session in store, try loading from API when URL contains a session id
   React.useEffect(() => {
-    if (!session && !loading) navigate('/exam')
-  }, [session, loading, navigate])
+    // If navigating directly to /exam/session/:id we should load the session from API
+    if (!id) return
+    // If the session in store is already the right one, nothing to do
+    if (session && session.id === id) return
+
+    let cancelled = false
+
+    const loadSession = async () => {
+      try {
+        // fetch session
+        const res = await examApi.getSession(id)
+        if (!res.success || !res.data) {
+          if (!cancelled) navigate('/exam')
+          return
+        }
+        const sess = res.data
+
+        // fetch questions for the session's technology + level
+        const qres = await examApi.getQuestions(sess.technologyId, sess.level)
+        if (!qres.success || !qres.data) {
+          if (!cancelled) {
+            // fallback: navigate back to setup
+            navigate('/exam')
+          }
+          return
+        }
+
+        const allQuestions = qres.data
+        const sessionQuestions = allQuestions.filter(q => sess.questionIds.includes(q.id))
+
+        if (!cancelled) {
+          dispatch(generateSuccess({ session: sess, questions: sessionQuestions }))
+        }
+      } catch (err) {
+        console.error('Failed to load session', err)
+        if (!cancelled) {
+          dispatch(examFailure((err as Error)?.message ?? 'Failed to load session'))
+          navigate('/exam')
+        }
+      }
+    }
+
+    loadSession()
+
+    return () => { cancelled = true }
+  }, [id, session, dispatch, navigate])
 
   const question = questions[currentIndex]
   const totalAnswered = Object.keys(answers).length
@@ -70,7 +134,7 @@ export function ExamSessionPage() {
         {/* MCQ options */}
         {question.type === 'mcq' && question.options && (
           <div className="space-y-2">
-            {question.options.map((opt, i) => (
+            {shuffleArray(question.options, question.id).map((opt, i) => (
               <button
                 key={i}
                 type="button"

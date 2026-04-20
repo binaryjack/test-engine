@@ -51,7 +51,7 @@ export function PasswordResetPage() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ password })
+        body: JSON.stringify({ email, password })
       })
       
       if (response.ok) {

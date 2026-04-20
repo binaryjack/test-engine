@@ -6,10 +6,13 @@ import { authenticate, AuthRequest } from '../middleware/authenticate.js'
 export const examsRouter: Router = Router()
 
 const GenerateSchema = z.object({
-  technologyId: z.string().uuid(),
+  technologyId: z.string().uuid().optional(),
+  technologyIds: z.array(z.string().uuid()).optional(),
   level: z.string().min(1),
   count: z.number().int().min(1).max(100).optional(),
   seed: z.number().int().optional()
+}).refine(data => !!data.technologyId || (Array.isArray(data.technologyIds) && data.technologyIds.length > 0), {
+  message: 'technologyId or technologyIds is required'
 })
 
 examsRouter.post('/generate', authenticate, (req: AuthRequest, res) => {
@@ -19,7 +22,8 @@ examsRouter.post('/generate', authenticate, (req: AuthRequest, res) => {
     return
   }
   try {
-    const session = examService.generateExam({ userId: req.user!.sub, ...result.data })
+    const payload = result.data
+    const session = examService.generateExam({ userId: req.user!.sub, ...payload })
     res.status(201).json({ success: true, data: session })
   } catch (err: unknown) {
     const e = err as Error & { status?: number }
