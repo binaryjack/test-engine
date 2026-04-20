@@ -67,8 +67,6 @@ export const adminApi = {
   updateQuestion: (id: string, input: Partial<CreateQuestionInput>) =>
     http.put<ApiResponse<Question>>(`/questions/${id}`, input),
 
-  updateQuestion: (id: string, input: Partial<CreateQuestionInput>) =>
-    http.put<ApiResponse<Question>>(`/questions/${id}`, input),
 
   deleteQuestion: (id: string) =>
     http.delete<ApiResponse<void>>(`/questions/${id}`),

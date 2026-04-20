@@ -42,6 +42,19 @@ function seededShuffle<T>(arr: T[], seed: number): T[] {
   return a
 }
 
+/** Deterministically shuffle MCQ options for a question using provided seed */
+function shuffleQuestionOptions(q: QuestionDto, seed: number): Partial<QuestionDto> {
+  if (q.type !== 'mcq' || !q.options || q.options.length <= 1) return {}
+  const a = [...q.options]
+  let s = seed
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff
+    const j = Math.abs(s) % (i + 1)
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return { options: a }
+}
+
 // ── generate ─────────────────────────────────────────────────────────────────
 
 export interface GenerateInput {
