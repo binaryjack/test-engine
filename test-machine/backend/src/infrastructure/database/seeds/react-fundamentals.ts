@@ -100,7 +100,7 @@ export const reactFundamentalsQuestions: QuestionSeed[] = [
     topic: 'Fragments',
     subtopic: 'Grouping elements',
     type: 'mcq',
-    prompt: 'What is the use of React.Fragment (<>...</>)?',
+    prompt: 'What is the use of React.Fragment (`<>...</>`)?',
     options: ['Wrap multiple elements without adding an extra DOM node', 'Create a portal', 'Lazy-load components', 'Memoize children'],
     answer: 'Wrap multiple elements without adding an extra DOM node',
     difficulty: 'easy',

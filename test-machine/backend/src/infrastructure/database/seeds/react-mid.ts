@@ -486,7 +486,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     answer: 'Handle the `onSubmit` event and call `event.preventDefault()`',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'Attach an onSubmit handler to the <form> element and call event.preventDefault() to stop the default browser form submission (page reload). Then handle the data in React.',
+    explanation: 'Attach an onSubmit handler to the `<form>` element and call event.preventDefault() to stop the default browser form submission (page reload). Then handle the data in React.',
     references: ['https://react.dev/learn/reacting-to-input-with-state']
   },
 
@@ -500,7 +500,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     options: [
       'Nothing — 0 is falsy so the Spinner is not rendered',
       'The number `0` is rendered to the DOM',
-      '<Spinner /> is rendered',
+      '`<Spinner />` is rendered',
       'null is rendered'
     ],
     answer: 'The number `0` is rendered to the DOM',
@@ -1047,14 +1047,14 @@ export const reactMidQuestions: QuestionSeed[] = [
     prompt: 'What is the correct TypeScript type for a React input change handler?',
     options: [
       '(e: Event) => void',
-      '(e: React.ChangeEvent<HTMLInputElement>) => void',
+      '`(e: React.ChangeEvent<HTMLInputElement>) => void`',
       '(e: InputEvent) => void',
       '(e: React.FormEvent) => void'
     ],
-    answer: '(e: React.ChangeEvent<HTMLInputElement>) => void',
+    answer: '`(e: React.ChangeEvent<HTMLInputElement>) => void`',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'React wraps native events in SyntheticEvents. For onChange on an <input>, use React.ChangeEvent<HTMLInputElement>. Access e.target.value with correct typing.',
+    explanation: 'React wraps native events in SyntheticEvents. For onChange on an `<input>`, use `React.ChangeEvent<HTMLInputElement>`. Access e.target.value with correct typing.',
     references: ['https://react.dev/learn/typescript#typing-dom-events']
   },
   {
@@ -1064,12 +1064,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you correctly type a ref for a DOM input element in TypeScript?',
     options: [
-      'const ref = useRef<Element>(null)',
-      'const ref = useRef<HTMLInputElement>(null)',
-      'const ref = useRef<InputElement>(null)',
-      'const ref = useRef(document.createElement("input"))'
+      '`const ref = useRef<Element>(null)`',
+      '`const ref = useRef<HTMLInputElement>(null)`',
+      '`const ref = useRef<InputElement>(null)`',
+      '`const ref = useRef(document.createElement("input"))`'
     ],
-    answer: 'const ref = useRef<HTMLInputElement>(null)',
+    answer: '`const ref = useRef<HTMLInputElement>(null)`',
     difficulty: 'easy',
     estimatedTime: 30,
     explanation: 'Pass the specific DOM element type as the generic argument to useRef. Initialize with null since the element does not exist during the first render.',

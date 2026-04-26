@@ -240,7 +240,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     answer: 'The pending status of the parent form\'s submission action, accessible from child components',
     difficulty: 'hard',
     estimatedTime: 60,
-    explanation: 'useFormStatus must be called inside a component that is rendered inside a <form>. It returns { pending, data, method, action }, letting a submit button disable itself while the form action is in progress.',
+    explanation: 'useFormStatus must be called inside a component that is rendered inside a `<form>`. It returns { pending, data, method, action }, letting a submit button disable itself while the form action is in progress.',
     references: ['https://react.dev/reference/react-dom/hooks/useFormStatus']
   },
 
@@ -352,7 +352,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     answer: 'A pattern where a parent component and several child components share implicit state via Context',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: 'Compound Components (e.g., <Select>, <Select.Option>) work together via shared Context. The parent manages state; child components consume it. This provides a flexible, declarative API without explicit prop passing.',
+    explanation: 'Compound Components (e.g., `<Select>`, `<Select.Option>`) work together via shared Context. The parent manages state; child components consume it. This provides a flexible, declarative API without explicit prop passing.',
     references: ['https://kentcdodds.com/blog/compound-components-with-react-hooks']
   },
   {
@@ -734,12 +734,12 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you create a generic React component in TypeScript?',
     options: [
-      'function List(props: GenericProps): JSX.Element',
-      'function List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element',
-      'const List: React.Generic<T> = (props) => ...',
+      '`function List(props: GenericProps): JSX.Element`',
+      '`function List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element`',
+      '`const List: React.Generic<T> = (props) => ...`',
       'Generic components are not supported in React TypeScript'
     ],
-    answer: 'function List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element',
+    answer: '`function List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element`',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'Generic components use a type parameter to infer the item type from props. TypeScript infers T from the items array, providing full type safety in the renderItem callback.',
@@ -770,15 +770,15 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you extend a native HTML element\'s props in a custom component?',
     options: [
-      'interface ButtonProps extends EventHandler { label: string }',
-      'interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }',
-      'type ButtonProps = HTMLButtonElement & { variant: string }',
+      '`interface ButtonProps extends EventHandler { label: string }`',
+      '`interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }`',
+      '`type ButtonProps = HTMLButtonElement & { variant: string }`',
       'You cannot extend native HTML props in TypeScript'
     ],
-    answer: 'interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }',
+    answer: '`interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }`',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: 'React.ComponentPropsWithoutRef<"button"> provides all native button attributes. Your component can spread them onto the DOM element while adding custom props. Use WithRef variant when forwarding refs.',
+    explanation: '`React.ComponentPropsWithoutRef<"button">` provides all native button attributes. Your component can spread them onto the DOM element while adding custom props. Use WithRef variant when forwarding refs.',
     references: ['https://react-typescript-cheatsheet.netlify.app/docs/advanced/patterns_by_usecase/#wrappingmirroring-a-html-element']
   },
 
@@ -1106,7 +1106,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     answer: 'Accepting all native button attributes via spread + an `asChild` prop to render as any element',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: 'The `asChild` pattern (from Radix UI) allows the component to render as any element (e.g., <a> for links) while maintaining all its styles and behavior. Combined with prop spreading, it provides maximum flexibility.',
+    explanation: 'The `asChild` pattern (from Radix UI) allows the component to render as any element (e.g., `<a>` for links) while maintaining all its styles and behavior. Combined with prop spreading, it provides maximum flexibility.',
     references: ['https://www.radix-ui.com/primitives/docs/utilities/slot']
   },
 

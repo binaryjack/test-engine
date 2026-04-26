@@ -108,7 +108,7 @@ export const extraTypescriptQuestions: QuestionSeed[] = [
     answer: 'Makes all properties optional',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'Partial<T> constructs a type with all properties of T set to optional.',
+    explanation: '`Partial<T>` constructs a type with all properties of T set to optional.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype']
   },
   {
@@ -130,8 +130,13 @@ export const extraTypescriptQuestions: QuestionSeed[] = [
     subtopic: 'User-defined type guards',
     type: 'mcq',
     prompt: 'What is the form of a user-defined type guard function in TypeScript?',
-    options: ['function isUser(x): boolean', 'function isUser(x: unknown): x is User', 'function isUser<T>(x: T): T is User', 'function isUser(x): x is User'],
-    answer: 'function isUser(x: unknown): x is User',
+    options: [
+      '`function isUser(x): boolean`',
+      '`function isUser(x: unknown): x is User`',
+      '`function isUser<T>(x: T): T is User`',
+      '`function isUser(x): x is User`'
+    ],
+    answer: '`function isUser(x: unknown): x is User`',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'A user-defined type guard has a return type of the form `paramName is Type`, which TypeScript uses to narrow the type in the calling scope.',

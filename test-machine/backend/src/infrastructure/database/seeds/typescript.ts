@@ -163,7 +163,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'Returns true if T is an array type, false otherwise',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: 'Conditional types use the `T extends U ? X : Y` syntax — a ternary for types. IsArray<string[]> = true, IsArray<number> = false. They enable powerful type-level computations.',
+    explanation: 'Conditional types use the `T extends U ? X : Y` syntax — a ternary for types. `IsArray<string[]>` = true, `IsArray<number>` = false. They enable powerful type-level computations.',
     references: ['https://www.typescriptlang.org/docs/handbook/2/conditional-types.html']
   },
   {
@@ -181,7 +181,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'Extracts a type from within a conditional type pattern — U is inferred from the structure of T',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: '`infer U` captures the resolved type of a Promise within the conditional pattern. UnpackPromise<Promise<string>> = string; UnpackPromise<number> = number. infer creates a new type variable bound in the true branch.',
+    explanation: '`infer U` captures the resolved type of a Promise within the conditional pattern. `UnpackPromise<Promise<string>>` = string; `UnpackPromise<number>` = number. infer creates a new type variable bound in the true branch.',
     references: ['https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types']
   },
 
@@ -201,7 +201,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: '{ name?: string; age?: number }',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'Partial<T> makes all properties of T optional. It is equivalent to { [K in keyof T]?: T[K] }. Useful for update payloads or form state where not all fields are required.',
+    explanation: '`Partial<T>` makes all properties of T optional. It is equivalent to `{ [K in keyof T]?: T[K] }`. Useful for update payloads or form state where not all fields are required.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype']
   },
   {
@@ -211,15 +211,15 @@ export const typescriptQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'Given `type User = { id: number; name: string; password: string }`, how do you create a type with only id and name?',
     options: [
-      'Pick<User, "id" | "name">',
-      'Omit<User, "id" | "name">',
-      'Extract<User, "id" | "name">',
-      'Select<User, "id" | "name">'
+      '`Pick<User, "id" | "name">`',
+      '`Omit<User, "id" | "name">`',
+      '`Extract<User, "id" | "name">`',
+      '`Select<User, "id" | "name">`'
     ],
-    answer: 'Pick<User, "id" | "name">',
+    answer: '`Pick<User, "id" | "name">`',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'Pick<T, Keys> constructs a type with only the specified keys. Omit<T, Keys> constructs a type with everything except the specified keys. For this case (2 props from 3), Pick is cleaner.',
+    explanation: '`Pick<T, Keys>` constructs a type with only the specified keys. `Omit<T, Keys>` constructs a type with everything except the specified keys. For this case (2 props from 3), Pick is cleaner.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys']
   },
   {
@@ -237,7 +237,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'An object type where all keys are strings and all values are numbers',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'Record<K, V> is equivalent to { [key in K]: V }. Record<string, number> describes an object like { a: 1, b: 2 }. Often used for dictionaries/maps with consistent value types.',
+    explanation: '`Record<K, V>` is equivalent to `{ [key in K]: V }`. `Record<string, number>` describes an object like `{ a: 1, b: 2 }`. Often used for dictionaries/maps with consistent value types.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type']
   },
   {
@@ -255,7 +255,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'Makes all properties read-only at the type level — TypeScript will error on assignment',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'Readonly<T> adds the readonly modifier to all properties. TypeScript will produce a type error if you try to reassign a property. Note: this is type-level only — Object.freeze() is needed for runtime enforcement.',
+    explanation: '`Readonly<T>` adds the readonly modifier to all properties. TypeScript will produce a type error if you try to reassign a property. Note: this is type-level only — Object.freeze() is needed for runtime enforcement.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype']
   },
   {
@@ -266,14 +266,14 @@ export const typescriptQuestions: QuestionSeed[] = [
     prompt: 'What does `ReturnType<typeof fetch>` give you?',
     options: [
       'The type of the fetch function itself',
-      'The return type of the fetch function — Promise<Response>',
+      'The return type of the fetch function — `Promise<Response>`',
       'The parameter types of fetch',
       'The resolved value type — Response'
     ],
-    answer: 'The return type of the fetch function — Promise<Response>',
+    answer: 'The return type of the fetch function — `Promise<Response>`',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: 'ReturnType<T> extracts the return type of a function type. typeof fetch gives the function type; ReturnType<typeof fetch> = Promise<Response>. Pair with Awaited<> to get the resolved type.',
+    explanation: '`ReturnType<T>` extracts the return type of a function type. `typeof fetch` gives the function type; `ReturnType<typeof fetch> = Promise<Response>`. Pair with `Awaited<>` to get the resolved type.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype']
   },
   {
@@ -291,7 +291,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: '"active"',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: 'Exclude<T, U> removes from T all types assignable to U. Exclude<"active" | "inactive" | "pending", "inactive" | "pending"> = "active". Extract is the opposite — keeps only types assignable to U.',
+    explanation: '`Exclude<T, U>` removes from T all types assignable to U. `Exclude<"active" | "inactive" | "pending", "inactive" | "pending"> = "active"`. Extract is the opposite — keeps only types assignable to U.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers']
   },
   {
@@ -309,7 +309,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'string',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: 'NonNullable<T> removes null and undefined from a union type. Useful when you have received a value from a nullable source and have confirmed it is defined.',
+    explanation: '`NonNullable<T>` removes null and undefined from a union type. Useful when you have received a value from a nullable source and have confirmed it is defined.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype']
   },
 
@@ -416,14 +416,14 @@ export const typescriptQuestions: QuestionSeed[] = [
     prompt: 'What does this mapped type produce: `type Optional<T> = { [K in keyof T]?: T[K] }`?',
     options: [
       'A type where all properties are required',
-      'A type where all properties of T are made optional — equivalent to Partial<T>',
+      'A type where all properties of T are made optional — equivalent to `Partial<T>`',
       'A type where all property values are union with undefined',
       'A type that only includes properties with optional values'
     ],
-    answer: 'A type where all properties of T are made optional — equivalent to Partial<T>',
+    answer: 'A type where all properties of T are made optional — equivalent to `Partial<T>`',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: '`[K in keyof T]` iterates over all keys of T. Adding ? makes each property optional. This is exactly how Partial<T> is implemented in TypeScript\'s lib.',
+    explanation: '`[K in keyof T]` iterates over all keys of T. Adding ? makes each property optional. This is exactly how `Partial<T>` is implemented in TypeScript\'s lib.',
     references: ['https://www.typescriptlang.org/docs/handbook/2/mapped-types.html']
   },
   {
@@ -459,7 +459,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'string[] | number[]',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: 'When a conditional type receives a union, TypeScript distributes it: ToArray<string | number> = ToArray<string> | ToArray<number> = string[] | number[]. To prevent distribution, wrap in []: `[T] extends [any] ? T[] : never`.',
+    explanation: 'When a conditional type receives a union, TypeScript distributes it: `ToArray<string | number> = ToArray<string> | ToArray<number> = string[] | number[]`. To prevent distribution, wrap in []: `[T] extends [any] ? T[] : never`.',
     references: ['https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types']
   },
   {
@@ -508,11 +508,11 @@ export const typescriptQuestions: QuestionSeed[] = [
     prompt: 'How do you type `useState` when the initial value is null but will later be a User object?',
     options: [
       'const [user, setUser] = useState(null)',
-      'const [user, setUser] = useState<User | null>(null)',
-      'const [user, setUser] = useState<User>(null)',
+      '`const [user, setUser] = useState<User | null>(null)`',
+      '`const [user, setUser] = useState<User>(null)`',
       'const [user, setUser] = useState<User>({})'
     ],
-    answer: 'const [user, setUser] = useState<User | null>(null)',
+    answer: '`const [user, setUser] = useState<User | null>(null)`',
     difficulty: 'easy',
     estimatedTime: 30,
     explanation: 'Provide the generic type argument explicitly when TypeScript cannot infer from the initial value. `useState<User | null>(null)` tells TypeScript this state holds User | null, so setUser(fetchedUser) is type-safe.',
@@ -528,7 +528,7 @@ export const typescriptQuestions: QuestionSeed[] = [
       'const [data, setData] = useState(null); const [loading, setLoading] = useState(false); const [error, setError] = useState(null)',
       'type State = { status: "idle" } | { status: "loading" } | { status: "success"; data: User } | { status: "error"; error: Error }; const [state, setState] = useState<State>({ status: "idle" })',
       'const [state, setState] = useState<{ data?: User; loading: boolean; error?: Error }>({ loading: false })',
-      'interface AsyncState<T> { data: T | null; loading: boolean; error: string | null }'
+      '`interface AsyncState<T> { data: T | null; loading: boolean; error: string | null }`'
     ],
     answer: 'type State = { status: "idle" } | { status: "loading" } | { status: "success"; data: User } | { status: "error"; error: Error }; const [state, setState] = useState<State>({ status: "idle" })',
     difficulty: 'hard',
@@ -544,14 +544,14 @@ export const typescriptQuestions: QuestionSeed[] = [
     prompt: 'What is the correct type for a React `onKeyDown` handler prop?',
     options: [
       'React.KeyDownHandler',
-      'React.KeyboardEventHandler<HTMLInputElement>',
+      '`React.KeyboardEventHandler<HTMLInputElement>`',
       '(e: KeyboardEvent) => void',
-      'EventHandler<KeyboardEvent>'
+      '`EventHandler<KeyboardEvent>`'
     ],
-    answer: 'React.KeyboardEventHandler<HTMLInputElement>',
+    answer: '`React.KeyboardEventHandler<HTMLInputElement>`',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: 'React provides typed event handler aliases: React.KeyboardEventHandler<T> = (event: React.KeyboardEvent<T>) => void. These are for the handler function type. Use React.KeyboardEvent<T> for the event parameter type.',
+    explanation: 'React provides typed event handler aliases: `React.KeyboardEventHandler<T> = (event: React.KeyboardEvent<T>) => void`. These are for the handler function type. Use `React.KeyboardEvent<T>` for the event parameter type.',
     references: ['https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events/']
   },
   {
@@ -581,8 +581,8 @@ export const typescriptQuestions: QuestionSeed[] = [
     options: [
       'const Ctx = createContext(null)',
       'Create a custom hook that wraps useContext and throws if the value is undefined: `if (!ctx) throw new Error("Must be inside Provider")`',
-      'Use createContext<T>() with no default value',
-      'Type the context as Readonly<T>'
+      'Use `createContext<T>()` with no default value',
+      'Type the context as `Readonly<T>`'
     ],
     answer: 'Create a custom hook that wraps useContext and throws if the value is undefined: `if (!ctx) throw new Error("Must be inside Provider")`',
     difficulty: 'hard',
