@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { ExamResult, ExamSession, Question } from '../../../shared/types/index.js'
-import type { GenerateExamInput } from '../api/exam.api.js'
+import type { GenerateExamInputExtended } from '../api/exam.api.js'
 
 interface ExamState {
   session: ExamSession | null
@@ -9,6 +9,7 @@ interface ExamState {
   currentIndex: number
   answers: Record<string, string>    // questionId -> userAnswer
   timings: Record<string, number>    // questionId -> ms spent
+  availableCount: number
   loading: boolean
   error: string | null
 }
@@ -20,6 +21,7 @@ const initialState: ExamState = {
   currentIndex: 0,
   answers: {},
   timings: {},
+  availableCount: 80,
   loading: false,
   error: null
 }
@@ -28,7 +30,7 @@ const examSlice = createSlice({
   name: 'exam',
   initialState,
   reducers: {
-    generateRequest(state, _action: PayloadAction<GenerateExamInput>) {
+    generateRequest(state, _action: PayloadAction<GenerateExamInputExtended>) {
       state.loading = true
       state.error = null
       state.session = null
@@ -90,6 +92,12 @@ const examSlice = createSlice({
       state.loading = true
       state.error = null
     },
+    calculateAvailableCountRequest(state, _action: PayloadAction<{ techs: string[]; level: string }>) {
+      // Don't set loading to true as it's a background calculation for the UI
+    },
+    calculateAvailableCountSuccess(state, action: PayloadAction<number>) {
+      state.availableCount = action.payload
+    },
     clearExam(state) {
       Object.assign(state, initialState)
     }
@@ -111,6 +119,8 @@ export const {
   loadResultRequest,
   loadResultSuccess,
   retakeFailedRequest,
+  calculateAvailableCountRequest,
+  calculateAvailableCountSuccess,
   clearExam
 } = examSlice.actions
 

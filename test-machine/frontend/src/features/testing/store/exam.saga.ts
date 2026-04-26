@@ -2,17 +2,19 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import type { ApiResponse, ExamResult, ExamSession, Question } from '../../../shared/types/index.js'
 import type { RootState } from '../../../store/index.js'
-import { examApi, GenerateExamInput, SubmitExamInput } from '../api/exam.api.js'
+import { examApi, GenerateExamInputExtended, SubmitExamInput } from '../api/exam.api.js'
 import {
-    examFailure,
-    generateRequest,
-    generateSuccess,
-    loadResultRequest,
-    loadResultSuccess,
-    loadSessionRequest,
-    retakeFailedRequest,
-    submitRequest,
-    submitSuccess
+  calculateAvailableCountRequest,
+  calculateAvailableCountSuccess,
+  examFailure,
+  generateRequest,
+  generateSuccess,
+  loadResultRequest,
+  loadResultSuccess,
+  loadSessionRequest,
+  retakeFailedRequest,
+  submitRequest,
+  submitSuccess
 } from './exam.slice.js'
 
 function* handleLoadSession(action: PayloadAction<string>) {
@@ -48,7 +50,7 @@ function* handleLoadResult(action: PayloadAction<string>) {
   }
 }
 
-function* handleGenerate(action: PayloadAction<GenerateExamInput>) {
+function* handleGenerate(action: PayloadAction<GenerateExamInputExtended>) {
   const sessionRes: ApiResponse<ExamSession> = yield call(examApi.generate, action.payload)
   if (!sessionRes.success || !sessionRes.data) {
     yield put(examFailure(sessionRes.error ?? 'Failed to generate exam'))
@@ -82,13 +84,32 @@ function* handleGenerate(action: PayloadAction<GenerateExamInput>) {
 
 function* handleRetakeFailed(action: PayloadAction<string>) {
   try {
-    const sessionRes: ApiResponse<ExamSession> = yield call(examApi.retakeFailed, action.payload)
+    const state: RootState = yield select()
+    const { result } = state.exam
+    if (!result) {
+      yield put(examFailure('No exam result found to retake from'))
+      return
+    }
+
+    const failedQuestionIds = result.questions
+      .filter((q: any) => {
+        const ans = result.answers.find((a: any) => a.questionId === q.id)
+        return !ans || !ans.isCorrect
+      })
+      .map((q: any) => q.id)
+
+    if (failedQuestionIds.length === 0) {
+      yield put(examFailure('No failed questions to retake'))
+      return
+    }
+
+    const sessionRes: ApiResponse<ExamSession> = yield call(examApi.retakeFailed, action.payload, failedQuestionIds)
     if (!sessionRes.success || !sessionRes.data) {
+      console.error('API Error:', sessionRes)
       yield put(examFailure(sessionRes.error ?? 'Failed to generate retake exam'))
       return
     }
 
-    // Get the original result to determine technology and level... actually we have it from sessionRes
     // We need to load the questions for the new session
     const questionIds = sessionRes.data.questionIds
     // We'll fetch questions from the technology, but we need to know which ones are in this session
@@ -99,13 +120,35 @@ function* handleRetakeFailed(action: PayloadAction<string>) {
       sessionRes.data.level
     )
     if (!questionsRes.success || !questionsRes.data) {
+      console.error('Questions API Error:', questionsRes)
       yield put(examFailure(questionsRes.error ?? 'Failed to load questions'))
       return
     }
     const questions = questionsRes.data.filter(q => questionIds.includes(q.id))
     yield put(generateSuccess({ session: sessionRes.data, questions }))
   } catch (err: unknown) {
+    console.error('Saga try-catch caught:', err)
     yield put(examFailure((err as Error)?.message ?? 'Failed to retake exam'))
+  }
+}
+
+function* handleCalculateAvailableCount(action: PayloadAction<{ techs: string[]; level: string }>) {
+  try {
+    let total = 0
+    const { techs, level } = action.payload
+
+    if (techs.length === 0) {
+      const res: ApiResponse<Question[]> = yield call(examApi.getQuestions, undefined, level || undefined)
+      if (res.success && res.data) total = res.data.length
+    } else {
+      for (const tid of techs) {
+        const res: ApiResponse<Question[]> = yield call(examApi.getQuestions, tid, level || undefined)
+        if (res.success && res.data) total += res.data.length
+      }
+    }
+    yield put(calculateAvailableCountSuccess(total || 1))
+  } catch (err) {
+    // Ignore error for background calculation, fallback to 1 is handled in component
   }
 }
 
@@ -137,4 +180,5 @@ export function* examSaga() {
   yield takeLatest(submitRequest.type, handleSubmit)
   yield takeLatest(loadResultRequest.type, handleLoadResult)
   yield takeLatest(retakeFailedRequest.type, handleRetakeFailed)
+  yield takeLatest(calculateAvailableCountRequest.type, handleCalculateAvailableCount)
 }

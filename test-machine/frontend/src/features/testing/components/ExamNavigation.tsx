@@ -25,7 +25,7 @@ export function ExamNavigation({ questions, answers, currentIndex, loading, onPr
         Previous
       </button>
 
-      <div className="flex gap-1">
+      {/* <div className="flex gap-1">
         {questions.map((q, i) => (
           <button
             key={q.id}
@@ -40,7 +40,7 @@ export function ExamNavigation({ questions, answers, currentIndex, loading, onPr
             title={`Question ${i + 1}`}
           />
         ))}
-      </div>
+      </div> */}
 
       {isLast ? (
         <button

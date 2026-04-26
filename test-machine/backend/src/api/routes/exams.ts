@@ -82,7 +82,8 @@ examsRouter.post('/:id/retake', authenticate, async (req: AuthRequest, res) => {
   const { failedQuestionIds } = req.body;
 
   if (!failedQuestionIds || !Array.isArray(failedQuestionIds)) {
-    return res.status(400).json({ success: false, error: 'Failed to provide a valid array of failed question IDs.' });
+    res.status(400).json({ success: false, error: 'Failed to provide a valid array of failed question IDs.' });
+    return;
   }
   
   try {

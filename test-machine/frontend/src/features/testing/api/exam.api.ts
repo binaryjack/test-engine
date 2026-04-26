@@ -43,6 +43,6 @@ export const examApi = {
   getResult: (sessionId: string) =>
     http.get<ApiResponse<ExamResult>>(`/exams/${sessionId}/results`),
 
-  retakeFailed: (sessionId: string) =>
-    http.post<ApiResponse<ExamSession>>(`/exams/${sessionId}/retake-failed`, {})
+  retakeFailed: (sessionId: string, failedQuestionIds: string[]) =>
+    http.post<ApiResponse<ExamSession>>(`/exams/${sessionId}/retake`, { failedQuestionIds })
 }

@@ -290,6 +290,30 @@ export function generateRetakeExam(previousSessionId: string, userId: string): E
   return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)
 }
 
+export function generateRetakeExamFromIds(userId: string, failedQuestionIds: string[]): ExamSessionDto {
+  if (!failedQuestionIds || failedQuestionIds.length === 0) {
+    throw Object.assign(new Error('No failed questions to retake'), { status: 422 })
+  }
+
+  // To build a valid session, we need at least one question to derive the technology and level
+  // from, assuming all questions belong to the same logical retake block.
+  const sampleQuestion = getQuestion(failedQuestionIds[0])
+  if (!sampleQuestion) {
+    throw Object.assign(new Error('Invalid question ID provided'), { status: 400 })
+  }
+
+  const id = uuidv4()
+  const now = new Date().toISOString()
+
+  runSql(
+    `INSERT INTO exam_sessions (id, userId, technologyId, level, questionIds, startedAt)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [id, userId, sampleQuestion.technologyId, sampleQuestion.level, JSON.stringify(failedQuestionIds), now]
+  )
+
+  return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)
+}
+
 function normalizeAnswer(answer: string): string {
   return answer.trim().toLowerCase()
 }
