@@ -9,10 +9,35 @@ import {
     generateSuccess,
     loadResultRequest,
     loadResultSuccess,
+    loadSessionRequest,
     retakeFailedRequest,
     submitRequest,
     submitSuccess
 } from './exam.slice.js'
+
+function* handleLoadSession(action: PayloadAction<string>) {
+  try {
+    const res: ApiResponse<ExamSession> = yield call(examApi.getSession, action.payload)
+    if (!res.success || !res.data) {
+      yield put(examFailure(res.error ?? 'Failed to load session'))
+      return
+    }
+    const sess = res.data
+
+    const qres: ApiResponse<Question[]> = yield call(examApi.getQuestions, sess.technologyId, sess.level)
+    if (!qres.success || !qres.data) {
+      yield put(examFailure(qres.error ?? 'Failed to load questions'))
+      return
+    }
+
+    const allQuestions = qres.data
+    const sessionQuestions = allQuestions.filter(q => sess.questionIds.includes(q.id))
+
+    yield put(generateSuccess({ session: sess, questions: sessionQuestions }))
+  } catch (err: unknown) {
+    yield put(examFailure((err as Error)?.message ?? 'Failed to load session'))
+  }
+}
 
 function* handleLoadResult(action: PayloadAction<string>) {
   const res: ApiResponse<ExamResult> = yield call(examApi.getResult, action.payload)
@@ -108,6 +133,7 @@ function* handleSubmit() {
 
 export function* examSaga() {
   yield takeLatest(generateRequest.type, handleGenerate)
+  yield takeLatest(loadSessionRequest.type, handleLoadSession)
   yield takeLatest(submitRequest.type, handleSubmit)
   yield takeLatest(loadResultRequest.type, handleLoadResult)
   yield takeLatest(retakeFailedRequest.type, handleRetakeFailed)

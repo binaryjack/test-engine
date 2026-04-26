@@ -74,6 +74,10 @@ const examSlice = createSlice({
       state.loading = false
       state.result = action.payload
     },
+    loadSessionRequest(state, _action: PayloadAction<string>) {
+      state.loading = true
+      state.error = null
+    },
     loadResultRequest(state, _action: PayloadAction<string>) {
       state.loading = true
       state.error = null
@@ -103,6 +107,7 @@ export const {
   goToQuestion,
   submitRequest,
   submitSuccess,
+  loadSessionRequest,
   loadResultRequest,
   loadResultSuccess,
   retakeFailedRequest,
