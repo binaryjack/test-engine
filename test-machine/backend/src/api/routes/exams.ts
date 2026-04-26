@@ -77,12 +77,20 @@ examsRouter.get('/:id/results', authenticate, (req: AuthRequest, res) => {
   }
 })
 
-examsRouter.post('/:id/retake-failed', authenticate, (req: AuthRequest, res) => {
-  try {
-    const session = examService.generateRetakeExam(req.params.id as string, req.user!.sub)
-    res.status(201).json({ success: true, data: session })
-  } catch (err: unknown) {
-    const e = err as Error & { status?: number }
-    res.status(e.status ?? 500).json({ success: false, error: e.message })
+
+examsRouter.post('/:id/retake', authenticate, async (req: AuthRequest, res) => {
+  const { failedQuestionIds } = req.body;
+
+  if (!failedQuestionIds || !Array.isArray(failedQuestionIds)) {
+    return res.status(400).json({ success: false, error: 'Failed to provide a valid array of failed question IDs.' });
   }
-})
+  
+  try {
+    // The backend service now handles generating the new session from the provided IDs
+    const session = await examService.generateRetakeExamFromIds(req.user!.sub, failedQuestionIds);
+    res.status(201).json({ success: true, data: session });
+  } catch (err: unknown) {
+    const e = err as Error & { status?: number };
+    res.status(e.status ?? 500).json({ success: false, error: e.message });
+  }
+});
