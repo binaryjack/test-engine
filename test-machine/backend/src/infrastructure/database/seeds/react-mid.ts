@@ -141,12 +141,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'Which pattern correctly fetches data and avoids a state update after unmount?',
     options: [
-      '```tsx\nuseEffect(() => {\n  fetch(url).then(res => setState(res))\n}, [url])\n```',
-      '```tsx\nuseEffect(() => {\n  let mounted = true;\n  fetch(url).then(res => {\n    if (mounted) setState(res)\n  });\n  return () => { mounted = false }\n}, [url])\n```',
-      '```tsx\nuseEffect(async () => {\n  const res = await fetch(url);\n  setState(res)\n}, [url])\n```',
-      '```tsx\nuseEffect(() => {\n  fetch(url).then(res => setState(res))\n}, [])\n```'
+      '```jsx\nuseEffect(() => {\n  fetch(url).then(res => setState(res))\n}, [url])\n```',
+      '```jsx\nuseEffect(() => {\n  let mounted = true;\n  fetch(url).then(res => {\n    if (mounted) setState(res)\n  });\n  return () => { mounted = false }\n}, [url])\n```',
+      '```jsx\nuseEffect(async () => {\n  const res = await fetch(url);\n  setState(res)\n}, [url])\n```',
+      '```jsx\nuseEffect(() => {\n  fetch(url).then(res => setState(res))\n}, [])\n```'
     ],
-    answer: '```tsx\nuseEffect(() => {\n  let mounted = true;\n  fetch(url).then(res => {\n    if (mounted) setState(res)\n  });\n  return () => { mounted = false }\n}, [url])\n```',
+    answer: '```jsx\nuseEffect(() => {\n  let mounted = true;\n  fetch(url).then(res => {\n    if (mounted) setState(res)\n  });\n  return () => { mounted = false }\n}, [url])\n```',
     difficulty: 'medium',
     estimatedTime: 90,
     explanation: 'The mounted flag pattern prevents setting state on an unmounted component. Note: async useEffect callbacks are not directly supported — you need a wrapper function or the abort controller pattern.',
@@ -649,12 +649,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you correctly update a nested object in React state?',
     options: [
-      '```tsx\nstate.user.name = "Alice";\nsetState(state)\n```',
-      '```tsx\nsetState({ ...state, user: { ...state.user, name: "Alice" } })\n```',
-      '```tsx\nsetState(Object.assign(state, { user: { name: "Alice" } }))\n```',
+      '```jsx\nstate.user.name = "Alice";\nsetState(state)\n```',
+      '```jsx\nsetState({ ...state, user: { ...state.user, name: "Alice" } })\n```',
+      '```jsx\nsetState(Object.assign(state, { user: { name: "Alice" } }))\n```',
       'useState allows direct mutation — React detects deep changes automatically'
     ],
-    answer: '```tsx\nsetState({ ...state, user: { ...state.user, name: "Alice" } })\n```',
+    answer: '```jsx\nsetState({ ...state, user: { ...state.user, name: "Alice" } })\n```',
     difficulty: 'medium',
     estimatedTime: 60,
     explanation: 'You must create a new object at every level you want to update. Spread at each nested level to produce a new reference without mutating the original.',
@@ -1197,12 +1197,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'In React 19, how has the way of passing refs to function components changed?',
     options: [
-      'Refs must still use forwardRef — nothing has changed',
-      'Function components can now receive ref as a regular prop without forwardRef',
+      'Refs must still use `forwardRef` — nothing has changed',
+      'Function components can now receive ref as a regular prop without `forwardRef`',
       'Refs are now automatically forwarded to the first DOM element',
       'useRef is deprecated in favor of the new useSignal hook'
     ],
-    answer: 'Function components can now receive ref as a regular prop without forwardRef',
+    answer: 'Function components can now receive ref as a regular prop without `forwardRef`',
     difficulty: 'medium',
     estimatedTime: 60,
     explanation: 'React 19 makes forwardRef unnecessary for function components. You can now accept ref as a regular prop: function Input({ ref, ...props }) { return <input ref={ref} {...props} /> }',

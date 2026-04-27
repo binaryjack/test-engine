@@ -30,7 +30,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'When would you use `useDeferredValue` instead of `useTransition`?',
     options: [
-      'When you control the state update — wrap it in startTransition',
+      'When you control the state update — wrap it in `startTransition`',
       'When you receive a value as a prop or from a hook you don\'t control and want to defer re-renders based on it',
       'When you want to debounce API calls',
       'When dealing with WebGL or Canvas rendering'
@@ -214,12 +214,12 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How does `use(Context)` in React 19 differ from `useContext(Context)`?',
     options: [
-      '```ts\nuse()\n``` is asynchronous; ```ts\nuseContext\n``` is synchronous',
-      '```ts\nuse()\n``` can be called conditionally and inside loops; ```ts\nuseContext\n``` cannot',
-      '```ts\nuse()\n``` is for Server Components; ```ts\nuseContext\n``` is for Client Components',
-      'They are identical — ```ts\nuse()\n``` is just an alias for ```ts\nuseContext\n```'
+      '```jsx\nuse()\n``` is asynchronous; ```jsx\nuseContext\n``` is synchronous',
+      '```jsx\nuse()\n``` can be called conditionally and inside loops; ```jsx\nuseContext\n``` cannot',
+      '```jsx\nuse()\n``` is for Server Components; ```jsx\nuseContext\n``` is for Client Components',
+      'They are identical — ```jsx\nuse()\n``` is just an alias for ```jsx\nuseContext\n```'
     ],
-    answer: '```ts\nuse()\n``` can be called conditionally and inside loops; ```ts\nuseContext\n``` cannot',
+    answer: '```jsx\nuse()\n``` can be called conditionally and inside loops; ```jsx\nuseContext\n``` cannot',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'use(Context) is not a traditional hook — it follows different rules. It can be called after early returns, inside if statements and loops. This makes it more flexible for conditional context reading.',
@@ -736,7 +736,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     options: [
       '```tsx\nfunction List(props: GenericProps): JSX.Element\n```',
       '```tsx\nfunction List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element\n```',
-      '```tsx\nconst List: React.Generic<T> = (props) => ...\n```',
+      '```tsx\ntype List: React.Generic<T> = (props) => ...\n```',
       'Generic components are not supported in React TypeScript'
     ],
     answer: '```tsx\nfunction List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element\n```',

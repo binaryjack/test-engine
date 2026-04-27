@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { querySql, queryOneSql, runSql } from '../../infrastructure/database/connection.js'
+import { queryOneSql, querySql, runSql } from '../../infrastructure/database/connection.js'
 import { Question, QuestionDto } from '../types.js'
 import { QuestionInput } from './question.schema.js'
 
