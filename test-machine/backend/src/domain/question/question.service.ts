@@ -3,6 +3,8 @@ import { querySql, queryOneSql, runSql } from '../../infrastructure/database/con
 import { Question, QuestionDto } from '../types.js'
 import { QuestionInput } from './question.schema.js'
 
+const EXAM_TIME_MULTIPLIER = Number(process.env.EXAM_TIME_MULTIPLIER ?? 1)
+
 function toDto(q: Question): QuestionDto {
   return {
     id: q.id,
@@ -15,7 +17,7 @@ function toDto(q: Question): QuestionDto {
     options: q.options ? (JSON.parse(q.options) as string[]) : null,
     answer: q.answer,
     difficulty: q.difficulty,
-    estimatedTime: q.estimatedTime,
+    estimatedTime: Math.round(q.estimatedTime * EXAM_TIME_MULTIPLIER),
     explanation: q.explanation,
     references: JSON.parse(q.references) as string[],
     createdAt: q.createdAt

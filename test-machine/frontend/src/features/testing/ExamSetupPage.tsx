@@ -14,6 +14,7 @@ export function ExamSetupPage() {
   const [selectedTechs, setSelectedTechs] = React.useState<string[]>([])
   const [selectedLevel, setSelectedLevel] = React.useState('')
   const [count, setCount] = React.useState(20)
+  const [mode, setMode] = React.useState(1)
 
   // Clear any lingering exam state/errors when entering the setup page
   React.useEffect(() => {
@@ -35,8 +36,8 @@ export function ExamSetupPage() {
   const handleStart = () => {
     if (selectedTechs.length === 0 || !selectedLevel) return
     const payload = selectedTechs.length > 1
-      ? { technologyIds: selectedTechs, level: selectedLevel, count }
-      : { technologyId: selectedTechs[0], level: selectedLevel, count }
+      ? { technologyIds: selectedTechs, level: selectedLevel, count, mode }
+      : { technologyId: selectedTechs[0], level: selectedLevel, count, mode }
     dispatch(generateRequest(payload as any))
   }
 
@@ -66,9 +67,11 @@ export function ExamSetupPage() {
       selectedLevel={selectedLevel}
       count={count}
       availableCount={availableCount}
+      mode={mode}
       onTechChange={handleTechChange}
       onLevelChange={setSelectedLevel}
       onCountChange={setCount}
+      onModeChange={setMode}
       onSubmit={handleStart}
       error={error}
     />

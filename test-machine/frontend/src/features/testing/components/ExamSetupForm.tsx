@@ -8,9 +8,11 @@ interface ExamSetupFormProps {
   selectedLevel: string;
   count: number;
   availableCount: number;
+  mode: number;
   onTechChange: (techs: string[]) => void;
   onLevelChange: (level: string) => void;
   onCountChange: (count: number) => void;
+  onModeChange: (mode: number) => void;
   onSubmit: () => void;
   error: string | null;
 }
@@ -23,9 +25,11 @@ export function ExamSetupForm({
   selectedLevel,
   count,
   availableCount,
+  mode,
   onTechChange,
   onLevelChange,
   onCountChange,
+  onModeChange,
   onSubmit,
   error
 }: ExamSetupFormProps) {
@@ -83,6 +87,36 @@ export function ExamSetupForm({
             </div>
           </div>
         )}
+
+        <div>
+          <label className="label">Session Mode</label>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              onClick={() => onModeChange(1)}
+              className={`flex flex-col items-center p-3 rounded border transition-all ${
+                mode === 1 
+                  ? 'bg-primary-900/40 border-primary-500 text-white' 
+                  : 'border-slate-700 text-slate-400 hover:border-slate-500'
+              }`}
+            >
+              <span className="text-sm font-bold">Practice</span>
+              <span className="text-[10px] text-slate-500">No timer, untimed</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onModeChange(2)}
+              className={`flex flex-col items-center p-3 rounded border transition-all ${
+                mode === 2 
+                  ? 'bg-primary-900/40 border-primary-500 text-white' 
+                  : 'border-slate-700 text-slate-400 hover:border-slate-500'
+              }`}
+            >
+              <span className="text-sm font-bold">Exam</span>
+              <span className="text-[10px] text-slate-500">Time-boxed session</span>
+            </button>
+          </div>
+        </div>
 
         <div>
           <label className="label">Number of Questions: {count}</label>

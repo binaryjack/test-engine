@@ -43,10 +43,12 @@ export interface ExamSession {
   userId: string
   technologyId: string
   level: string
+  mode: number
   questionIds: string   // JSON array
   startedAt: string
   submittedAt: string | null
   score: number | null
+  timeTaken: number | null
   breakdown: string | null  // JSON: per-topic breakdown
 }
 
@@ -100,10 +102,12 @@ export interface ExamSessionDto {
   userId: string
   technologyId: string
   level: string
+  mode: number
   questionIds: string[]
   startedAt: string
   submittedAt: string | null
   score: number | null
+  timeTaken: number | null
   breakdown: Record<string, { correct: number; total: number }> | null
 }
 

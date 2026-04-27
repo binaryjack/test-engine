@@ -45,10 +45,12 @@ const SCHEMA_SQL = `
     userId       TEXT NOT NULL REFERENCES users(id),
     technologyId TEXT NOT NULL REFERENCES technologies(id),
     level        TEXT NOT NULL,
+    mode         INTEGER NOT NULL DEFAULT 1,
     questionIds  TEXT NOT NULL DEFAULT '[]',
     startedAt    TEXT NOT NULL,
     submittedAt  TEXT,
     score        REAL,
+    timeTaken    INTEGER,
     breakdown    TEXT
   );
 

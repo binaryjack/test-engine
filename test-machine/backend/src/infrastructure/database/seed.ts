@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcryptjs'
+import { v4 as uuidv4 } from 'uuid'
 import { getDb, persistDb, querySql } from './connection.js'
 
 export async function seed(): Promise<void> {
@@ -18,10 +18,25 @@ export async function seed(): Promise<void> {
         'react',
         'React',
         'React certification exam questions covering Hooks, Component Patterns, Performance, Server Components, and more.',
-        JSON.stringify(['MID', 'SENIOR']),
+        JSON.stringify(['FUNDAMENTALS','BEGINER','MID', 'SENIOR', 'ADVANCED', 'ARCHITECT']),
         now
       ]
     )
+
+
+    db.run(
+      `INSERT INTO technologies (id, slug, name, description, isActive, levels, createdAt)
+       VALUES (?, ?, ?, ?, 1, ?, ?)`,
+      [
+        uuidv4(),
+        'CSHarp',
+        'CSHarp',
+        'CSHarp certivication that covers most important aspect of csharp ',
+        JSON.stringify(['FUNDAMENTALS','BEGINER','MID', 'SENIOR', 'ADVANCED', 'ARCHITECT']),
+        now
+      ]
+    )
+
 
     db.run(
       `INSERT INTO technologies (id, slug, name, description, isActive, levels, createdAt)
@@ -31,7 +46,7 @@ export async function seed(): Promise<void> {
         'typescript',
         'TypeScript',
         'TypeScript exam questions covering Types, Generics, Utility Types, Narrowing, and Declaration Files.',
-        JSON.stringify(['FUNDAMENTALS', 'ADVANCED']),
+        JSON.stringify(['FUNDAMENTALS', 'BEGINER','MID', 'SENIOR', 'ADVANCED', 'ARCHITECT']),
         now
       ]
     )

@@ -3,6 +3,9 @@ import { queryOneSql, querySql, runSql } from '../../infrastructure/database/con
 import { getQuestion, listQuestions } from '../question/question.service.js'
 import { ExamAnswer, ExamAnswerDto, ExamSession, ExamSessionDto, QuestionDto } from '../types.js'
 
+const JWT_SECRET = process.env.JWT_SECRET ?? 'dev-secret-change-in-production'
+const EXAM_TIME_MULTIPLIER = Number(process.env.EXAM_TIME_MULTIPLIER ?? 1)
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 function sessionToDto(s: ExamSession): ExamSessionDto {
@@ -11,10 +14,12 @@ function sessionToDto(s: ExamSession): ExamSessionDto {
     userId: s.userId,
     technologyId: s.technologyId,
     level: s.level,
+    mode: s.mode,
     questionIds: JSON.parse(s.questionIds) as string[],
     startedAt: s.startedAt,
     submittedAt: s.submittedAt,
     score: s.score,
+    timeTaken: s.timeTaken,
     breakdown: s.breakdown ? JSON.parse(s.breakdown) : null
   }
 }
@@ -62,6 +67,7 @@ export interface GenerateInput {
   technologyId?: string
   technologyIds?: string[]
   level: string
+  mode: number
   count?: number
   seed?: number   // deterministic mode for tests
 }
@@ -119,10 +125,10 @@ export function generateExam(input: GenerateInput): ExamSessionDto {
   }
 
   runSql(
-    `INSERT INTO exam_sessions (id, userId, technologyId, level, questionIds, startedAt)
-     VALUES (?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO exam_sessions (id, userId, technologyId, level, mode, questionIds, startedAt)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`,
     // Store the first technologyId for compatibility (when multiple techs were requested)
-    [id, input.userId, techIds[0], input.level, JSON.stringify(selected.map(q => q.id)), now]
+    [id, input.userId, techIds[0], input.level, input.mode, JSON.stringify(selected.map(q => q.id)), now]
   )
 
   return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)
@@ -195,11 +201,13 @@ export function submitExam(sessionId: string, userId: string, input: SubmitInput
   }
 
   const score = questionIds.length > 0 ? Math.round((correct / questionIds.length) * 100) : 0
-  const now = new Date().toISOString()
+  const now = new Date()
+  const startedAt = new Date(session.startedAt)
+  const timeTaken = Math.round((now.getTime() - startedAt.getTime()) / 1000)
 
   runSql(
-    `UPDATE exam_sessions SET submittedAt = ?, score = ?, breakdown = ? WHERE id = ?`,
-    [now, score, JSON.stringify(breakdown), sessionId]
+    `UPDATE exam_sessions SET submittedAt = ?, score = ?, timeTaken = ?, breakdown = ? WHERE id = ?`,
+    [now.toISOString(), score, timeTaken, JSON.stringify(breakdown), sessionId]
   )
 
   const updatedSession = sessionToDto(

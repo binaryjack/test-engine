@@ -9,6 +9,7 @@ const GenerateSchema = z.object({
   technologyId: z.string().uuid().optional(),
   technologyIds: z.array(z.string().uuid()).optional(),
   level: z.string().min(1),
+  mode: z.number().int().min(1).max(2).default(1),
   count: z.number().int().min(1).max(100).optional(),
   seed: z.number().int().optional()
 }).refine(data => !!data.technologyId || (Array.isArray(data.technologyIds) && data.technologyIds.length > 0), {

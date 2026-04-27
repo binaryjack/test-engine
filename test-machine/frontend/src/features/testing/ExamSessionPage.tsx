@@ -12,7 +12,7 @@ export function ExamSessionPage() {
   const navigate = useNavigate()
   const { session, questions, currentIndex, answers, loading, error, result } = useAppSelector(s => s.exam)
 
-  const startRef = React.useRef<number>(Date.now())
+  const [timeLeft, setTimeLeft] = React.useState<number | null>(null)
 
   // If no session in store, try loading from API when URL contains a session id
   React.useEffect(() => {
@@ -21,6 +21,53 @@ export function ExamSessionPage() {
     
     dispatch(loadSessionRequest(id))
   }, [id, session, dispatch])
+
+  // Initialize timer for Exam mode
+  React.useEffect(() => {
+    if (session?.mode === 2 && questions.length > 0 && timeLeft === null) {
+      const totalSeconds = questions.reduce((acc, q) => acc + q.estimatedTime, 0)
+      setTimeLeft(totalSeconds)
+    }
+  }, [session, questions, timeLeft])
+
+  // Timer countdown
+  React.useEffect(() => {
+    if (timeLeft === null || timeLeft < 0) return
+    
+    if (timeLeft === 0) {
+      // Auto-submit when time is up
+      dispatch(submitRequest())
+      return
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev !== null ? prev - 1 : null))
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [timeLeft, dispatch])
+
+  // Handle auto-submit on leave for Exam Mode
+  React.useEffect(() => {
+    if (session?.mode !== 2 || !!result) return
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault()
+      e.returnValue = '' // Standard way to show "Are you sure?" dialog
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      
+      // If we are unmounting and haven't submitted yet (and we're in Exam mode), auto-submit
+      // We check !result to avoid double submission when navigating to results page
+      if (session?.mode === 2 && !result) {
+        dispatch(submitRequest())
+      }
+    }
+  }, [session, result, dispatch])
 
   const handleAnswer = (answer: string) => {
     if (questions[currentIndex]) {
@@ -50,7 +97,8 @@ export function ExamSessionPage() {
             totalQuestions={questions.length} 
             totalAnswered={totalAnswered} 
             difficulty={question.difficulty} 
-            topic={question.topic} 
+            topic={question.topic}
+            timeLeft={timeLeft}
           />
         </div>
 

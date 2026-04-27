@@ -45,10 +45,12 @@ export interface ExamSession {
   userId: string
   technologyId: string
   level: string
+  mode: number
   questionIds: string[]
   startedAt: string
   submittedAt: string | null
   score: number | null
+  timeTaken: number | null
   breakdown: Record<string, { correct: number; total: number }> | null
 }
 

@@ -11,6 +11,7 @@ export interface GenerateExamInputExtended {
   technologyId?: string
   technologyIds?: string[]
   level: string
+  mode: number
   count?: number
   seed?: number
 }
