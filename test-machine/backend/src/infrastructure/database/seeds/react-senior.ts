@@ -1,4 +1,4 @@
-import type { QuestionInput } from '../../domain/question/question.schema.js'
+import { QuestionInput } from "@/domain/question/question.schema"
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type QuestionSeed = Omit<QuestionInput, 'technologyId' | 'difficulty'> & { difficulty: Difficulty }
@@ -214,12 +214,12 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How does `use(Context)` in React 19 differ from `useContext(Context)`?',
     options: [
-      'use() is asynchronous; useContext is synchronous',
-      'use() can be called conditionally and inside loops; useContext cannot',
-      'use() is for Server Components; useContext is for Client Components',
-      'They are identical — use() is just an alias for useContext'
+      '```ts\nuse()\n``` is asynchronous; ```ts\nuseContext\n``` is synchronous',
+      '```ts\nuse()\n``` can be called conditionally and inside loops; ```ts\nuseContext\n``` cannot',
+      '```ts\nuse()\n``` is for Server Components; ```ts\nuseContext\n``` is for Client Components',
+      'They are identical — ```ts\nuse()\n``` is just an alias for ```ts\nuseContext\n```'
     ],
-    answer: 'use() can be called conditionally and inside loops; useContext cannot',
+    answer: '```ts\nuse()\n``` can be called conditionally and inside loops; ```ts\nuseContext\n``` cannot',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'use(Context) is not a traditional hook — it follows different rules. It can be called after early returns, inside if statements and loops. This makes it more flexible for conditional context reading.',
@@ -734,12 +734,12 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you create a generic React component in TypeScript?',
     options: [
-      '`function List(props: GenericProps): JSX.Element`',
-      '`function List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element`',
-      '`const List: React.Generic<T> = (props) => ...`',
+      '```tsx\nfunction List(props: GenericProps): JSX.Element\n```',
+      '```tsx\nfunction List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element\n```',
+      '```tsx\nconst List: React.Generic<T> = (props) => ...\n```',
       'Generic components are not supported in React TypeScript'
     ],
-    answer: '`function List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element`',
+    answer: '```tsx\nfunction List<T>(props: { items: T[]; renderItem: (item: T) => React.ReactNode }): JSX.Element\n```',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'Generic components use a type parameter to infer the item type from props. TypeScript infers T from the items array, providing full type safety in the renderItem callback.',
@@ -760,7 +760,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     answer: 'TypeScript can narrow the type in each branch, making invalid state combinations impossible',
     difficulty: 'hard',
     estimatedTime: 90,
-    explanation: 'type State = { status: "idle" } | { status: "loading" } | { status: "success"; data: User } | { status: "error"; error: string } — TypeScript narrows the type in each if/switch branch, preventing accessing data when status is "loading".',
+    explanation: '```ts\ntype State = { status: "idle" } | { status: "loading" } | { status: "success"; data: User } | { status: "error"; error: string }\n```\nTypeScript narrows the type in each if/switch branch, preventing accessing data when status is "loading".',
     references: ['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions']
   },
   {
@@ -770,12 +770,12 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you extend a native HTML element\'s props in a custom component?',
     options: [
-      '`interface ButtonProps extends EventHandler { label: string }`',
-      '`interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }`',
-      '`type ButtonProps = HTMLButtonElement & { variant: string }`',
+      '```ts\ninterface ButtonProps extends EventHandler { label: string }\n```',
+      '```ts\ninterface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }\n```',
+      '```ts\ntype ButtonProps = HTMLButtonElement & { variant: string }\n```',
       'You cannot extend native HTML props in TypeScript'
     ],
-    answer: '`interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }`',
+    answer: '```ts\ninterface ButtonProps extends React.ComponentPropsWithoutRef<"button"> { variant?: "primary" | "danger" }\n```',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: '`React.ComponentPropsWithoutRef<"button">` provides all native button attributes. Your component can spread them onto the DOM element while adding custom props. Use WithRef variant when forwarding refs.',

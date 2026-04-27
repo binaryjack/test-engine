@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
 import { ExamAnswerRow } from './components/ExamAnswerRow.js'
 import { ExamScoreHeader } from './components/ExamScoreHeader.js'
 import { ExamTopicBreakdown } from './components/ExamTopicBreakdown.js'
-import { loadResultRequest, retakeFailedRequest } from './store/exam.slice.js'
+import { deleteExamRequest, loadResultRequest, retakeFailedRequest } from './store/exam.slice.js'
 
 export function ExamResultsPage() {
   const { id } = useParams<{ id: string }>()
@@ -22,10 +22,20 @@ export function ExamResultsPage() {
   // Navigate to session once generated (e.g., from retaking failed)
   const prevSessionIdRef = React.useRef(session?.id);
   React.useEffect(() => {
-    if (session && session.id !== prevSessionIdRef.current && prevSessionIdRef.current) {
+    // If the session ID changed and it's not the same as the current result's session ID (which is 'id'),
+    // navigate to the new session page
+    if (session && session.id !== id && !loading) {
       navigate(`/exam/session/${session.id}`);
     }
-  }, [session, navigate]);
+  }, [session, id, loading, navigate]);
+
+  // If result was deleted, navigate away
+  React.useEffect(() => {
+    if (!result && !loading && id) {
+      // If we were viewing a result but it's gone from state, go to dashboard
+      navigate('/dashboard')
+    }
+  }, [result, loading, navigate, id])
 
   // Show error toast/alert if there's an error but we still have a result
   React.useEffect(() => {
@@ -46,8 +56,14 @@ export function ExamResultsPage() {
     const prevSessionId = data.session?.id ?? session?.id
     if (!prevSessionId) return
     
-    prevSessionIdRef.current = prevSessionId
     dispatch(retakeFailedRequest(prevSessionId))
+  }
+
+  const handleDelete = () => {
+    if (!id) return
+    if (window.confirm('Are you sure you want to delete this exam attempt? This cannot be undone.')) {
+      dispatch(deleteExamRequest(id))
+    }
   }
 
   return (
@@ -61,6 +77,7 @@ export function ExamResultsPage() {
         onRetakeFailed={handleRetakeFailed}
         onNewExam={() => navigate('/exam')}
         onDashboard={() => navigate('/dashboard')}
+        onDelete={handleDelete}
       />
 
       {Object.keys(data.breakdown).length > 0 && (

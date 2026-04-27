@@ -1,4 +1,4 @@
-import type { QuestionInput } from '../../domain/question/question.schema.js'
+import { QuestionInput } from "@/domain/question/question.schema"
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type QuestionSeed = Omit<QuestionInput, 'technologyId' | 'difficulty'> & { difficulty: Difficulty }
@@ -42,8 +42,8 @@ export const reactNextjsQuestions: QuestionSeed[] = [
     subtopic: 'Client navigation',
     type: 'mcq',
     prompt: 'Which component should you use for client-side navigation in Next.js?',
-    options: ['`<a>`', '`<Link>` from next/link', '`<NavLink>`', '`<RouterLink>`'],
-    answer: '`<Link>` from next/link',
+    options: ['```html\n<a>\n```', '```tsx\n<Link>\n``` from next/link', '```tsx\n<NavLink>\n```', '```tsx\n<RouterLink>\n```'],
+    answer: '```tsx\n<Link>\n``` from next/link',
     difficulty: 'easy',
     estimatedTime: 30,
     explanation: 'Use `Link` from `next/link` for client-side transitions; it enables prefetching and avoids full page reloads.',

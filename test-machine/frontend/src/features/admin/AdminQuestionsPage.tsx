@@ -1,7 +1,8 @@
 import React from 'react'
+import { MarkdownContent } from '../../shared/components/UI/MarkdownContent.js'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
-import { loadQuestionsRequest, loadTechnologiesRequest, deleteQuestionRequest, createQuestionRequest } from './store/admin.slice.js'
-import type { QuestionType, Difficulty } from '../../shared/types/index.js'
+import type { Difficulty, QuestionType } from '../../shared/types/index.js'
+import { createQuestionRequest, deleteQuestionRequest, loadQuestionsRequest, loadTechnologiesRequest } from './store/admin.slice.js'
 
 const TYPES: QuestionType[] = ['mcq', 'theory', 'coding', 'debug']
 const DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard']
@@ -155,6 +156,7 @@ export function AdminQuestionsPage() {
         <table className="w-full text-sm text-left">
           <thead>
             <tr className="border-b border-slate-700 text-slate-400">
+              <th className="pb-2 pr-4">Prompt</th>
               <th className="pb-2 pr-4">Topic</th>
               <th className="pb-2 pr-4">Level</th>
               <th className="pb-2 pr-4">Type</th>
@@ -165,7 +167,10 @@ export function AdminQuestionsPage() {
           <tbody>
             {questions.map(q => (
               <tr key={q.id} className="border-b border-slate-800">
-                <td className="py-2 pr-4 text-white max-w-xs truncate">{q.topic}</td>
+                <td className="py-2 pr-4 max-w-md">
+                  <MarkdownContent content={q.prompt} className="text-white line-clamp-2 text-xs" />
+                </td>
+                <td className="py-2 pr-4 text-slate-400 whitespace-nowrap">{q.topic}</td>
                 <td className="py-2 pr-4"><span className="badge badge-mid">{q.level}</span></td>
                 <td className="py-2 pr-4 text-slate-400">{q.type}</td>
                 <td className="py-2 pr-4 text-slate-400">{q.difficulty}</td>

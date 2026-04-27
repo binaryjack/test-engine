@@ -277,6 +277,15 @@ export function generateRetakeExam(previousSessionId: string, userId: string): E
     throw Object.assign(new Error('No failed questions to retake'), { status: 422 })
   }
 
+  // Filter out any IDs that don't exist in the database anymore (e.g. after a re-seed)
+  const validQuestions = failedQuestionIds.map(id => getQuestion(id)).filter((q): q is QuestionDto => q !== null);
+
+  if (validQuestions.length === 0) {
+    throw Object.assign(new Error('None of the original failed questions exist anymore (they might have been reseeded).'), { status: 400 });
+  }
+
+  const validQuestionIds = validQuestions.map(q => q.id);
+
   // Create new exam session with only failed questions
   const id = uuidv4()
   const now = new Date().toISOString()
@@ -284,34 +293,67 @@ export function generateRetakeExam(previousSessionId: string, userId: string): E
   runSql(
     `INSERT INTO exam_sessions (id, userId, technologyId, level, questionIds, startedAt)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [id, userId, previousSession.technologyId, previousSession.level, JSON.stringify(failedQuestionIds), now]
+    [id, userId, previousSession.technologyId, previousSession.level, JSON.stringify(validQuestionIds), now]
   )
 
   return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)
 }
 
 export function generateRetakeExamFromIds(userId: string, failedQuestionIds: string[]): ExamSessionDto {
-  if (!failedQuestionIds || failedQuestionIds.length === 0) {
-    throw Object.assign(new Error('No failed questions to retake'), { status: 422 })
+  if (failedQuestionIds.length === 0) {
+    throw Object.assign(new Error('No failed questions to retake.'), { status: 400 });
   }
 
-  // To build a valid session, we need at least one question to derive the technology and level
-  // from, assuming all questions belong to the same logical retake block.
-  const sampleQuestion = getQuestion(failedQuestionIds[0])
-  if (!sampleQuestion) {
-    throw Object.assign(new Error('Invalid question ID provided'), { status: 400 })
+  // Filter out any IDs that don't exist in the database anymore
+  const validQuestions = failedQuestionIds.map(id => getQuestion(id)).filter((q): q is QuestionDto => q !== null);
+
+  if (validQuestions.length === 0) {
+    throw Object.assign(new Error('None of the original failed questions exist anymore (they might have been reseeded).'), { status: 400 });
   }
 
-  const id = uuidv4()
-  const now = new Date().toISOString()
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  // Assume a default level (e.g. 'mid') since we're composing from multiple questions which might vary
+  const level = validQuestions.length > 0 ? validQuestions[0].level : 'mid';
+
+  // Extract a fallback technology from valid questions, or a default
+  const technologyId = validQuestions.find(q => q.technologyId)?.technologyId ?? 'retake';
 
   runSql(
     `INSERT INTO exam_sessions (id, userId, technologyId, level, questionIds, startedAt)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [id, userId, sampleQuestion.technologyId, sampleQuestion.level, JSON.stringify(failedQuestionIds), now]
-  )
+    [
+      id,
+      userId,
+      technologyId,
+      level,
+      JSON.stringify(validQuestions.map(q => q.id)),
+      now
+    ]
+  );
 
-  return sessionToDto(queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [id])!)
+  return {
+    id,
+    userId,
+    technologyId,
+    level,
+    questionIds: validQuestions.map(q => q.id),
+    startedAt: now
+  };
+}
+
+export function deleteExam(sessionId: string, userId: string, userRole: string): void {
+  const session = queryOneSql<ExamSession>('SELECT * FROM exam_sessions WHERE id = ?', [sessionId]);
+  if (!session) {
+    throw Object.assign(new Error('Exam session not found'), { status: 404 });
+  }
+  
+  if (session.userId !== userId && userRole !== 'admin') {
+    throw Object.assign(new Error('Forbidden'), { status: 403 });
+  }
+
+  runSql('DELETE FROM exam_answers WHERE sessionId = ?', [sessionId]);
+  runSql('DELETE FROM exam_sessions WHERE id = ?', [sessionId]);
 }
 
 function normalizeAnswer(answer: string): string {

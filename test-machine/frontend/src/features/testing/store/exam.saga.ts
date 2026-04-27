@@ -2,19 +2,22 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { call, put, select, takeLatest } from 'redux-saga/effects'
 import type { ApiResponse, ExamResult, ExamSession, Question } from '../../../shared/types/index.js'
 import type { RootState } from '../../../store/index.js'
+import { loadHistoryRequest, loadStatsRequest } from '../../analytics/store/analytics.slice.js'
 import { examApi, GenerateExamInputExtended, SubmitExamInput } from '../api/exam.api.js'
 import {
-  calculateAvailableCountRequest,
-  calculateAvailableCountSuccess,
-  examFailure,
-  generateRequest,
-  generateSuccess,
-  loadResultRequest,
-  loadResultSuccess,
-  loadSessionRequest,
-  retakeFailedRequest,
-  submitRequest,
-  submitSuccess
+    calculateAvailableCountRequest,
+    calculateAvailableCountSuccess,
+    deleteExamRequest,
+    deleteExamSuccess,
+    examFailure,
+    generateRequest,
+    generateSuccess,
+    loadResultRequest,
+    loadResultSuccess,
+    loadSessionRequest,
+    retakeFailedRequest,
+    submitRequest,
+    submitSuccess
 } from './exam.slice.js'
 
 function* handleLoadSession(action: PayloadAction<string>) {
@@ -26,7 +29,9 @@ function* handleLoadSession(action: PayloadAction<string>) {
     }
     const sess = res.data
 
-    const qres: ApiResponse<Question[]> = yield call(examApi.getQuestions, sess.technologyId, sess.level)
+    // Fetch all questions to ensure we can filter for the specific session IDs, 
+    // especially for mixed-technology or retake sessions.
+    const qres: ApiResponse<Question[]> = yield call(examApi.getQuestions, undefined, undefined)
     if (!qres.success || !qres.data) {
       yield put(examFailure(qres.error ?? 'Failed to load questions'))
       return
@@ -47,6 +52,22 @@ function* handleLoadResult(action: PayloadAction<string>) {
     yield put(loadResultSuccess(res.data))
   } else {
     yield put(examFailure(res.error ?? 'Failed to load results'))
+  }
+}
+
+function* handleDeleteExam(action: PayloadAction<string>) {
+  try {
+    const res: ApiResponse<void> = yield call(examApi.delete, action.payload)
+    if (res.success) {
+      yield put(deleteExamSuccess())
+      // Also refresh analytics data
+      yield put(loadHistoryRequest())
+      yield put(loadStatsRequest())
+    } else {
+      yield put(examFailure(res.error ?? 'Failed to delete exam'))
+    }
+  } catch (err: unknown) {
+    yield put(examFailure((err as Error)?.message ?? 'Failed to delete exam'))
   }
 }
 
@@ -90,13 +111,10 @@ function* handleRetakeFailed(action: PayloadAction<string>) {
       yield put(examFailure('No exam result found to retake from'))
       return
     }
+    const answersOfSession = result.answers.filter(o => o.sessionId === action.payload)
+    const failedAnsers = answersOfSession.filter(o => !o.isCorrect)
+    const failedQuestionIds =failedAnsers.map(o => o.questionId)
 
-    const failedQuestionIds = result.questions
-      .filter((q: any) => {
-        const ans = result.answers.find((a: any) => a.questionId === q.id)
-        return !ans || !ans.isCorrect
-      })
-      .map((q: any) => q.id)
 
     if (failedQuestionIds.length === 0) {
       yield put(examFailure('No failed questions to retake'))
@@ -112,19 +130,9 @@ function* handleRetakeFailed(action: PayloadAction<string>) {
 
     // We need to load the questions for the new session
     const questionIds = sessionRes.data.questionIds
-    // We'll fetch questions from the technology, but we need to know which ones are in this session
-    // Since we have questionIds in the session, we can just use those
-    const questionsRes: ApiResponse<Question[]> = yield call(
-      examApi.getQuestions,
-      sessionRes.data.technologyId,
-      sessionRes.data.level
-    )
-    if (!questionsRes.success || !questionsRes.data) {
-      console.error('Questions API Error:', questionsRes)
-      yield put(examFailure(questionsRes.error ?? 'Failed to load questions'))
-      return
-    }
-    const questions = questionsRes.data.filter(q => questionIds.includes(q.id))
+    // Use the existing questions from the results to ensure consistency across multiple technologies
+    const questions = result.questions.filter((q: any) => questionIds.includes(q.id))
+    
     yield put(generateSuccess({ session: sessionRes.data, questions }))
   } catch (err: unknown) {
     console.error('Saga try-catch caught:', err)
@@ -176,9 +184,10 @@ function* handleSubmit() {
 
 export function* examSaga() {
   yield takeLatest(generateRequest.type, handleGenerate)
-  yield takeLatest(loadSessionRequest.type, handleLoadSession)
   yield takeLatest(submitRequest.type, handleSubmit)
+  yield takeLatest(loadSessionRequest.type, handleLoadSession)
   yield takeLatest(loadResultRequest.type, handleLoadResult)
   yield takeLatest(retakeFailedRequest.type, handleRetakeFailed)
   yield takeLatest(calculateAvailableCountRequest.type, handleCalculateAvailableCount)
+  yield takeLatest(deleteExamRequest.type, handleDeleteExam)
 }

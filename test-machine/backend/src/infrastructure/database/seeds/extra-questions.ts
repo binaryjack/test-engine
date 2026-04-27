@@ -1,4 +1,4 @@
-import type { QuestionInput } from '../../domain/question/question.schema.js'
+import { QuestionInput } from "@/domain/question/question.schema"
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type QuestionSeed = Omit<QuestionInput, 'technologyId' | 'difficulty'> & { difficulty: Difficulty }
@@ -95,7 +95,7 @@ export const extraTypescriptQuestions: QuestionSeed[] = [
     answer: 'A union type of the property names of T',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: '`keyof T` produces a union of the keys of T (e.g., keyof {a: number; b: string} = "a" | "b").',
+    explanation: '`keyof T` produces a union of the keys of T (e.g., `keyof {a: number; b: string} = "a" | "b"`).',
     references: ['https://www.typescriptlang.org/docs/handbook/2/keyof-types.html']
   },
   {
@@ -131,12 +131,12 @@ export const extraTypescriptQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'What is the form of a user-defined type guard function in TypeScript?',
     options: [
-      '`function isUser(x): boolean`',
-      '`function isUser(x: unknown): x is User`',
-      '`function isUser<T>(x: T): T is User`',
-      '`function isUser(x): x is User`'
+      '```ts\nfunction isUser(x): boolean\n```',
+      '```ts\nfunction isUser(x: unknown): x is User\n```',
+      '```ts\nfunction isUser<T>(x: T): T is User\n```',
+      '```ts\nfunction isUser(x): x is User\n```'
     ],
-    answer: '`function isUser(x: unknown): x is User`',
+    answer: '```ts\nfunction isUser(x: unknown): x is User\n```',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'A user-defined type guard has a return type of the form `paramName is Type`, which TypeScript uses to narrow the type in the calling scope.',

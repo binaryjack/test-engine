@@ -1,4 +1,4 @@
-import type { QuestionInput } from '../../domain/question/question.schema.js'
+import { QuestionInput } from "@/domain/question/question.schema"
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type QuestionSeed = Omit<QuestionInput, 'technologyId' | 'difficulty'> & { difficulty: Difficulty }
@@ -59,7 +59,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Basic Types',
     subtopic: 'Literal types',
     type: 'mcq',
-    prompt: 'What does `const direction = "north" as const` do?',
+    prompt: 'What does the following declaration do?\n```ts\nconst direction = "north" as const\n```',
     options: [
       'Casts the string to a constant number',
       'Narrows the type from `string` to the literal type `"north"`',
@@ -97,7 +97,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Interfaces',
     subtopic: 'Extending',
     type: 'mcq',
-    prompt: 'What is the TypeScript output of this: `interface A { x: number } interface B extends A { y: string }` — what properties does B have?',
+    prompt: 'Consider the following interfaces:\n```ts\ninterface A { x: number }\ninterface B extends A { y: string }\n```\nWhat properties does B have?',
     options: [
       'Only y: string',
       'x: number and y: string',
@@ -117,7 +117,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Generics',
     subtopic: 'Basic generics',
     type: 'mcq',
-    prompt: 'What does this function signature mean: `function identity<T>(value: T): T`?',
+    prompt: 'What does this function signature mean?\n```ts\nfunction identity<T>(value: T): T\n```',
     options: [
       'The function takes and returns any type, but loses type information',
       'The function is generic — it takes a value of type T and returns the same type T, preserving type information',
@@ -135,7 +135,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Generics',
     subtopic: 'Constraints',
     type: 'mcq',
-    prompt: 'What does `<T extends { length: number }>` mean?',
+    prompt: 'What does the following generic constraint mean?\n```ts\n<T extends { length: number }>\n```',
     options: [
       'T must be a string or array',
       'T can be any type that has a length property of type number',
@@ -153,7 +153,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Generics',
     subtopic: 'Conditional generics',
     type: 'mcq',
-    prompt: 'What does this type produce: `type IsArray<T> = T extends any[] ? true : false`?',
+    prompt: 'What does this type produce?\n```ts\ntype IsArray<T> = T extends any[] ? true : false\n```',
     options: [
       'Always returns boolean',
       'Returns true if T is an array type, false otherwise',
@@ -171,7 +171,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Generics',
     subtopic: 'Infer keyword',
     type: 'mcq',
-    prompt: 'What does `infer` do in a conditional type like `type UnpackPromise<T> = T extends Promise<infer U> ? U : T`?',
+    prompt: 'What does `infer` do in a conditional type like the following?\n```ts\ntype UnpackPromise<T> = T extends Promise<infer U> ? U : T\n```',
     options: [
       'Forces TypeScript to infer the type at runtime',
       'Extracts a type from within a conditional type pattern — U is inferred from the structure of T',
@@ -191,14 +191,14 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'Partial and Required',
     type: 'mcq',
-    prompt: 'What does `Partial<User>` produce if User is `{ name: string; age: number }`?',
+    prompt: 'What does `Partial<User>` produce if User is defined as follows?\n```ts\ntype User = { name: string; age: number }\n```',
     options: [
-      '{ name?: string; age?: number }',
-      '{ name: string | undefined; age: number | undefined }',
-      '{ name: string; age?: number }',
+      '```ts\n{ name?: string; age?: number }\n```',
+      '```ts\n{ name: string | undefined; age: number | undefined }\n```',
+      '```ts\n{ name: string; age?: number }\n```',
       'Removes optional properties, leaving only required ones'
     ],
-    answer: '{ name?: string; age?: number }',
+    answer: '```ts\n{ name?: string; age?: number }\n```',
     difficulty: 'easy',
     estimatedTime: 30,
     explanation: '`Partial<T>` makes all properties of T optional. It is equivalent to `{ [K in keyof T]?: T[K] }`. Useful for update payloads or form state where not all fields are required.',
@@ -209,7 +209,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'Pick and Omit',
     type: 'mcq',
-    prompt: 'Given `type User = { id: number; name: string; password: string }`, how do you create a type with only id and name?',
+    prompt: 'Given the following type:\n```ts\ntype User = { id: number; name: string; password: string }\n```\nHow do you create a type with only `id` and `name`?',
     options: [
       '`Pick<User, "id" | "name">`',
       '`Omit<User, "id" | "name">`',
@@ -337,7 +337,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Type Algebra',
     subtopic: 'Intersection types',
     type: 'mcq',
-    prompt: 'What does `type AB = A & B` mean when A = { x: number } and B = { y: string }?',
+    prompt: 'What does `type AB = A & B` mean when `A` and `B` are defined as:\n```ts\ntype A = { x: number }\ntype B = { y: string }\n```',
     options: [
       'A value that is either { x: number } or { y: string }',
       'A value that has both x: number AND y: string — must satisfy both shapes',
@@ -357,7 +357,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Type Narrowing',
     subtopic: 'typeof narrowing',
     type: 'mcq',
-    prompt: 'Inside `if (typeof value === "string") { ... }`, what is the type of `value`?',
+    prompt: 'Inside the following block, what is the type of `value`?\n```ts\nif (typeof value === "string") { ... }\n```',
     options: [
       'string | undefined',
       'string',
@@ -413,7 +413,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Advanced Types',
     subtopic: 'Mapped types',
     type: 'mcq',
-    prompt: 'What does this mapped type produce: `type Optional<T> = { [K in keyof T]?: T[K] }`?',
+    prompt: 'What does this mapped type produce?\n```ts\ntype Optional<T> = { [K in keyof T]?: T[K] }\n```',
     options: [
       'A type where all properties are required',
       'A type where all properties of T are made optional — equivalent to `Partial<T>`',
@@ -431,7 +431,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Advanced Types',
     subtopic: 'Template literal types',
     type: 'mcq',
-    prompt: 'What does `type EventName = \`on${string}\`` match?',
+    prompt: 'What does the following template literal type match?\n```ts\ntype EventName = `on${string}`\n```',
     options: [
       'Only the string "on"',
       'Any string that starts with "on"',
@@ -449,7 +449,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Advanced Types',
     subtopic: 'Conditional types distributive',
     type: 'mcq',
-    prompt: 'What is "distributive" behavior in conditional types? Given `type ToArray<T> = T extends any ? T[] : never`, what is `ToArray<string | number>`?',
+    prompt: 'What is "distributive" behavior in conditional types? Given the following type:\n```ts\ntype ToArray<T> = T extends any ? T[] : never\n```\nWhat is `ToArray<string | number>`?',
     options: [
       '(string | number)[]',
       'string[] | number[]',
@@ -469,12 +469,12 @@ export const typescriptQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How would you type a deeply nested JSON value in TypeScript?',
     options: [
-      'type JSON = string | number | boolean | null | object',
-      'type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }',
-      'type JSON = Record<string, unknown>',
+      '```ts\ntype JSON = string | number | boolean | null | object\n```',
+      '```ts\ntype JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }\n```',
+      '```ts\ntype JSON = Record<string, unknown>\n```',
       'Recursive types are not supported in TypeScript'
     ],
-    answer: 'type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }',
+    answer: '```ts\ntype JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }\n```',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'TypeScript supports recursive type aliases (since TS 3.7 with lazy evaluation). JSONValue references itself in array and object positions, correctly typing arbitrarily nested JSON structures.',
@@ -505,14 +505,14 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'TypeScript + React',
     subtopic: 'useState with types',
     type: 'mcq',
-    prompt: 'How do you type `useState` when the initial value is null but will later be a User object?',
+    prompt: 'How do you type `useState` when the initial value is null but will later be a `User` object?',
     options: [
-      'const [user, setUser] = useState(null)',
-      '`const [user, setUser] = useState<User | null>(null)`',
-      '`const [user, setUser] = useState<User>(null)`',
-      'const [user, setUser] = useState<User>({})'
+      '```tsx\nconst [user, setUser] = useState(null)\n```',
+      '```tsx\nconst [user, setUser] = useState<User | null>(null)\n```',
+      '```tsx\nconst [user, setUser] = useState<User>(null)\n```',
+      '```tsx\nconst [user, setUser] = useState<User>({})\n```'
     ],
-    answer: '`const [user, setUser] = useState<User | null>(null)`',
+    answer: '```tsx\nconst [user, setUser] = useState<User | null>(null)\n```',
     difficulty: 'easy',
     estimatedTime: 30,
     explanation: 'Provide the generic type argument explicitly when TypeScript cannot infer from the initial value. `useState<User | null>(null)` tells TypeScript this state holds User | null, so setUser(fetchedUser) is type-safe.',
@@ -525,12 +525,12 @@ export const typescriptQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How should you type an async data loading state in TypeScript for maximum type safety?',
     options: [
-      'const [data, setData] = useState(null); const [loading, setLoading] = useState(false); const [error, setError] = useState(null)',
-      'type State = { status: "idle" } | { status: "loading" } | { status: "success"; data: User } | { status: "error"; error: Error }; const [state, setState] = useState<State>({ status: "idle" })',
-      'const [state, setState] = useState<{ data?: User; loading: boolean; error?: Error }>({ loading: false })',
-      '`interface AsyncState<T> { data: T | null; loading: boolean; error: string | null }`'
+      '```tsx\nconst [data, setData] = useState(null);\nconst [loading, setLoading] = useState(false);\nconst [error, setError] = useState(null);\n```',
+      '```tsx\ntype State = \n  | { status: "idle" }\n  | { status: "loading" }\n  | { status: "success"; data: User }\n  | { status: "error"; error: Error };\nconst [state, setState] = useState<State>({ status: "idle" });\n```',
+      '```tsx\nconst [state, setState] = useState<{ data?: User; loading: boolean; error?: Error }>({ loading: false });\n```',
+      '```ts\ninterface AsyncState<T> { data: T | null; loading: boolean; error: string | null }\n```'
     ],
-    answer: 'type State = { status: "idle" } | { status: "loading" } | { status: "success"; data: User } | { status: "error"; error: Error }; const [state, setState] = useState<State>({ status: "idle" })',
+    answer: '```tsx\ntype State = \n  | { status: "idle" }\n  | { status: "loading" }\n  | { status: "success"; data: User }\n  | { status: "error"; error: Error };\nconst [state, setState] = useState<State>({ status: "idle" });\n```',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'The discriminated union approach makes invalid states impossible — you cannot have data and error simultaneously. TypeScript narrows automatically in switch/if statements, giving full type safety in each branch.',
@@ -544,11 +544,11 @@ export const typescriptQuestions: QuestionSeed[] = [
     prompt: 'What is the correct type for a React `onKeyDown` handler prop?',
     options: [
       'React.KeyDownHandler',
-      '`React.KeyboardEventHandler<HTMLInputElement>`',
+      '```ts\nReact.KeyboardEventHandler<HTMLInputElement>\n```',
       '(e: KeyboardEvent) => void',
-      '`EventHandler<KeyboardEvent>`'
+      '```ts\nEventHandler<KeyboardEvent>\n```'
     ],
-    answer: '`React.KeyboardEventHandler<HTMLInputElement>`',
+    answer: '```ts\nReact.KeyboardEventHandler<HTMLInputElement>\n```',
     difficulty: 'medium',
     estimatedTime: 60,
     explanation: 'React provides typed event handler aliases: `React.KeyboardEventHandler<T> = (event: React.KeyboardEvent<T>) => void`. These are for the handler function type. Use `React.KeyboardEvent<T>` for the event parameter type.',
@@ -579,12 +579,12 @@ export const typescriptQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'What is the type-safe way to create a context that cannot be undefined at the consumer?',
     options: [
-      'const Ctx = createContext(null)',
-      'Create a custom hook that wraps useContext and throws if the value is undefined: `if (!ctx) throw new Error("Must be inside Provider")`',
+      '```tsx\nconst Ctx = createContext(null)\n```',
+      'Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error("Must be inside Provider")\n```',
       'Use `createContext<T>()` with no default value',
       'Type the context as `Readonly<T>`'
     ],
-    answer: 'Create a custom hook that wraps useContext and throws if the value is undefined: `if (!ctx) throw new Error("Must be inside Provider")`',
+    answer: 'Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error("Must be inside Provider")\n```',
     difficulty: 'hard',
     estimatedTime: 90,
     explanation: 'The pattern: `const Ctx = createContext<UserContextType | undefined>(undefined)`. Then `function useUserContext() { const ctx = useContext(Ctx); if (!ctx) throw Error("Missing Provider"); return ctx; }`. Consumers get UserContextType — not | undefined.',

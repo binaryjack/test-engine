@@ -1,3 +1,4 @@
+import { MarkdownContent } from '../../../shared/components/UI/MarkdownContent.js'
 import type { Question } from '../../../shared/types/index.js'
 
 // Helper to shuffle array
@@ -32,7 +33,7 @@ export function ExamQuestionForm({ question, currentAnswer, onAnswer }: ExamQues
 
   return (
     <div className="card space-y-4">
-      <div className="text-white whitespace-pre-wrap leading-relaxed">{question.prompt}</div>
+      <MarkdownContent content={question.prompt} className="text-white leading-relaxed" />
 
       {isMcq && question.options && (
         <div className="space-y-2">
@@ -41,14 +42,14 @@ export function ExamQuestionForm({ question, currentAnswer, onAnswer }: ExamQues
               key={i}
               type="button"
               onClick={() => onAnswer(opt)}
-              className={`w-full text-left px-4 py-3 rounded border transition-colors text-sm ${
+              className={`w-full text-left px-4 py-3 rounded border transition-colors text-sm flex items-start ${
                 currentAnswer === opt
                   ? 'border-primary-500 bg-primary-900/40 text-white'
                   : 'border-slate-600 text-slate-300 hover:border-slate-500 hover:text-white'
               }`}
             >
-              <span className="font-mono mr-2 text-slate-500">{String.fromCharCode(65 + i)}.</span>
-              {opt}
+              <span className="font-mono mr-2 text-slate-500 shrink-0">{String.fromCharCode(65 + i)}.</span>
+              <MarkdownContent content={opt} className="flex-1" />
             </button>
           ))}
         </div>

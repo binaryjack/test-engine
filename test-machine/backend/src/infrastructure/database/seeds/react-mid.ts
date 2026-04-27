@@ -1,4 +1,5 @@
-import type { QuestionInput } from '../../domain/question/question.schema.js'
+import { QuestionInput } from "@/domain/question/question.schema"
+
 
 type Difficulty = 'easy' | 'medium' | 'hard'
 type QuestionSeed = Omit<QuestionInput, 'technologyId' | 'difficulty'> & { difficulty: Difficulty }
@@ -28,7 +29,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useState',
     type: 'mcq',
-    prompt: 'Given `const [count, setCount] = useState(0)`, what happens when you call `setCount(count + 1)` inside an event handler that fires twice rapidly?',
+    prompt: 'Given the following state:\n```tsx\nconst [count, setCount] = useState(0)\n```\nWhat happens when you call `setCount(count + 1)` inside an event handler that fires twice rapidly?',
     options: [
       'count increments by 2',
       'count increments by 1 because state batching uses stale closure values',
@@ -48,12 +49,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'Which of the following correctly initializes state lazily in React?',
     options: [
-      'useState(expensiveComputation())',
-      'useState(() => expensiveComputation())',
-      'useLazyState(expensiveComputation)',
-      'useState(null); useEffect(() => setState(expensiveComputation()), [])'
+      '```tsx\nuseState(expensiveComputation())\n```',
+      '```tsx\nuseState(() => expensiveComputation())\n```',
+      '```tsx\nuseLazyState(expensiveComputation)\n```',
+      '```tsx\nuseState(null);\nuseEffect(() => setState(expensiveComputation()), [])\n```'
     ],
-    answer: 'useState(() => expensiveComputation())',
+    answer: '```tsx\nuseState(() => expensiveComputation())\n```',
     difficulty: 'medium',
     estimatedTime: 60,
     explanation: 'Passing an initializer function to useState ensures the expensive computation only runs once on mount, not on every render.',
@@ -140,12 +141,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'Which pattern correctly fetches data and avoids a state update after unmount?',
     options: [
-      'useEffect(() => { fetch(url).then(res => setState(res)) }, [url])',
-      'useEffect(() => { let mounted = true; fetch(url).then(res => { if (mounted) setState(res) }); return () => { mounted = false } }, [url])',
-      'useEffect(async () => { const res = await fetch(url); setState(res) }, [url])',
-      'useEffect(() => { fetch(url).then(res => setState(res)) }, [])'
+      '```tsx\nuseEffect(() => {\n  fetch(url).then(res => setState(res))\n}, [url])\n```',
+      '```tsx\nuseEffect(() => {\n  let mounted = true;\n  fetch(url).then(res => {\n    if (mounted) setState(res)\n  });\n  return () => { mounted = false }\n}, [url])\n```',
+      '```tsx\nuseEffect(async () => {\n  const res = await fetch(url);\n  setState(res)\n}, [url])\n```',
+      '```tsx\nuseEffect(() => {\n  fetch(url).then(res => setState(res))\n}, [])\n```'
     ],
-    answer: 'useEffect(() => { let mounted = true; fetch(url).then(res => { if (mounted) setState(res) }); return () => { mounted = false } }, [url])',
+    answer: '```tsx\nuseEffect(() => {\n  let mounted = true;\n  fetch(url).then(res => {\n    if (mounted) setState(res)\n  });\n  return () => { mounted = false }\n}, [url])\n```',
     difficulty: 'medium',
     estimatedTime: 90,
     explanation: 'The mounted flag pattern prevents setting state on an unmounted component. Note: async useEffect callbacks are not directly supported — you need a wrapper function or the abort controller pattern.',
@@ -458,7 +459,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Forms',
     subtopic: 'Controlled inputs',
     type: 'mcq',
-    prompt: 'You have `<input value={name} onChange={e => setName(e.target.value)} />`. What happens if you remove the `onChange` handler?',
+    prompt: 'You have the following input:\n```tsx\n<input value={name} onChange={e => setName(e.target.value)} />\n```\nWhat happens if you remove the `onChange` handler?',
     options: [
       'The input becomes read-only and the user cannot type in it',
       'The input works normally but React warns in the console',
@@ -496,7 +497,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Rendering',
     subtopic: 'Conditional Rendering',
     type: 'mcq',
-    prompt: 'What does this JSX render when `count = 0`: `{count && <Spinner />}`?',
+    prompt: 'What does this JSX render when `count = 0`?\n```tsx\n{count && <Spinner />}\n```',
     options: [
       'Nothing — 0 is falsy so the Spinner is not rendered',
       'The number `0` is rendered to the DOM',
@@ -648,12 +649,12 @@ export const reactMidQuestions: QuestionSeed[] = [
     type: 'mcq',
     prompt: 'How do you correctly update a nested object in React state?',
     options: [
-      'state.user.name = "Alice"; setState(state)',
-      'setState({ ...state, user: { ...state.user, name: "Alice" } })',
-      'setState(Object.assign(state, { user: { name: "Alice" } }))',
+      '```tsx\nstate.user.name = "Alice";\nsetState(state)\n```',
+      '```tsx\nsetState({ ...state, user: { ...state.user, name: "Alice" } })\n```',
+      '```tsx\nsetState(Object.assign(state, { user: { name: "Alice" } }))\n```',
       'useState allows direct mutation — React detects deep changes automatically'
     ],
-    answer: 'setState({ ...state, user: { ...state.user, name: "Alice" } })',
+    answer: '```tsx\nsetState({ ...state, user: { ...state.user, name: "Alice" } })\n```',
     difficulty: 'medium',
     estimatedTime: 60,
     explanation: 'You must create a new object at every level you want to update. Spread at each nested level to produce a new reference without mutating the original.',

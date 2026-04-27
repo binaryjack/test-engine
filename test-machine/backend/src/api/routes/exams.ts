@@ -77,6 +77,15 @@ examsRouter.get('/:id/results', authenticate, (req: AuthRequest, res) => {
   }
 })
 
+examsRouter.delete('/:id', authenticate, (req: AuthRequest, res) => {
+  try {
+    examService.deleteExam(req.params.id as string, req.user!.sub, req.user!.role)
+    res.json({ success: true })
+  } catch (err: unknown) {
+    const e = err as Error & { status?: number }
+    res.status(e.status ?? 500).json({ success: false, error: e.message })
+  }
+})
 
 examsRouter.post('/:id/retake', authenticate, async (req: AuthRequest, res) => {
   const { failedQuestionIds } = req.body;

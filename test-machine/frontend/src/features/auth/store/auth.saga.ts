@@ -1,14 +1,15 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { authApi, LoginResponse } from '../api/auth.api.js'
+import { call, put, takeLatest } from 'redux-saga/effects'
 import type { ApiResponse, User } from '../../../shared/types/index.js'
+import { authApi, LoginResponse } from '../api/auth.api.js'
 import {
-  loginRequest,
-  registerRequest,
-  authSuccess,
-  authFailure,
-  loadUserRequest,
-  loadUserSuccess
+    authFailure,
+    authSuccess,
+    loadUserRequest,
+    loadUserSuccess,
+    loginRequest,
+    logout,
+    registerRequest
 } from './auth.slice.js'
 
 function* handleLogin(action: PayloadAction<{ email: string; password: string }>) {
@@ -34,7 +35,8 @@ function* handleLoadUser() {
   if (res.success && res.data) {
     yield put(loadUserSuccess(res.data))
   } else {
-    // Token invalid/expired — leave state as is (user will be redirected by guard)
+    // Token invalid/expired or user deleted — clear session
+    yield put(logout())
   }
 }
 

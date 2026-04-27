@@ -1,3 +1,4 @@
+import { MarkdownContent } from '../../../shared/components/UI/MarkdownContent.js'
 import type { ExamAnswer, Question } from '../../../shared/types/index.js'
 
 interface ExamAnswerRowProps {
@@ -15,18 +16,24 @@ export function ExamAnswerRow({ question, answer }: ExamAnswerRowProps) {
           {isCorrect ? 'Correct' : 'Incorrect'}
         </span>
       </div>
-      <p className="text-white text-sm mb-3 whitespace-pre-wrap">{question.prompt}</p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-        <div>
-          <span className="text-slate-400">Your answer: </span>
-          <span className={`font-mono ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-            {answer?.userAnswer || <em className="text-slate-500">No answer</em>}
-          </span>
+      <MarkdownContent content={question.prompt} className="text-white text-sm mb-3" />
+      <div className="grid grid-cols-1 gap-4 text-sm mt-4">
+        <div className="space-y-1">
+          <span className="text-slate-400 block text-xs uppercase tracking-wider font-semibold">Your answer:</span>
+          <div className={`p-3 rounded bg-slate-950/50 border ${isCorrect ? 'border-green-900/50' : 'border-red-900/50'}`}>
+            <MarkdownContent 
+              content={answer?.userAnswer || ''} 
+              className={`font-mono ${isCorrect ? 'text-green-400' : 'text-red-400'}`} 
+            />
+            {!answer?.userAnswer && <em className="text-slate-500">No answer</em>}
+          </div>
         </div>
         {!isCorrect && (
-          <div>
-            <span className="text-slate-400">Correct answer: </span>
-            <span className="text-green-400 font-mono">{question.answer}</span>
+          <div className="space-y-1">
+            <span className="text-slate-400 block text-xs uppercase tracking-wider font-semibold">Correct answer:</span>
+            <div className="p-3 rounded bg-slate-950/50 border border-green-900/50">
+              <MarkdownContent content={question.answer} className="text-green-400 font-mono" />
+            </div>
           </div>
         )}
       </div>

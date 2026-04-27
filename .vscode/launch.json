@@ -1,15 +1,54 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Backend: Live Debug",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "pnpm",
+            "runtimeArgs": [
+                "run",
+                "dev"
+            ],
+            "cwd": "${workspaceFolder}/test-machine/backend",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "restart": true
+        },
+        {
+            "name": "Frontend: Chrome Debug",
             "type": "chrome",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
             "url": "http://localhost:5174",
-            "webRoot": "${workspaceFolder}"
+            "webRoot": "${workspaceFolder}/test-machine/frontend",
+            "sourceMaps": true,
+            "preLaunchTask": "Start Frontend Server",
+            "skipFiles": [
+                "**/node_modules/**"
+            ]
+        },
+        {
+            "name": "Frontend: Attach",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:5174",
+            "webRoot": "${workspaceFolder}/test-machine/frontend",
+            "sourceMaps": true,
+            "skipFiles": [
+                "**/node_modules/**"
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack: Live Debug",
+            "configurations": [
+                "Backend: Live Debug",
+                "Frontend: Chrome Debug"
+            ]
         }
     ]
 }

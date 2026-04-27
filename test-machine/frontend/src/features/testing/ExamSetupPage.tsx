@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
 import { loadPublicTechnologiesRequest } from '../admin/store/admin.slice.js'
 import { ExamSetupForm } from './components/ExamSetupForm.js'
-import { calculateAvailableCountRequest, generateRequest } from './store/exam.slice.js'
+import { calculateAvailableCountRequest, clearExam, generateRequest } from './store/exam.slice.js'
 
 export function ExamSetupPage() {
   const dispatch = useAppDispatch()
@@ -14,6 +14,11 @@ export function ExamSetupPage() {
   const [selectedTechs, setSelectedTechs] = React.useState<string[]>([])
   const [selectedLevel, setSelectedLevel] = React.useState('')
   const [count, setCount] = React.useState(20)
+
+  // Clear any lingering exam state/errors when entering the setup page
+  React.useEffect(() => {
+    dispatch(clearExam())
+  }, [dispatch])
 
   // Load technologies from admin store on mount
   React.useEffect(() => {

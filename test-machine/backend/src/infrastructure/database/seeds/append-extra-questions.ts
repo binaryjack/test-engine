@@ -1,9 +1,9 @@
+import { QuestionInput } from "@/domain/question/question.schema"
+import { createQuestion } from '../../../domain/question/question.service.js'
 import { getDb, queryOneSql } from '../connection.js'
 import { migrate } from '../schema.js'
 import { seed } from '../seed.js'
-import { createQuestion } from '../../../domain/question/question.service.js'
 import { extraReactQuestions, extraTypescriptQuestions } from './extra-questions.js'
-import type { QuestionInput } from '../../domain/question/question.schema.js'
 
 const DIFFICULTY_MAP: Record<string, number> = { easy: 2, medium: 3, hard: 5 }
 

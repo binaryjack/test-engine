@@ -88,6 +88,15 @@ const examSlice = createSlice({
       state.loading = false
       state.result = action.payload
     },
+    deleteExamRequest(state, _action: PayloadAction<string>) {
+      state.loading = true
+      state.error = null
+    },
+    deleteExamSuccess(state) {
+      state.loading = false
+      state.result = null
+      state.session = null
+    },
     retakeFailedRequest(state, _action: PayloadAction<string>) {
       state.loading = true
       state.error = null
@@ -118,6 +127,8 @@ export const {
   loadSessionRequest,
   loadResultRequest,
   loadResultSuccess,
+  deleteExamRequest,
+  deleteExamSuccess,
   retakeFailedRequest,
   calculateAvailableCountRequest,
   calculateAvailableCountSuccess,

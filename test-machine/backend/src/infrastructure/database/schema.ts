@@ -68,7 +68,26 @@ const SCHEMA_SQL = `
 
 export async function migrate(): Promise<void> {
   const db = await getDb()
-  db.run(SCHEMA_SQL)
+  db.run(SCHEMA_SQL, [])
   persistDb()
   console.log('[migrate] Schema applied')
+}
+
+/**
+ * Destructive reseed: Drops all tables and recreates them from scratch.
+ */
+export async function recreateDbTables(): Promise<void> {
+  const db = await getDb()
+  const tables = ['exam_answers', 'exam_sessions', 'questions', 'technologies', 'users']
+  
+  // Disable foreign keys temporarily for clean drop
+  db.run('PRAGMA foreign_keys = OFF',[])
+  for (const table of tables) {
+    db.run(`DROP TABLE IF EXISTS ${table}`,[])
+  }
+  db.run('PRAGMA foreign_keys = ON',[])
+  
+  persistDb()
+  console.log('[recreate] All tables dropped')
+  await migrate() // Re-apply current schema
 }
