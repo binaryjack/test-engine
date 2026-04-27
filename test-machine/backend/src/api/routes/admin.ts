@@ -3,7 +3,7 @@ import { listAllUsers } from '../../domain/auth/auth.service.js'
 import { getQuestionStats } from '../../domain/question/question.service.js'
 import { querySql } from '../../infrastructure/database/connection.js'
 import { runFullSeed } from '../../infrastructure/database/seed-database.js'
-import { authenticate, requireRole } from '../middleware/authenticate.js'
+import { authenticate, AuthRequest, requireRole } from '../middleware/authenticate.js'
 
 export const adminRouter: Router = Router()
 

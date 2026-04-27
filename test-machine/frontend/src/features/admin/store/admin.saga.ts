@@ -1,18 +1,20 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { adminApi, AdminStats, CreateTechnologyInput, CreateQuestionInput } from '../api/admin.api.js'
-import type { ApiResponse, Technology, Question, User } from '../../../shared/types/index.js'
+import { call, put, takeLatest } from 'redux-saga/effects'
+import type { ApiResponse, Question, Technology, User } from '../../../shared/types/index.js'
+import { adminApi, AdminStats, CreateQuestionInput, CreateTechnologyInput } from '../api/admin.api.js'
 import {
-  loadStatsRequest, loadStatsSuccess,
-  loadTechnologiesRequest, loadTechnologiesSuccess,
+  adminFailure,
+  createQuestionRequest,
+  createTechnologyRequest,
+  deleteQuestionRequest,
   loadPublicTechnologiesRequest, loadPublicTechnologiesSuccess,
   loadQuestionsRequest, loadQuestionsSuccess,
+  loadStatsRequest, loadStatsSuccess,
+  loadTechnologiesRequest, loadTechnologiesSuccess,
   loadUsersRequest, loadUsersSuccess,
-  adminFailure,
-  createTechnologyRequest,
-  createQuestionRequest,
-  deleteQuestionRequest,
-  questionDeleted
+  questionDeleted,
+  seedDatabaseEnd,
+  seedDatabaseRequest
 } from './admin.slice.js'
 
 function* handleLoadStats() {
@@ -44,6 +46,14 @@ function* handleLoadUsers() {
   if (res.success && res.data) yield put(loadUsersSuccess(res.data))
   else yield put(adminFailure(res.error ?? 'Failed'))
 }
+
+
+function* handleSeedDatabase() {
+  const res: ApiResponse<string> = yield call(adminApi.seedDatabase)
+  if (res.success && res.data) yield put(seedDatabaseEnd(''))
+  else yield put(seedDatabaseEnd(res.error ?? 'Failed'))
+}
+
 
 function* handleCreateTechnology(action: PayloadAction<CreateTechnologyInput>) {
   const res: ApiResponse<Technology> = yield call(adminApi.createTechnology, action.payload)
@@ -79,4 +89,7 @@ export function* adminSaga() {
   yield takeLatest(createQuestionRequest.type, handleCreateQuestion)
   yield takeLatest('admin/updateQuestionRequest', handleUpdateQuestion)
   yield takeLatest(deleteQuestionRequest.type, handleDeleteQuestion)
+  yield takeLatest(seedDatabaseRequest.type, handleSeedDatabase)
+
+  
 }

@@ -68,7 +68,7 @@ const SCHEMA_SQL = `
 
 export async function migrate(): Promise<void> {
   const db = await getDb()
-  db.run(SCHEMA_SQL, [])
+  db.exec(SCHEMA_SQL)
   persistDb()
   console.log('[migrate] Schema applied')
 }
@@ -78,7 +78,7 @@ export async function migrate(): Promise<void> {
  */
 export async function recreateDbTables(): Promise<void> {
   const db = await getDb()
-  const tables = ['exam_answers', 'exam_sessions', 'questions', 'technologies', 'users']
+  const tables = ['exam_answers', 'exam_sessions', 'questions', 'technologies']
   
   // Disable foreign keys temporarily for clean drop
   db.run('PRAGMA foreign_keys = OFF',[])
@@ -88,6 +88,6 @@ export async function recreateDbTables(): Promise<void> {
   db.run('PRAGMA foreign_keys = ON',[])
   
   persistDb()
-  console.log('[recreate] All tables dropped')
+  console.log('[recreate] Domain tables dropped (users preserved)')
   await migrate() // Re-apply current schema
 }

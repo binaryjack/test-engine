@@ -42,34 +42,42 @@ export function ExamSessionPage() {
   const totalAnswered = Object.keys(answers).length
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <ExamHeader 
-        currentIndex={currentIndex} 
-        totalQuestions={questions.length} 
-        totalAnswered={totalAnswered} 
-        difficulty={question.difficulty} 
-        topic={question.topic} 
-      />
+    <div className="flex flex-col h-[calc(100vh-80px)] max-w-3xl mx-auto">
+      <div className="flex-1 flex flex-col min-h-0 space-y-6">
+        <div className="shrink-0">
+          <ExamHeader 
+            currentIndex={currentIndex} 
+            totalQuestions={questions.length} 
+            totalAnswered={totalAnswered} 
+            difficulty={question.difficulty} 
+            topic={question.topic} 
+          />
+        </div>
 
-      <ExamQuestionForm 
-        question={question} 
-        currentAnswer={currentAnswer} 
-        onAnswer={handleAnswer} 
-      />
+        <div className="flex-1 min-h-0">
+          <ExamQuestionForm 
+            question={question} 
+            currentAnswer={currentAnswer} 
+            onAnswer={handleAnswer} 
+          />
+        </div>
+      </div>
 
-      <ExamNavigation 
-        questions={questions}
-        answers={answers}
-        currentIndex={currentIndex}
-        loading={loading}
-        onPrev={() => dispatch(prevQuestion())}
-        onNext={() => dispatch(nextQuestion())}
-        onGoTo={(i) => dispatch(goToQuestion(i))}
-        onSubmit={() => dispatch(submitRequest())}
-      />
+      <div className="shrink-0 pt-6 pb-2 bg-slate-950/80 backdrop-blur-sm sticky bottom-0">
+        <ExamNavigation 
+          questions={questions}
+          answers={answers}
+          currentIndex={currentIndex}
+          loading={loading}
+          onPrev={() => dispatch(prevQuestion())}
+          onNext={() => dispatch(nextQuestion())}
+          onGoTo={(i) => dispatch(goToQuestion(i))}
+          onSubmit={() => dispatch(submitRequest())}
+        />
+      </div>
 
       {error && (
-        <div className="bg-red-900/50 border border-red-700 text-red-200 rounded px-3 py-2 text-sm">{error}</div>
+        <div className="mt-4 bg-red-900/50 border border-red-700 text-red-200 rounded px-3 py-2 text-sm shrink-0">{error}</div>
       )}
     </div>
   )

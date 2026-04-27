@@ -338,7 +338,10 @@ export function generateRetakeExamFromIds(userId: string, failedQuestionIds: str
     technologyId,
     level,
     questionIds: validQuestions.map(q => q.id),
-    startedAt: now
+    startedAt: now,
+    submittedAt: null,
+    breakdown: null,
+    score: null
   };
 }
 

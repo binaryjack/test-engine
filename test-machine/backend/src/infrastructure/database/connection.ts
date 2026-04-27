@@ -1,5 +1,5 @@
-import { createRequire } from 'module'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { createRequire } from 'module'
 import path from 'path'
 
 const require = createRequire(import.meta.url)
@@ -18,6 +18,7 @@ interface SqlStatement {
 interface SqlDatabase {
   prepare(sql: string): SqlStatement
   run(sql: string, params: unknown[]): void
+  exec(sql: string): void
   export(): Uint8Array
 }
 

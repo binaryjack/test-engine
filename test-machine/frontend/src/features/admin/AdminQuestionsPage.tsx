@@ -1,12 +1,27 @@
 import React from 'react'
-import { MarkdownContent } from '../../shared/components/UI/MarkdownContent.js'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
-import type { Difficulty, QuestionType } from '../../shared/types/index.js'
+import type { Difficulty, Question, QuestionType } from '../../shared/types/index.js'
+import { QuestionFilters } from './components/QuestionFilters.js'
+import { QuestionForm } from './components/QuestionForm.js'
+import { QuestionTable } from './components/QuestionTable.js'
 import { createQuestionRequest, deleteQuestionRequest, loadQuestionsRequest, loadTechnologiesRequest } from './store/admin.slice.js'
 
-const TYPES: QuestionType[] = ['mcq', 'theory', 'coding', 'debug']
-const DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard']
 const DIFFICULTY_MAP: Record<Difficulty, number> = { easy: 2, medium: 3, hard: 5 }
+const REVERSE_DIFFICULTY_MAP: Record<number, Difficulty> = { 2: 'easy', 3: 'medium', 5: 'hard' }
+
+const INITIAL_FORM_STATE = {
+  technologyId: '',
+  level: '',
+  topic: '',
+  subtopic: '',
+  type: 'mcq' as QuestionType,
+  prompt: '',
+  options: '',
+  answer: '',
+  difficulty: 'medium' as Difficulty,
+  estimatedTime: 120,
+  explanation: ''
+}
 
 export function AdminQuestionsPage() {
   const dispatch = useAppDispatch()
@@ -18,11 +33,7 @@ export function AdminQuestionsPage() {
 
   // Form state
   const [editingId, setEditingId] = React.useState<string | null>(null)
-  const [form, setForm] = React.useState({
-    technologyId: '', level: '', topic: '', subtopic: '', type: 'mcq' as QuestionType,
-    prompt: '', options: '', answer: '', difficulty: 'medium' as Difficulty,
-    estimatedTime: 120, explanation: ''
-  })
+  const [form, setForm] = React.useState(INITIAL_FORM_STATE)
 
   React.useEffect(() => {
     dispatch(loadTechnologiesRequest())
@@ -30,7 +41,10 @@ export function AdminQuestionsPage() {
   }, [dispatch])
 
   const handleFilter = () => {
-    dispatch(loadQuestionsRequest({ technologyId: filterTech || undefined, level: filterLevel || undefined }))
+    dispatch(loadQuestionsRequest({ 
+      technologyId: filterTech || undefined, 
+      level: filterLevel || undefined 
+    }))
   }
 
   const handleCreate = (e: React.FormEvent) => {
@@ -38,6 +52,7 @@ export function AdminQuestionsPage() {
     const options = form.type === 'mcq'
       ? form.options.split('\n').map(s => s.trim()).filter(Boolean)
       : undefined
+    
     const payload = {
       technologyId: form.technologyId,
       level: form.level,
@@ -47,173 +62,94 @@ export function AdminQuestionsPage() {
       prompt: form.prompt,
       options,
       answer: form.answer,
-      difficulty: DIFFICULTY_MAP[form.difficulty as Difficulty] ?? 3,
+      difficulty: DIFFICULTY_MAP[form.difficulty] ?? 3,
       estimatedTime: form.estimatedTime,
       explanation: form.explanation || undefined
     }
+
     if (editingId) {
-      // Update existing question
       dispatch({ type: 'admin/updateQuestionRequest', payload: { id: editingId, data: payload } })
     } else {
       dispatch(createQuestionRequest(payload))
     }
+    
     setShowForm(false)
     setEditingId(null)
+    setForm(INITIAL_FORM_STATE)
   }
 
-  const selectedTech = technologies.find(t => t.id === form.technologyId)
+  const handleEdit = (q: Question) => {
+    setForm({
+      technologyId: q.technologyId,
+      level: q.level,
+      topic: q.topic,
+      subtopic: q.subtopic ?? '',
+      type: q.type as QuestionType,
+      prompt: q.prompt,
+      options: q.options ? q.options.join('\n') : '',
+      answer: q.answer,
+      difficulty: REVERSE_DIFFICULTY_MAP[q.difficulty as unknown as number] ?? 'medium',
+      estimatedTime: q.estimatedTime,
+      explanation: q.explanation ?? ''
+    })
+    setEditingId(q.id)
+    setShowForm(true)
+  }
+
+  const handleDelete = (id: string) => {
+    if (window.confirm('Delete this question?')) {
+      dispatch(deleteQuestionRequest(id))
+    }
+  }
+
+  const toggleForm = () => {
+    if (showForm) {
+      setEditingId(null)
+      setForm(INITIAL_FORM_STATE)
+    }
+    setShowForm(!showForm)
+  }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col h-full space-y-6 overflow-hidden">
+      <div className="flex items-center justify-between shrink-0">
         <h1 className="text-xl font-semibold text-white">Questions</h1>
-        <button className="btn-primary text-sm" onClick={() => { if (showForm) setEditingId(null); setShowForm(v => !v) }}>
+        <button className="btn-primary text-sm" onClick={toggleForm}>
           {showForm ? 'Cancel' : '+ Add Question'}
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-3">
-        <select className="input w-48" value={filterTech} onChange={e => setFilterTech(e.target.value)}>
-          <option value="">All technologies</option>
-          {technologies.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-        </select>
-        <input className="input w-32" placeholder="Level" value={filterLevel} onChange={e => setFilterLevel(e.target.value)} />
-        <button className="btn-secondary text-sm" onClick={handleFilter}>Filter</button>
+      <div className="shrink-0">
+        <QuestionFilters
+          technologies={technologies}
+          filterTech={filterTech}
+          setFilterTech={setFilterTech}
+          filterLevel={filterLevel}
+          setFilterLevel={setFilterLevel}
+          onFilter={handleFilter}
+        />
       </div>
 
-      {/* Create form */}
-      {showForm && (
-        <form onSubmit={handleCreate} className="card space-y-4">
-          <h2 className="font-medium text-white">{editingId ? 'Edit Question' : 'New Question'}</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="label">Technology</label>
-              <select className="input" value={form.technologyId}
-                onChange={e => setForm(f => ({ ...f, technologyId: e.target.value, level: '' }))} required>
-                <option value="">Select…</option>
-                {technologies.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="label">Level</label>
-              <select className="input" value={form.level}
-                onChange={e => setForm(f => ({ ...f, level: e.target.value }))} required>
-                <option value="">Select…</option>
-                {(selectedTech?.levels ?? []).map(l => <option key={l} value={l}>{l}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="label">Topic</label>
-              <input className="input" value={form.topic} onChange={e => setForm(f => ({ ...f, topic: e.target.value }))} required />
-            </div>
-            <div>
-              <label className="label">Type</label>
-              <select className="input" value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as QuestionType }))}>
-                {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="label">Difficulty</label>
-              <select className="input" value={form.difficulty} onChange={e => setForm(f => ({ ...f, difficulty: e.target.value as Difficulty }))}>
-                {DIFFICULTIES.map(d => <option key={d} value={d}>{d}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="label">Est. Time (seconds)</label>
-              <input type="number" className="input" value={form.estimatedTime}
-                onChange={e => setForm(f => ({ ...f, estimatedTime: Number(e.target.value) }))} min={10} />
-            </div>
+      <div className="flex-1 overflow-hidden">
+        {showForm ? (
+          <div className="overflow-y-auto h-full pr-1 custom-scrollbar">
+            <QuestionForm
+              editingId={editingId}
+              form={form}
+              setForm={setForm}
+              technologies={technologies}
+              onSubmit={handleCreate}
+              loading={loading}
+            />
           </div>
-          <div>
-            <label className="label">Prompt</label>
-            <textarea className="input font-mono text-sm" rows={4} value={form.prompt}
-              onChange={e => setForm(f => ({ ...f, prompt: e.target.value }))} required />
-          </div>
-          {form.type === 'mcq' && (
-            <div>
-              <label className="label">Options (one per line)</label>
-              <textarea className="input font-mono text-sm" rows={4} value={form.options}
-                onChange={e => setForm(f => ({ ...f, options: e.target.value }))} />
-            </div>
-          )}
-          <div>
-            <label className="label">Answer</label>
-            <input className="input" value={form.answer} onChange={e => setForm(f => ({ ...f, answer: e.target.value }))} required />
-          </div>
-          <div>
-            <label className="label">Explanation (optional)</label>
-            <textarea className="input text-sm" rows={3} value={form.explanation}
-              onChange={e => setForm(f => ({ ...f, explanation: e.target.value }))} />
-          </div>
-          <button type="submit" className="btn-primary text-sm" disabled={loading}>{editingId ? 'Update Question' : 'Create Question'}</button>
-        </form>
-      )}
-
-      {/* Table */}
-      <div className="card overflow-x-auto">
-        <p className="text-slate-400 text-sm mb-3">{questions.length} questions</p>
-        <table className="w-full text-sm text-left">
-          <thead>
-            <tr className="border-b border-slate-700 text-slate-400">
-              <th className="pb-2 pr-4">Prompt</th>
-              <th className="pb-2 pr-4">Topic</th>
-              <th className="pb-2 pr-4">Level</th>
-              <th className="pb-2 pr-4">Type</th>
-              <th className="pb-2 pr-4">Difficulty</th>
-              <th className="pb-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {questions.map(q => (
-              <tr key={q.id} className="border-b border-slate-800">
-                <td className="py-2 pr-4 max-w-md">
-                  <MarkdownContent content={q.prompt} className="text-white line-clamp-2 text-xs" />
-                </td>
-                <td className="py-2 pr-4 text-slate-400 whitespace-nowrap">{q.topic}</td>
-                <td className="py-2 pr-4"><span className="badge badge-mid">{q.level}</span></td>
-                <td className="py-2 pr-4 text-slate-400">{q.type}</td>
-                <td className="py-2 pr-4 text-slate-400">{q.difficulty}</td>
-                <td className="py-2">
-                  <div className="flex gap-2">
-                    <button
-                      className="btn-secondary text-xs"
-                      onClick={() => {
-                          // Populate form and show it for editing
-                          const revMap: Record<number, Difficulty> = { 2: 'easy', 3: 'medium', 5: 'hard' }
-                          setForm({
-                            technologyId: q.technologyId,
-                            level: q.level,
-                            topic: q.topic,
-                            subtopic: q.subtopic ?? '',
-                            type: q.type as QuestionType,
-                            prompt: q.prompt,
-                            options: q.options ? q.options.join('\n') : '',
-                            answer: q.answer,
-                            difficulty: revMap[q.difficulty] ?? 'medium',
-                            estimatedTime: q.estimatedTime,
-                            explanation: q.explanation ?? ''
-                          })
-                          setEditingId(q.id)
-                          setShowForm(true)
-                        }}
-                      disabled={loading}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn-danger text-xs"
-                      onClick={() => { if (confirm('Delete this question?')) dispatch(deleteQuestionRequest(q.id)) }}
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        ) : (
+          <QuestionTable
+            questions={questions}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            loading={loading}
+          />
+        )}
       </div>
     </div>
   )

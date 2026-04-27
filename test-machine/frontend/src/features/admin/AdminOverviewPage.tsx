@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../shared/hooks/useStore.js'
-import { loadStatsRequest } from './store/admin.slice.js'
+import { loadStatsRequest, seedDatabaseRequest } from './store/admin.slice.js'
 
 export function AdminOverviewPage() {
   const dispatch = useAppDispatch()
@@ -19,10 +19,18 @@ export function AdminOverviewPage() {
     grouped[key][row.topic] = row.count
   }
 
+  const handleSeedDatabase = () => {
+  dispatch(seedDatabaseRequest())
+  }
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-white">Admin Overview</h1>
 
+       <button className="btn-primary text-sm" onClick={handleSeedDatabase} >
+          {` seed database ${loading ? ' ... in progress ...' : ''}`} 
+        </button>
+      
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="card text-center">
           <div className="text-3xl font-bold text-primary-400">{stats.totalQuestions}</div>

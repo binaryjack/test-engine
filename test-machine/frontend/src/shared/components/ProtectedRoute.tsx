@@ -1,7 +1,7 @@
 import React from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from '../hooks/useStore.js'
 import { loadUserRequest } from '../../features/auth/store/auth.slice.js'
+import { useAppDispatch, useAppSelector } from '../hooks/useStore.js'
 
 interface Props {
   children: React.ReactNode
@@ -13,11 +13,6 @@ export function ProtectedRoute({ children, requireRole }: Props) {
   const { user, token, loading } = useAppSelector(s => s.auth)
   const location = useLocation()
 
-  // Not authenticated
-  if (!token) {
-    return <Navigate to="/login" state={{ from: location }} replace />
-  }
-
   // If we have a token but no user loaded yet, fetch the user from the API.
   // This avoids redirecting to /dashboard on page reload when the token is present.
   React.useEffect(() => {
@@ -25,6 +20,11 @@ export function ProtectedRoute({ children, requireRole }: Props) {
       dispatch(loadUserRequest())
     }
   }, [dispatch, token, user, loading])
+
+  // Not authenticated
+  if (!token) {
+    return <Navigate to="/login" state={{ from: location }} replace />
+  }
 
   // While we're loading the user, show nothing (or a small placeholder).
   if (!user) {

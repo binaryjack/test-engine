@@ -5,19 +5,19 @@ import type { RootState } from '../../../store/index.js'
 import { loadHistoryRequest, loadStatsRequest } from '../../analytics/store/analytics.slice.js'
 import { examApi, GenerateExamInputExtended, SubmitExamInput } from '../api/exam.api.js'
 import {
-    calculateAvailableCountRequest,
-    calculateAvailableCountSuccess,
-    deleteExamRequest,
-    deleteExamSuccess,
-    examFailure,
-    generateRequest,
-    generateSuccess,
-    loadResultRequest,
-    loadResultSuccess,
-    loadSessionRequest,
-    retakeFailedRequest,
-    submitRequest,
-    submitSuccess
+  calculateAvailableCountRequest,
+  calculateAvailableCountSuccess,
+  deleteExamRequest,
+  deleteExamSuccess,
+  examFailure,
+  generateRequest,
+  generateSuccess,
+  loadResultRequest,
+  loadResultSuccess,
+  loadSessionRequest,
+  retakeFailedRequest,
+  submitRequest,
+  submitSuccess
 } from './exam.slice.js'
 
 function* handleLoadSession(action: PayloadAction<string>) {

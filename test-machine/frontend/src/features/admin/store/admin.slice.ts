@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { Technology, Question, User } from '../../../shared/types/index.js'
+import type { Question, Technology, User } from '../../../shared/types/index.js'
 import type { AdminStats } from '../api/admin.api.js'
 
 interface AdminState {
@@ -7,7 +7,7 @@ interface AdminState {
   technologies: Technology[]
   questions: Question[]
   users: User[]
-  loading: boolean
+  loading: boolean  
   error: string | null
 }
 
@@ -46,6 +46,11 @@ const adminSlice = createSlice({
     loadUsersSuccess(state, action: PayloadAction<User[]>) {
       state.loading = false; state.users = action.payload
     },
+    seedDatabaseRequest(state) { state.loading = true },
+    seedDatabaseEnd(state, action: PayloadAction<string>) {
+      state.loading = action.payload ? true : false
+        state.error = action.payload
+    },
     adminFailure(state, action: PayloadAction<string>) {
       state.loading = false; state.error = action.payload
     },
@@ -80,7 +85,9 @@ export const {
   createTechnologyRequest,
   createQuestionRequest,
   deleteQuestionRequest,
-  questionDeleted
+  questionDeleted,
+  seedDatabaseRequest,
+  seedDatabaseEnd
 } = adminSlice.actions
 
 export default adminSlice.reducer

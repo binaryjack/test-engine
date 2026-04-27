@@ -1,5 +1,5 @@
+import type { ApiResponse, Question, Technology, User } from '../../../shared/types/index.js'
 import { http } from '../../../shared/utils/http.js'
-import type { ApiResponse, Technology, Question, User } from '../../../shared/types/index.js'
 
 export interface AdminStats {
   totalQuestions: number
@@ -72,5 +72,9 @@ export const adminApi = {
     http.delete<ApiResponse<void>>(`/questions/${id}`),
 
   bulkImportQuestions: (questions: CreateQuestionInput[]) =>
-    http.post<ApiResponse<{ count: number }>>('/questions/bulk', { questions })
+    http.post<ApiResponse<{ count: number }>>('/questions/bulk', { questions }),
+
+  seedDatabase: () =>
+    http.post<ApiResponse<Question>>('/admin/seed/1',{})
+
 }
