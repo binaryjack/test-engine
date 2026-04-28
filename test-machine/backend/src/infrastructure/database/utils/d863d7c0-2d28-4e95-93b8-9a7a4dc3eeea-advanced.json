@@ -1,0 +1,422 @@
+[
+  {
+    "level": "ADVANCED",
+    "topic": "Generics",
+    "subtopic": "Conditional generics",
+    "type": "mcq",
+    "prompt": "What does this type produce?\n```ts\ntype IsArray<T> = T extends any[] ? true : false\n```",
+    "options": [
+      "0,Always returns boolean // Always returns boolean",
+      "1,Returns true if T is an array type, false otherwise // Returns true if T is an array type, false otherwise",
+      "2,Returns the element type of the array // Returns the element type of the array",
+      "3,TypeScript error — conditional types require keyof // TypeScript error — conditional types require keyof"
+    ],
+    "answer": "Returns true if T is an array type, false otherwise",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "Conditional types use the ```jsx\n\n``` syntax — a ternary for types. ```jsx\n\n``` = true, ```jsx\n\n``` = false. They enable powerful type-level computations.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Generics",
+    "subtopic": "Infer keyword",
+    "type": "mcq",
+    "prompt": "What does ```jsx\n infer``` do in a conditional type like the following?\n```ts\ntype UnpackPromise<T> = T extends Promise<infer U> ? U : T\n```",
+    "options": [
+      "0,Forces TypeScript to infer the type at runtime // Forces TypeScript to infer the type at runtime",
+      "1,Extracts a type from within a conditional type pattern — U is inferred from the structure of T // Extracts a type from within a conditional type pattern — U is inferred from the structure of T",
+      "2,Makes the generic parameter optional // Makes the generic parameter optional",
+      "3,Declares a new type variable scoped to the true branch // Declares a new type variable scoped to the true branch"
+    ],
+    "answer": "Extracts a type from within a conditional type pattern — U is inferred from the structure of T",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "```jsx\n\n``` captures the resolved type of a Promise within the conditional pattern. ```jsx\n\n``` = string; ```jsx\n\n``` = number. infer creates a new type variable bound in the true branch.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Utility Types",
+    "subtopic": "ReturnType and Parameters",
+    "type": "mcq",
+    "prompt": "What does```jsx\n ReturnType<typeof fetch>``` give you?",
+    "options": [
+      "0,The type of the fetch function itself // The type of the fetch function itself",
+      "1,The return type of the fetch function — ```jsx\n\n``` // The return type of the fetch function — `Promise<Response>`",
+      "2,The parameter types of fetch // The parameter types of fetch",
+      "3,The resolved value type — Response // The resolved value type — Response"
+    ],
+    "answer": "The return type of the fetch function — ```jsx\n\n```",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` extracts the return type of a function type. ```jsx\n\n``` gives the function type; ```jsx\n\n```. Pair with ```jsx\n\n``` to get the resolved type.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Utility Types",
+    "subtopic": "Exclude and Extract",
+    "type": "mcq",
+    "prompt": "Given```jsx\n type Status = \"active\" | \"inactive\" | \"pending\"```, what is```jsx\n Exclude<Status, \"inactive\" | \"pending\">```?",
+    "options": [
+      "0,\"inactive\" | \"pending\" // \"inactive\" | \"pending\"",
+      "1,\"active\" // \"active\"",
+      "2,Status // Status",
+      "3,never // never"
+    ],
+    "answer": "\"active\"",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` removes from T all types assignable to U. ```jsx\n\n```. Extract is the opposite — keeps only types assignable to U.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#excludeuniontype-excludedmembers"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Utility Types",
+    "subtopic": "NonNullable",
+    "type": "mcq",
+    "prompt": "What does```jsx\n NonNullable<string | null | undefined>``` produce?",
+    "options": [
+      "0,string | null // string | null",
+      "1,string // string",
+      "2,string | undefined // string | undefined",
+      "3,never // never"
+    ],
+    "answer": "string",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "```jsx\n\n``` removes null and undefined from a union type. Useful when you have received a value from a nullable source and have confirmed it is defined.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Type Narrowing",
+    "subtopic": "Discriminated unions",
+    "type": "mcq",
+    "prompt": "What makes a union a \"discriminated union\" that TypeScript can narrow efficiently?",
+    "options": [
+      "0,Each member has at least one unique property name // Each member has at least one unique property name",
+      "1,Each member has a shared literal-typed discriminant property (e.g., ```jsx\n\n```) // Each member has a shared literal-typed discriminant property (e.g., `type: \"circle\" | \"square\"`)",
+      "2,The union has at most two members // The union has at most two members",
+      "3,All members must be class instances // All members must be class instances"
+    ],
+    "answer": "Each member has a shared literal-typed discriminant property (e.g., ```jsx\n\n```)",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "A discriminated union has a shared property with literal values: type Shape = { kind: \"circle\"; radius: number } | { kind: \"square\"; side: number }. Checking ```jsx\n\n``` narrows to the circle variant.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Advanced Types",
+    "subtopic": "Mapped types",
+    "type": "mcq",
+    "prompt": "What does this mapped type produce?\n```ts\ntype Optional<T> = { [K in keyof T]?: T[K] }\n```",
+    "options": [
+      "0,A type where all properties are required // A type where all properties are required",
+      "1,A type where all properties of T are made optional — equivalent to```jsx\n Partial<T>``` // A type where all properties of T are made optional — equivalent to```jsx\n Partial<T>```",
+      "2,A type where all property values are union with undefined // A type where all property values are union with undefined",
+      "3,A type that only includes properties with optional values // A type that only includes properties with optional values"
+    ],
+    "answer": "A type where all properties of T are made optional — equivalent to```jsx\n Partial<T>```",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` iterates over all keys of T. Adding ? makes each property optional. This is exactly how```jsx\n Partial<T>``` is implemented in TypeScript's lib.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/mapped-types.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Advanced Types",
+    "subtopic": "Template literal types",
+    "type": "mcq",
+    "prompt": "What does the following template literal type match?\n```ts\ntype EventName = ```jsx\n\n```\n```",
+    "options": [
+      "0,Only the string \"on\" // Only the string \"on\"",
+      "1,Any string that starts with \"on\" // Any string that starts with \"on\"",
+      "2,Any string that contains \"on\" // Any string that contains \"on\"",
+      "3,Only capitalized event names like \"onClick\" // Only capitalized event names like \"onClick\""
+    ],
+    "answer": "Any string that starts with \"on\"",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "Template literal types compose string literal types. ``on${string}`` matches any string starting with \"on\" — like \"onClick\", \"onChange\", \"onSubmit\". The string type matches any string suffix.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Advanced Types",
+    "subtopic": "Conditional types distributive",
+    "type": "mcq",
+    "prompt": "What is \"distributive\" behavior in conditional types? Given the following type:\n```ts\ntype ToArray<T> = T extends any ? T[] : never\n```\nWhat is ```jsx\n\n```?",
+    "options": [
+      "0,(string | number)[] // (string | number)[]",
+      "1,string[] | number[] // string[] | number[]",
+      "2,never // never",
+      "3,TypeScript error // TypeScript error"
+    ],
+    "answer": "string[] | number[]",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "When a conditional type receives a union, TypeScript distributes it: ```jsx\n\n```. To prevent distribution, wrap in []: ```jsx\n\n```.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Advanced Types",
+    "subtopic": "Recursive types",
+    "type": "mcq",
+    "prompt": "How would you type a deeply nested JSON value in TypeScript?",
+    "options": [
+      "0,```ts\ntype JSON = string | number | boolean | null | object\n``` // ```ts\ntype JSON = string | number | boolean | null | object\n```",
+      "1,```ts\ntype JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }\n``` // ```ts\ntype JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }\n```",
+      "2,```ts\ntype JSON = Record<string, unknown>\n``` // ```ts\ntype JSON = Record<string, unknown>\n```",
+      "3,Recursive types are not supported in TypeScript // Recursive types are not supported in TypeScript"
+    ],
+    "answer": "```ts\ntype JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue }\n```",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "TypeScript supports recursive type aliases (since TS 3.7 with lazy evaluation). JSONValue references itself in array and object positions, correctly typing arbitrarily nested JSON structures.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/objects.html#the-readonly-modifier"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "TypeScript + React",
+    "subtopic": "Discriminated union state",
+    "type": "mcq",
+    "prompt": "How should you type an async data loading state in TypeScript for maximum type safety?",
+    "options": [
+      "0,```tsx\nconst [data, setData] = useState(null);\nconst [loading, setLoading] = useState(false);\nconst [error, setError] = useState(null);\n``` // ```tsx\nconst [data, setData] = useState(null);\nconst [loading, setLoading] = useState(false);\nconst [error, setError] = useState(null);\n```",
+      "1,```tsx\ntype State = \n  | { status: \"idle\" }\n  | { status: \"loading\" }\n  | { status: \"success\"; data: User }\n  | { status: \"error\"; error: Error };\nconst [state, setState] = useState<State>({ status: \"idle\" });\n``` // ```tsx\ntype State = \n  | { status: \"idle\" }\n  | { status: \"loading\" }\n  | { status: \"success\"; data: User }\n  | { status: \"error\"; error: Error };\nconst [state, setState] = useState<State>({ status: \"idle\" });\n```",
+      "2,```tsx\nconst [state, setState] = useState<{ data?: User; loading: boolean; error?: Error }>({ loading: false });\n``` // ```tsx\nconst [state, setState] = useState<{ data?: User; loading: boolean; error?: Error }>({ loading: false });\n```",
+      "3,```ts\ninterface AsyncState<T> { data: T | null; loading: boolean; error: string | null }\n``` // ```ts\ninterface AsyncState<T> { data: T | null; loading: boolean; error: string | null }\n```"
+    ],
+    "answer": "```tsx\ntype State = \n  | { status: \"idle\" }\n  | { status: \"loading\" }\n  | { status: \"success\"; data: User }\n  | { status: \"error\"; error: Error };\nconst [state, setState] = useState<State>({ status: \"idle\" });\n```",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "The discriminated union approach makes invalid states impossible — you cannot have data and error simultaneously. TypeScript narrows automatically in switch/if statements, giving full type safety in each branch.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "TypeScript + React",
+    "subtopic": "Event handlers",
+    "type": "mcq",
+    "prompt": "What is the correct type for a React```jsx\n onKeyDown``` handler prop?",
+    "options": [
+      "0,React.KeyDownHandler // React.KeyDownHandler",
+      "1,```ts\nReact.KeyboardEventHandler<HTMLInputElement>\n``` // ```ts\nReact.KeyboardEventHandler<HTMLInputElement>\n```",
+      "2,(e: KeyboardEvent) => void // (e: KeyboardEvent) => void",
+      "3,```ts\nEventHandler<KeyboardEvent>\n``` // ```ts\nEventHandler<KeyboardEvent>\n```"
+    ],
+    "answer": "```ts\nReact.KeyboardEventHandler<HTMLInputElement>\n```",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "React provides typed event handler aliases: ```jsx\n\n```. These are for the handler function type. Use ```jsx\n\n``` for the event parameter type.",
+    "references": [
+      "https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/forms_and_events/"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "TypeScript + React",
+    "subtopic": "useReducer typing",
+    "type": "mcq",
+    "prompt": "What is the benefit of typing a useReducer action as a discriminated union?",
+    "options": [
+      "0,It makes the reducer run faster // It makes the reducer run faster",
+      "1,TypeScript narrows the action type in each case branch, so action.payload is typed correctly per action // TypeScript narrows the action type in each case branch, so action.payload is typed correctly per action",
+      "2,It enables the reducer to handle async actions // It enables the reducer to handle async actions",
+      "3,It allows multiple reducers to handle the same action // It allows multiple reducers to handle the same action"
+    ],
+    "answer": "TypeScript narrows the action type in each case branch, so action.payload is typed correctly per action",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "type Action = { type: \"increment\" } | { type: \"setName\"; payload: string }. In ```jsx\n\n```, TypeScript knows action.payload is string. Without discriminated unions, payload would be unknown and require casting.",
+    "references": [
+      "https://react.dev/learn/typescript#typing-usereducer"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "TypeScript + React",
+    "subtopic": "Context typing",
+    "type": "mcq",
+    "prompt": "What is the type-safe way to create a context that cannot be undefined at the consumer?",
+    "options": [
+      "0,```tsx\nconst Ctx = createContext(null)\n``` // ```tsx\nconst Ctx = createContext(null)\n```",
+      "1,Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error(\"Must be inside Provider\")\n``` // Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error(\"Must be inside Provider\")\n```",
+      "2,Use ```jsx\n\n``` with no default value // Use `createContext<T>()` with no default value",
+      "3,Type the context as```jsx\n Readonly<T>``` // Type the context as```jsx\n Readonly<T>```"
+    ],
+    "answer": "Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error(\"Must be inside Provider\")\n```",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "The pattern: ```jsx\n\n```. Then ```jsx\n\n```. Consumers get UserContextType — not | undefined.",
+    "references": [
+      "https://kentcdodds.com/blog/how-to-use-react-context-effectively"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Declaration Files",
+    "subtopic": "Module augmentation",
+    "type": "mcq",
+    "prompt": "How do you extend an existing library's types in TypeScript without modifying the library?",
+    "options": [
+      "0,Copy the library's type file and add your properties // Copy the library's type file and add your properties",
+      "1,Use module augmentation — declare the same module in a .d.ts file and add properties to the interface // Use module augmentation — declare the same module in a .d.ts file and add properties to the interface",
+      "2,Use type casting wherever you need the additional properties // Use type casting wherever you need the additional properties",
+      "3,TypeScript does not allow extending library types // TypeScript does not allow extending library types"
+    ],
+    "answer": "Use module augmentation — declare the same module in a .d.ts file and add properties to the interface",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "Module augmentation uses declaration merging: ```jsx\n\n```. TypeScript merges this with the library's existing declarations, adding your custom property globally.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Declaration Files",
+    "subtopic": "DefinitelyTyped",
+    "type": "mcq",
+    "prompt": "What is ```jsx\n @types/*``` and when do you need it?",
+    "options": [
+      "0,TypeScript's built-in type definitions for the web platform // TypeScript's built-in type definitions for the web platform",
+      "1,Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don't ship their own types // Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don't ship their own types",
+      "2,Custom type definition files generated during build // Custom type definition files generated during build",
+      "3,ESLint type checking plugins // ESLint type checking plugins"
+    ],
+    "answer": "Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don't ship their own types",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "When a library doesn't include TypeScript types, the community publishes them to @types/* on npm (from the DefinitelyTyped repository). Install ```jsx\n\n``` to get type definitions for the ```jsx\n\n``` library.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/type-declarations.html#definitelytyped--types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Enums",
+    "subtopic": "Union vs enum",
+    "type": "mcq",
+    "prompt": "When should you prefer a string union type over an enum?",
+    "options": [
+      "0,Always — enums are obsolete in modern TypeScript // Always — enums are obsolete in modern TypeScript",
+      "1,When you do not need runtime iteration over values and want simpler, idiomatic TypeScript without a compiled object // When you do not need runtime iteration over values and want simpler, idiomatic TypeScript without a compiled object",
+      "2,When you need the reverse mapping (value to name) // When you need the reverse mapping (value to name)",
+      "3,When the values are numeric // When the values are numeric"
+    ],
+    "answer": "When you do not need runtime iteration over values and want simpler, idiomatic TypeScript without a compiled object",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` is simpler, tree-shakeable, and does not generate any runtime code. Use enums when you need Object.values(Enum) iteration or numeric bitfield operations.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/enums.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Decorators",
+    "subtopic": "TypeScript decorators",
+    "type": "mcq",
+    "prompt": "TypeScript decorators are primarily used for:",
+    "options": [
+      "0,Adding runtime type information to classes and methods // Adding runtime type information to classes and methods",
+      "1,Metaprogramming — annotating or modifying classes, methods, and properties at design time (commonly in NestJS, Angular) // Metaprogramming — annotating or modifying classes, methods, and properties at design time (commonly in NestJS, Angular)",
+      "2,Replacing generics for cleaner syntax // Replacing generics for cleaner syntax",
+      "3,Providing type guards for complex types // Providing type guards for complex types"
+    ],
+    "answer": "Metaprogramming — annotating or modifying classes, methods, and properties at design time (commonly in NestJS, Angular)",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "Decorators (@Component, @Injectable, @Get) are a metaprogramming syntax for annotating and modifying class declarations and members. They are stage 3 in TC39 and widely used in Angular and NestJS.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/decorators.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Generics",
+    "subtopic": "infer",
+    "type": "mcq",
+    "prompt": "In conditional types, what does the ```jsx\n infer``` keyword allow you to do?",
+    "options": [
+      "0,Infer a type inside the true branch from a pattern // Infer a type inside the true branch from a pattern",
+      "1,Infer runtime values // Infer runtime values",
+      "2,Infer generic parameter names // Infer generic parameter names",
+      "3,Infer module paths // Infer module paths"
+    ],
+    "answer": "Infer a type inside the true branch from a pattern",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "infer lets you capture a type from inside another type in a conditional type for reuse in the true branch.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#inferring-within-conditional-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "ADVANCED",
+    "topic": "Type Narrowing",
+    "subtopic": "User-defined type guards",
+    "type": "mcq",
+    "prompt": "What is the form of a user-defined type guard function in TypeScript?",
+    "options": [
+      "0,```ts\nfunction isUser(x): boolean\n``` // ```ts\nfunction isUser(x): boolean\n```",
+      "1,```ts\nfunction isUser(x: unknown): x is User\n``` // ```ts\nfunction isUser(x: unknown): x is User\n```",
+      "2,```ts\nfunction isUser<T>(x: T): T is User\n``` // ```ts\nfunction isUser<T>(x: T): T is User\n```",
+      "3,```ts\nfunction isUser(x): x is User\n``` // ```ts\nfunction isUser(x): x is User\n```"
+    ],
+    "answer": "```ts\nfunction isUser(x: unknown): x is User\n```",
+    "difficulty": "hard",
+    "estimatedTime": 90,
+    "explanation": "A user-defined type guard has a return type of the form ```jsx\n\n```, which TypeScript uses to narrow the type in the calling scope.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  }
+]

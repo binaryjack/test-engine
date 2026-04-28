@@ -1,0 +1,485 @@
+[
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Basic Types",
+    "subtopic": "Primitives",
+    "type": "mcq",
+    "prompt": "Which TypeScript type describes a value that can never occur?",
+    "options": [
+      "0,unknown // unknown",
+      "1,void // void",
+      "2,never // never",
+      "3,undefined // undefined"
+    ],
+    "answer": "never",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` represents values that never occur — e.g., the return type of a function that always throws or has an infinite loop. It is also produced by exhaustive checks in discriminated unions.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Basic Types",
+    "subtopic": "unknown vs any",
+    "type": "mcq",
+    "prompt": "What is the key difference between ```jsx\n any``` and ```jsx\n unknown```?",
+    "options": [
+      "0,unknown is the same as any but marks deprecated APIs // unknown is the same as any but marks deprecated APIs",
+      "1,any disables type checking; unknown is type-safe — you must narrow it before using it // any disables type checking; unknown is type-safe — you must narrow it before using it",
+      "2,unknown can only hold primitive values; any can hold anything // unknown can only hold primitive values; any can hold anything",
+      "3,They are identical — unknown is just an alias for any // They are identical — unknown is just an alias for any"
+    ],
+    "answer": "any disables type checking; unknown is type-safe — you must narrow it before using it",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "unknown is the type-safe counterpart to any. You can assign anything to unknown, but you cannot use it without narrowing (type guard, typeof check, instanceof). any skips all checks.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Basic Types",
+    "subtopic": "Type assertions",
+    "type": "mcq",
+    "prompt": "When should you use a type assertion (```jsx\n value as Type```)?",
+    "options": [
+      "0,Whenever TypeScript infers the wrong type // Whenever TypeScript infers the wrong type",
+      "1,When you have more information than TypeScript about a value's type and the assertion is safe // When you have more information than TypeScript about a value's type and the assertion is safe",
+      "2,As a replacement for proper typing — it's faster than writing interfaces // As a replacement for proper typing — it's faster than writing interfaces",
+      "3,To convert between incompatible types (e.g., string to number) // To convert between incompatible types (e.g., string to number)"
+    ],
+    "answer": "When you have more information than TypeScript about a value's type and the assertion is safe",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "Type assertions tell TypeScript \"trust me, I know what this is.\" Use them sparingly and only when you are certain — they bypass type checking and can cause runtime errors if wrong.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Basic Types",
+    "subtopic": "Literal types",
+    "type": "mcq",
+    "prompt": "What does the following declaration do?\n```ts\nconst direction = \"north\" as const\n```",
+    "options": [
+      "0,Casts the string to a constant number // Casts the string to a constant number",
+      "1,Narrows the type from ```jsx\n\n``` to the literal type ```jsx\n\n``` // Narrows the type from `string` to the literal type `\"north\"`",
+      "2,Makes the variable immutable at runtime // Makes the variable immutable at runtime",
+      "3,Prevents TypeScript from widening the type to string // Prevents TypeScript from widening the type to string"
+    ],
+    "answer": "Narrows the type from ```jsx\n\n``` to the literal type ```jsx\n\n```",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` tells TypeScript to infer the most specific literal type rather than widening. Without it, ```jsx\n\n``` has type ```jsx\n\n```. With it, the type is the literal ```jsx\n\n```.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Interfaces",
+    "subtopic": "Interface vs Type alias",
+    "type": "mcq",
+    "prompt": "What can ```jsx\n interface``` do that a ```jsx\n type``` alias cannot?",
+    "options": [
+      "0,Describe union types // Describe union types",
+      "1,Use generics // Use generics",
+      "2,Declaration merging — multiple interface declarations with the same name are merged // Declaration merging — multiple interface declarations with the same name are merged",
+      "3,Extend other types // Extend other types"
+    ],
+    "answer": "Declaration merging — multiple interface declarations with the same name are merged",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "Declaration merging allows multiple ```jsx\n\n``` declarations to automatically merge into one. Type aliases cannot be reopened. This is useful for augmenting library types.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Interfaces",
+    "subtopic": "Extending",
+    "type": "mcq",
+    "prompt": "Consider the following interfaces:\n```ts\ninterface A { x: number }\ninterface B extends A { y: string }\n```\nWhat properties does B have?",
+    "options": [
+      "0,Only y: string // Only y: string",
+      "1,x: number and y: string // x: number and y: string",
+      "2,A union of x or y // A union of x or y",
+      "3,TypeScript error — interfaces cannot extend interfaces // TypeScript error — interfaces cannot extend interfaces"
+    ],
+    "answer": "x: number and y: string",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "interface B extends A means B inherits all properties from A and adds its own. The resulting type B has both x: number and y: string.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/objects.html#extending-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Generics",
+    "subtopic": "Basic generics",
+    "type": "mcq",
+    "prompt": "What does this function signature mean?\n```ts\nfunction identity<T>(value: T): T\n```",
+    "options": [
+      "0,The function takes and returns any type, but loses type information // The function takes and returns any type, but loses type information",
+      "1,The function is generic — it takes a value of type T and returns the same type T, preserving type information // The function is generic — it takes a value of type T and returns the same type T, preserving type information",
+      "2,T must be an object type — primitives are not allowed // T must be an object type — primitives are not allowed",
+      "3,The function can only be called with explicitly provided type arguments // The function can only be called with explicitly provided type arguments"
+    ],
+    "answer": "The function is generic — it takes a value of type T and returns the same type T, preserving type information",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "Generics are type parameters. TypeScript infers T from the argument, so calling identity(\"hello\") gives return type string, not any. This preserves type safety unlike using any.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/generics.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Generics",
+    "subtopic": "Constraints",
+    "type": "mcq",
+    "prompt": "What does the following generic constraint mean?\n```ts\n<T extends { length: number }>\n```",
+    "options": [
+      "0,T must be a string or array // T must be a string or array",
+      "1,T can be any type that has a length property of type number // T can be any type that has a length property of type number",
+      "2,T cannot exceed a length of a number // T cannot exceed a length of a number",
+      "3,T extends the Number class // T extends the Number class"
+    ],
+    "answer": "T can be any type that has a length property of type number",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "Generic constraints (extends) restrict what types T can be. ```jsx\n\n``` means T must have at least a length property — it accepts strings, arrays, and any object with length.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Utility Types",
+    "subtopic": "Partial and Required",
+    "type": "mcq",
+    "prompt": "What does```jsx\n Partial<User>``` produce if User is defined as follows?\n```ts\ntype User = { name: string; age: number }\n```",
+    "options": [
+      "0,```ts\n{ name?: string; age?: number }\n``` // ```ts\n{ name?: string; age?: number }\n```",
+      "1,```ts\n{ name: string | undefined; age: number | undefined }\n``` // ```ts\n{ name: string | undefined; age: number | undefined }\n```",
+      "2,```ts\n{ name: string; age?: number }\n``` // ```ts\n{ name: string; age?: number }\n```",
+      "3,Removes optional properties, leaving only required ones // Removes optional properties, leaving only required ones"
+    ],
+    "answer": "```ts\n{ name?: string; age?: number }\n```",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "```jsx\n\n``` makes all properties of T optional. It is equivalent to ```jsx\n\n```. Useful for update payloads or form state where not all fields are required.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Utility Types",
+    "subtopic": "Pick and Omit",
+    "type": "mcq",
+    "prompt": "Given the following type:\n```ts\ntype User = { id: number; name: string; password: string }\n```\nHow do you create a type with only ```jsx\n\n``` and ```jsx\n\n```?",
+    "options": [
+      "0,```jsx\n\n``` // `Pick<User, \"id\" | \"name\">`",
+      "1,```jsx\n\n``` // `Omit<User, \"id\" | \"name\">`",
+      "2,```jsx\n\n``` // `Extract<User, \"id\" | \"name\">`",
+      "3,```jsx\n\n``` // `Select<User, \"id\" | \"name\">`"
+    ],
+    "answer": "```jsx\n\n```",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "```jsx\n\n``` constructs a type with only the specified keys. ```jsx\n\n``` constructs a type with everything except the specified keys. For this case (2 props from 3), Pick is cleaner.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Utility Types",
+    "subtopic": "Record",
+    "type": "mcq",
+    "prompt": "What does```jsx\n Record<string, number>``` describe?",
+    "options": [
+      "0,A tuple of [string, number] // A tuple of [string, number]",
+      "1,An object type where all keys are strings and all values are numbers // An object type where all keys are strings and all values are numbers",
+      "2,A Map with string keys and number values // A Map with string keys and number values",
+      "3,An array of string-number pairs // An array of string-number pairs"
+    ],
+    "answer": "An object type where all keys are strings and all values are numbers",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "```jsx\n\n``` is equivalent to ```jsx\n\n```.```jsx\n Record<string, number>``` describes an object like ```jsx\n\n```. Often used for dictionaries/maps with consistent value types.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Utility Types",
+    "subtopic": "Readonly",
+    "type": "mcq",
+    "prompt": "What does```jsx\n Readonly<T>``` do?",
+    "options": [
+      "0,Freezes the object at runtime // Freezes the object at runtime",
+      "1,Makes all properties read-only at the type level — TypeScript will error on assignment // Makes all properties read-only at the type level — TypeScript will error on assignment",
+      "2,Removes all methods from the type, leaving only data properties // Removes all methods from the type, leaving only data properties",
+      "3,Makes all properties optional // Makes all properties optional"
+    ],
+    "answer": "Makes all properties read-only at the type level — TypeScript will error on assignment",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "```jsx\n\n``` adds the readonly modifier to all properties. TypeScript will produce a type error if you try to reassign a property. Note: this is type-level only — Object.freeze() is needed for runtime enforcement.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Type Algebra",
+    "subtopic": "Union types",
+    "type": "mcq",
+    "prompt": "What is a union type in TypeScript?",
+    "options": [
+      "0,A type that must satisfy all members simultaneously // A type that must satisfy all members simultaneously",
+      "1,A type that can be one of several types — the value is any one of them // A type that can be one of several types — the value is any one of them",
+      "2,A set of types that are combined via inheritance // A set of types that are combined via inheritance",
+      "3,A type that represents the intersection of two objects // A type that represents the intersection of two objects"
+    ],
+    "answer": "A type that can be one of several types — the value is any one of them",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "A union type (A | B) means the value is either A or B. You can only use properties/methods that exist on all members of the union without narrowing.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Type Algebra",
+    "subtopic": "Intersection types",
+    "type": "mcq",
+    "prompt": "What does ```jsx\n\n``` mean when ```jsx\n\n``` and ```jsx\n\n``` are defined as:\n```ts\ntype A = { x: number }\ntype B = { y: string }\n```",
+    "options": [
+      "0,A value that is either { x: number } or { y: string } // A value that is either { x: number } or { y: string }",
+      "1,A value that has both x: number AND y: string — must satisfy both shapes // A value that has both x: number AND y: string — must satisfy both shapes",
+      "2,An error — TypeScript does not support & on object types // An error — TypeScript does not support & on object types",
+      "3,A value that can have x or y but not both // A value that can have x or y but not both"
+    ],
+    "answer": "A value that has both x: number AND y: string — must satisfy both shapes",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "Intersection types (A & B) combine multiple types — the result must satisfy all of them. For objects, A & B has all properties of A plus all properties of B.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Type Narrowing",
+    "subtopic": "typeof narrowing",
+    "type": "mcq",
+    "prompt": "Inside the following block, what is the type of ```jsx\n\n```?\n```ts\nif (typeof value === \"string\") { ... }\n```",
+    "options": [
+      "0,string | undefined // string | undefined",
+      "1,string // string",
+      "2,unknown // unknown",
+      "3,The original type of value // The original type of value"
+    ],
+    "answer": "string",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "TypeScript's control flow analysis narrows types based on conditions. Inside the if block, TypeScript knows value is a string and gives it that type.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Type Narrowing",
+    "subtopic": "User-defined type guards",
+    "type": "mcq",
+    "prompt": "What is a user-defined type guard in TypeScript?",
+    "options": [
+      "0,A runtime validation library integration // A runtime validation library integration",
+      "1,A function that returns ```jsx\n\n``` — TypeScript uses the return as a type narrowing signal // A function that returns `value is Type` — TypeScript uses the return as a type narrowing signal",
+      "2,A class with a protected constructor // A class with a protected constructor",
+      "3,A generic constraint that checks the type at compile time // A generic constraint that checks the type at compile time"
+    ],
+    "answer": "A function that returns ```jsx\n\n``` — TypeScript uses the return as a type narrowing signal",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "function isUser(x: unknown): x is User { return ... }. When this returns true, TypeScript narrows x to User in the calling context. The \"is\" predicate is the type guard return type.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "TypeScript + React",
+    "subtopic": "FC type",
+    "type": "mcq",
+    "prompt": "Should you use```jsx\n React.FC<Props>``` to type function components in modern React TypeScript?",
+    "options": [
+      "0,Yes — it is the official recommended way // Yes — it is the official recommended way",
+      "1,No — it is increasingly discouraged; prefer directly typing props and return type // No — it is increasingly discouraged; prefer directly typing props and return type",
+      "2,Only for class components // Only for class components",
+      "3,Only when the component accepts children // Only when the component accepts children"
+    ],
+    "answer": "No — it is increasingly discouraged; prefer directly typing props and return type",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "React.FC adds implicit children prop (before React 18), wraps return type in ReactElement, and was removed from Create React App defaults. Prefer: ```jsx\n\n``` for clarity.",
+    "references": [
+      "https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/function_components"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "TypeScript + React",
+    "subtopic": "useState with types",
+    "type": "mcq",
+    "prompt": "How do you type ```jsx\n useState``` when the initial value is null but will later be a ```jsx\n\n``` object?",
+    "options": [
+      "0,```tsx\nconst [user, setUser] = useState(null)\n``` // ```tsx\nconst [user, setUser] = useState(null)\n```",
+      "1,```tsx\nconst [user, setUser] = useState<User | null>(null)\n``` // ```tsx\nconst [user, setUser] = useState<User | null>(null)\n```",
+      "2,```tsx\nconst [user, setUser] = useState<User>(null)\n``` // ```tsx\nconst [user, setUser] = useState<User>(null)\n```",
+      "3,```tsx\nconst [user, setUser] = useState<User>({})\n``` // ```tsx\nconst [user, setUser] = useState<User>({})\n```"
+    ],
+    "answer": "```tsx\nconst [user, setUser] = useState<User | null>(null)\n```",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "Provide the generic type argument explicitly when TypeScript cannot infer from the initial value. ```jsx\n\n``` tells TypeScript this state holds User | null, so setUser(fetchedUser) is type-safe.",
+    "references": [
+      "https://react.dev/learn/typescript#typing-usestate"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "tsconfig",
+    "subtopic": "Strict mode",
+    "type": "mcq",
+    "prompt": "What does```jsx\n \"strict\": true``` in tsconfig.json enable?",
+    "options": [
+      "0,Only strict null checks // Only strict null checks",
+      "1,A bundle of strict checks: strictNullChecks, noImplicitAny, strictFunctionTypes, strictBindCallApply, and more // A bundle of strict checks: strictNullChecks, noImplicitAny, strictFunctionTypes, strictBindCallApply, and more",
+      "2,Runtime type checking // Runtime type checking",
+      "3,Prevents the use of any type // Prevents the use of any type"
+    ],
+    "answer": "A bundle of strict checks: strictNullChecks, noImplicitAny, strictFunctionTypes, strictBindCallApply, and more",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "\"strict\" is a shorthand for enabling a group of strict type checking options. The most important are strictNullChecks (null/undefined are not assignable to other types) and noImplicitAny (variables must have explicit types).",
+    "references": [
+      "https://www.typescriptlang.org/tsconfig/#strict"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "tsconfig",
+    "subtopic": "Module resolution",
+    "type": "mcq",
+    "prompt": "What does the```jsx\n paths``` option in tsconfig.json do?",
+    "options": [
+      "0,Specifies which files TypeScript should compile // Specifies which files TypeScript should compile",
+      "1,Maps import paths to file system locations — enables path aliases like ```jsx\n\n``` // Maps import paths to file system locations — enables path aliases like `@/components`",
+      "2,Configures the output directory for compiled files // Configures the output directory for compiled files",
+      "3,Sets the module resolution algorithm (node vs bundler) // Sets the module resolution algorithm (node vs bundler)"
+    ],
+    "answer": "Maps import paths to file system locations — enables path aliases like ```jsx\n\n```",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "paths maps virtual import paths to real ones: ```jsx\n\n```. TypeScript uses this for type checking; bundlers (Vite, webpack) need separate alias configuration to resolve at runtime.",
+    "references": [
+      "https://www.typescriptlang.org/tsconfig/#paths"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Enums",
+    "subtopic": "const enum vs enum",
+    "type": "mcq",
+    "prompt": "What is the difference between ```jsx\n\n``` and ```jsx\n\n``` in TypeScript?",
+    "options": [
+      "0,const enum has constant default values; enum values are dynamic // const enum has constant default values; enum values are dynamic",
+      "1,const enum is inlined at compile time (no runtime object generated); enum generates a JavaScript object at runtime // const enum is inlined at compile time (no runtime object generated); enum generates a JavaScript object at runtime",
+      "2,enum can be used in conditional types; const enum cannot // enum can be used in conditional types; const enum cannot",
+      "3,They are identical // They are identical"
+    ],
+    "answer": "const enum is inlined at compile time (no runtime object generated); enum generates a JavaScript object at runtime",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "Regular enums compile to a JavaScript object (reversal mapping included). const enums are completely erased and their values are inlined at every usage. const enums reduce bundle size but have limitations with isolated modules.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/enums.html#const-enums"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Types",
+    "subtopic": "keyof",
+    "type": "mcq",
+    "prompt": "What does the```jsx\n keyof``` operator produce for a type```jsx\n T```?",
+    "options": [
+      "0,A runtime list of keys // A runtime list of keys",
+      "1,A union type of the property names of T // A union type of the property names of T",
+      "2,The type of values in T // The type of values in T",
+      "3,An error // An error"
+    ],
+    "answer": "A union type of the property names of T",
+    "difficulty": "medium",
+    "estimatedTime": 60,
+    "explanation": "```jsx\n\n``` produces a union of the keys of T (e.g., ```jsx\n\n```).",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/2/keyof-types.html"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  },
+  {
+    "level": "FUNDAMENTALS",
+    "topic": "Utility Types",
+    "subtopic": "Partial",
+    "type": "mcq",
+    "prompt": "What does```jsx\n Partial<T>``` do to a type T?",
+    "options": [
+      "0,Makes all properties required // Makes all properties required",
+      "1,Makes all properties optional // Makes all properties optional",
+      "2,Removes index signatures // Removes index signatures",
+      "3,Converts properties to readonly // Converts properties to readonly"
+    ],
+    "answer": "Makes all properties optional",
+    "difficulty": "easy",
+    "estimatedTime": 30,
+    "explanation": "```jsx\n\n``` constructs a type with all properties of T set to optional.",
+    "references": [
+      "https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype"
+    ],
+    "technologyId": "d863d7c0-2d28-4e95-93b8-9a7a4dc3eeea"
+  }
+]
