@@ -19,7 +19,7 @@ import { getDb, queryOneSql } from '../connection'
 
 
 type Difficulty = 'easy' | 'medium' | 'hard'
-type QuestionSeed = Omit<QuestionInput, 'difficulty'> & { difficulty: Difficulty }
+type QuestionSeed = Omit<QuestionInput,  'difficulty'> & { difficulty: Difficulty }
 
 /**
  * Converts single backtick code blocks to triple backtick JSX blocks.
@@ -138,7 +138,7 @@ export const ExecuteParsing = async  () => {
     ]
     
     
-    const parsedQuestionsPhase1 = formatCodeBlocks('react',...seedReactList)
+    const parsedQuestionsPhase1 = formatCodeBlocks('react',...seedReactList )
     const parsedQuestionsPhase2 = optionsAnswersMatching(...parsedQuestionsPhase1)
         sortQuestions(...parsedQuestionsPhase2)
         
