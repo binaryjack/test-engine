@@ -104,7 +104,12 @@ export const extraTypescriptQuestions: QuestionSeed[] = [
     subtopic: 'Partial',
     type: 'mcq',
     prompt: 'What does```jsx\n Partial<T>``` do to a type T?',
-    options: ['Makes all properties required', 'Makes all properties optional', 'Removes index signatures', 'Converts properties to readonly'],
+    options: [
+      'Makes all properties required',
+      'Makes all properties optional',
+      'Removes index signatures',
+      'Converts properties to readonly'
+    ],
     answer: 'Makes all properties optional',
     difficulty: 'easy',
     estimatedTime: 30,
