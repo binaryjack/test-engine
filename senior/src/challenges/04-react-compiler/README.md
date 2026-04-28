@@ -6,7 +6,7 @@ The React Compiler (previously "React Forget") is a build-time tool that **autom
 
 ## What It Does
 
-The compiler analyzes your code and inserts `useMemo`, `useCallback`, and `React.memo` automatically — everywhere it's safe to do so.
+The compiler analyzes your code and inserts ```jsx useMemo```, ```jsx useCallback```, and `React.memo` automatically — everywhere it's safe to do so.
 
 **Before compiler:**
 ```tsx
@@ -130,7 +130,7 @@ Even with the compiler, you need to understand:
 
 ## Exam Tips
 
-- With the compiler: you don't need to write `useMemo`/`useCallback` manually
+- With the compiler: you don't need to write ```jsx useMemo```/```jsx useCallback``` manually
 - But you absolutely must understand what they do — the exam tests mental models
 - The compiler requires Pure Functions — impure components are a red flag
 - `memo()` is still useful in edge cases even with the compiler
@@ -165,6 +165,6 @@ function BuggyList({ filterFn }) {
 ```
 
 **Bugs:**
-1. `useMemo` inside an `if` — conditional hook call
+1. ```jsx useMemo``` inside an `if` — conditional hook call
 2. `items.push()` during render — mutation + side effect
 3. `items[0].count++` then `setItems(items)` — mutating state directly, same reference

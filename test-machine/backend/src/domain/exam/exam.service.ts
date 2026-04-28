@@ -349,7 +349,9 @@ export function generateRetakeExamFromIds(userId: string, failedQuestionIds: str
     startedAt: now,
     submittedAt: null,
     breakdown: null,
-    score: null
+    score: null, 
+    timeTaken: 0,
+    mode: 0
   };
 }
 

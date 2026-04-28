@@ -116,7 +116,7 @@ const [value, setValue] = useState('');
 <input value={value} onChange={e => setValue(e.target.value)} />
 ```
 
-**Uncontrolled:** DOM is the source of truth. Use `useRef` to access the value when needed.
+**Uncontrolled:** DOM is the source of truth. Use ```jsx useRef``` to access the value when needed.
 
 ```tsx
 const inputRef = useRef<HTMLInputElement>(null);

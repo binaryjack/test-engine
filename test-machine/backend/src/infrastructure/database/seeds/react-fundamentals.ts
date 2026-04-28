@@ -50,11 +50,11 @@ export const reactFundamentalsQuestions: QuestionSeed[] = [
     subtopic: 'useState',
     type: 'mcq',
     prompt: 'Which hook adds local state to a functional component?',
-    options: ['`useLocal`', '`useState`', '`useEffect`', '`useMemo`'],
-    answer: '`useState`',
+    options: ['`useLocal`', '```jsx\n useState```', '```jsx\n useEffect```', '```jsx useMemo```'],
+    answer: '```jsx\n useState```',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: '`useState` returns a state value and a setter function to update it inside function components.',
+    explanation: '```jsx\n useState``` returns a state value and a setter function to update it inside function components.',
     references: ['https://react.dev/reference/react/useState']
   },
   {
@@ -101,7 +101,7 @@ export const reactFundamentalsQuestions: QuestionSeed[] = [
     topic: 'Fragments',
     subtopic: 'Grouping elements',
     type: 'mcq',
-    prompt: 'What is the use of React.Fragment (`<>...</>`)?',
+    prompt: 'What is the use of React.Fragment (```jsx\n <>...</>```)?',
     options: ['Wrap multiple elements without adding an extra DOM node', 'Create a portal', 'Lazy-load components', 'Memoize children'],
     answer: 'Wrap multiple elements without adding an extra DOM node',
     difficulty: 'easy',
@@ -119,7 +119,7 @@ export const reactFundamentalsQuestions: QuestionSeed[] = [
       'Use `defaultValue` and no `onChange`',
       'Set the input `value` prop from state and update state in `onChange`',
       'Only read the DOM value when submitting the form',
-      'Wrap the input in `React.memo`'
+      'Wrap the input in ```jsx\n React.memo```'
     ],
     answer: 'Set the input `value` prop from state and update state in `onChange`',
     difficulty: 'easy',
@@ -163,7 +163,7 @@ export const reactFundamentalsQuestions: QuestionSeed[] = [
     topic: 'Props',
     subtopic: 'Passing props',
     type: 'mcq',
-    prompt: 'How do you pass a prop called `title` with value `"Hello"` to a component `Header`?',
+    prompt: 'How do you pass a prop called ```jsx\n title``` with value ```jsx\n "Hello"``` to a component```jsx\n Header```?',
     options: [
       '```jsx\n<Header props={{ title: "Hello" }} />\n```',
       '```jsx\n<Header title="Hello" />\n```',
@@ -182,11 +182,11 @@ export const reactFundamentalsQuestions: QuestionSeed[] = [
     subtopic: 'useState basics',
     type: 'mcq',
     prompt: 'Which hook is used to add local state to a function component?',
-    options: ['`useEffect`', '`useState`', '`useMemo`', '`useRef`'],
-    answer: '`useState`',
+    options: ['```jsx\n useEffect```', '```jsx\n useState```', '```jsx useMemo```', '```jsx useRef```'],
+    answer: '```jsx\n useState```',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: '`useState` is the primary hook for adding local state to function components.',
+    explanation: '```jsx\n useState``` is the primary hook for adding local state to function components.',
     references: ['https://react.dev/learn/state-a-components-memory']
   },
   {

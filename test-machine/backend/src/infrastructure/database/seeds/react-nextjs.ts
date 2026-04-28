@@ -13,11 +13,11 @@ export const reactNextjsQuestions: QuestionSeed[] = [
     prompt: 'In Next.js, what does file-based routing mean?',
     options: [
       'You define routes with a central routes.json file',
-      'Pages and folders in the `pages` or `app` directory automatically create routes',
+      'Pages and folders in the ```jsx\n pages``` or `app` directory automatically create routes',
       'You must manually register routes in _app.tsx',
       'Routes are defined only with dynamic imports'
     ],
-    answer: 'Pages and folders in the `pages` or `app` directory automatically create routes',
+    answer: 'Pages and folders in the ```jsx\n pages``` or `app` directory automatically create routes',
     difficulty: 'easy',
     estimatedTime: 30,
     explanation: 'Next.js uses the filesystem to define routes: files under `pages/` (or `app/` for the App Router) map to URL paths automatically.',
@@ -69,7 +69,7 @@ export const reactNextjsQuestions: QuestionSeed[] = [
     topic: 'Data Fetching',
     subtopic: 'getStaticProps',
     type: 'mcq',
-    prompt: 'What is the purpose of `getStaticProps` in the Next.js `pages` router?',
+    prompt: 'What is the purpose of ```jsx\n getStaticProps``` in the Next.js ```jsx\n pages``` router?',
     options: [
       'Fetch data on every incoming request',
       'Fetch data once at build time and provide it as props',
@@ -79,7 +79,7 @@ export const reactNextjsQuestions: QuestionSeed[] = [
     answer: 'Fetch data once at build time and provide it as props',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: '`getStaticProps` runs at build time and produces static HTML with the returned props. It is useful for static pages that can be pre-rendered.',
+    explanation: '```jsx\n getStaticProps``` runs at build time and produces static HTML with the returned props. It is useful for static pages that can be pre-rendered.',
     references: ['https://nextjs.org/docs/basic-features/data-fetching/get-static-props']
   },
   {
@@ -105,7 +105,7 @@ export const reactNextjsQuestions: QuestionSeed[] = [
     topic: 'API',
     subtopic: 'API Routes',
     type: 'mcq',
-    prompt: 'Where do API routes live in a Next.js `pages`-based project and what are they used for?',
+    prompt: 'Where do API routes live in a Next.js ```jsx\n pages```-based project and what are they used for?',
     options: [
       'In `pages/api/*` and used to implement server endpoints (serverless functions)',
       'In `public/api/*` and used to serve static JSON',

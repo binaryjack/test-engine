@@ -64,10 +64,10 @@ const ProfilePage = lazy(() => import('./pages/Profile'));
 
 ## Exam Tips
 
-- Know the difference between `useMemo` (memoizes value) vs `useCallback` (memoizes function)
-- `React.memo` needs stable prop references — combine with `useCallback` for function props
+- Know the difference between ```jsx useMemo``` (memoizes value) vs ```jsx useCallback``` (memoizes function)
+- `React.memo` needs stable prop references — combine with ```jsx useCallback``` for function props
 - Over-optimizing is an anti-pattern — only memoize when you have proof of a problem
-- With **React Compiler** (React 19+): you don't need `useMemo`/`useCallback` manually
+- With **React Compiler** (React 19+): you don't need ```jsx useMemo```/```jsx useCallback``` manually
 
 ---
 

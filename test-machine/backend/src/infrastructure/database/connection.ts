@@ -92,7 +92,7 @@ export function queryOneSql<T = Record<string, unknown>>(sql: string, params: un
 /**
  * TEST-ONLY — inject a pre-built sql.js in-memory database.
  * Disables file persistence for the lifetime of that DB.
- * Call with `null` to reset to the uninitialised state.
+ * Call with```jsx\n null``` to reset to the uninitialised state.
  */
 export function _initTestDb(db: SqlDatabase | null): void {
   _db = db

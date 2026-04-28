@@ -10,7 +10,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Concurrent Features',
     subtopic: 'useTransition',
     type: 'mcq',
-    prompt: 'What does `useTransition` allow you to do?',
+    prompt: 'What does ```jsx\n useTransition``` allow you to do?',
     options: [
       'Animate component mount/unmount transitions',
       'Mark a state update as non-urgent so it can be interrupted by more urgent updates',
@@ -28,7 +28,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Concurrent Features',
     subtopic: 'useDeferredValue',
     type: 'mcq',
-    prompt: 'When would you use `useDeferredValue` instead of `useTransition`?',
+    prompt: 'When would you use `useDeferredValue` instead of ```jsx\n useTransition```?',
     options: [
       'When you control the state update — wrap it in `startTransition`',
       'When you receive a value as a prop or from a hook you don\'t control and want to defer re-renders based on it',
@@ -84,7 +84,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Advanced Hooks',
     subtopic: 'useImperativeHandle',
     type: 'mcq',
-    prompt: 'What is `useImperativeHandle` used for?',
+    prompt: 'What is ```jsx\n useImperativeHandle``` used for?',
     options: [
       'Accessing parent component methods from a child',
       'Customizing the ref value a component exposes to its parent, limiting what the parent can do',
@@ -102,7 +102,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Advanced Hooks',
     subtopic: 'useReducer',
     type: 'mcq',
-    prompt: 'How does `useReducer` with Context replace a simple state management library?',
+    prompt: 'How does ```jsx useReducer``` with Context replace a simple state management library?',
     options: [
       'It provides time-travel debugging out of the box',
       'The reducer handles complex state transitions; Context distributes state and dispatch to any descendant without prop drilling',
@@ -156,7 +156,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Advanced Hooks',
     subtopic: 'useDebugValue',
     type: 'mcq',
-    prompt: 'What is `useDebugValue` used for?',
+    prompt: 'What is ```jsx\n useDebugValue``` used for?',
     options: [
       'Logging all state changes to the console',
       'Adding a label to a custom hook that appears in React DevTools',
@@ -212,7 +212,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'use hook with Context',
     type: 'mcq',
-    prompt: 'How does `use(Context)` in React 19 differ from `useContext(Context)`?',
+    prompt: 'How does```jsx\n use(Context)``` in React 19 differ from```jsx\n useContext(Context)```?',
     options: [
       '```jsx\nuse()\n``` is asynchronous; ```jsx\nuseContext\n``` is synchronous',
       '```jsx\nuse()\n``` can be called conditionally and inside loops; ```jsx\nuseContext\n``` cannot',
@@ -230,7 +230,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'useFormStatus',
     type: 'mcq',
-    prompt: 'What does `useFormStatus` provide?',
+    prompt: 'What does```jsx\n useFormStatus``` provide?',
     options: [
       'Validation state for individual form fields',
       'The pending status of the parent form\'s submission action, accessible from child components',
@@ -286,7 +286,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Performance',
     subtopic: 'Bundle optimization',
     type: 'mcq',
-    prompt: 'What is the purpose of `React.lazy()` with dynamic `import()`?',
+    prompt: 'What is the purpose of ```jsx\n React.lazy()``` with dynamic ```jsx\n import()```?',
     options: [
       'To cache component state between route changes',
       'To split the component into a separate chunk loaded on demand, reducing initial bundle size',
@@ -304,7 +304,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Performance',
     subtopic: 'Memoization pitfalls',
     type: 'mcq',
-    prompt: 'When does `React.memo` NOT prevent a re-render?',
+    prompt: 'When does ```jsx\n React.memo``` NOT prevent a re-render?',
     options: [
       'When the component uses useContext and the context value changes',
       'When the component\'s key changes',
@@ -434,7 +434,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Testing',
     subtopic: 'MSW',
     type: 'mcq',
-    prompt: 'Why is Mock Service Worker (MSW) preferred over mocking `fetch` directly?',
+    prompt: 'Why is Mock Service Worker (MSW) preferred over mocking```jsx\n fetch``` directly?',
     options: [
       'MSW is faster than fetch mocking',
       'MSW intercepts at the network level using a Service Worker, making tests realistic — the component code does not need to change between test and production',
@@ -506,7 +506,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Testing',
     subtopic: 'Test isolation',
     type: 'mcq',
-    prompt: 'What is the purpose of `beforeEach(() => cleanup())` in RTL tests, and is it needed in modern setups?',
+    prompt: 'What is the purpose of```jsx\n beforeEach(() => cleanup())``` in RTL tests, and is it needed in modern setups?',
     options: [
       'It resets all mocked functions; it is always needed',
       'It removes rendered components from the DOM between tests; not needed in modern setups as RTL auto-cleans after each test',
@@ -638,7 +638,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'Client vs Server Components',
     type: 'mcq',
-    prompt: 'You have a component that needs `useState`. Where must it run?',
+    prompt: 'You have a component that needs ```jsx\n useState```. Where must it run?',
     options: [
       'Server Component — state is managed on the server',
       'Client Component — marked with "use client"; useState can only run on the client',
@@ -656,7 +656,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'Streaming SSR',
     type: 'mcq',
-    prompt: 'What does `renderToPipeableStream` enable in React 19 SSR?',
+    prompt: 'What does```jsx\n renderToPipeableStream``` enable in React 19 SSR?',
     options: [
       'Rendering components as static HTML strings synchronously',
       'Streaming HTML to the client progressively — critical content arrives first while slower data loads in Suspense boundaries',
@@ -806,7 +806,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'SSR',
     subtopic: 'suppressHydrationWarning',
     type: 'mcq',
-    prompt: 'When is `suppressHydrationWarning` appropriate to use?',
+    prompt: 'When is```jsx\n suppressHydrationWarning``` appropriate to use?',
     options: [
       'On all elements to prevent performance-harming hydration checks',
       'On elements whose content legitimately differs between server and client (e.g., timestamps, browser-only data)',
@@ -844,7 +844,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Security',
     subtopic: 'dangerouslySetInnerHTML',
     type: 'mcq',
-    prompt: 'When using `dangerouslySetInnerHTML`, what must you do to prevent XSS?',
+    prompt: 'When using```jsx\n dangerouslySetInnerHTML```, what must you do to prevent XSS?',
     options: [
       'Nothing — React sanitizes the HTML automatically when using this prop',
       'Sanitize the HTML with a library like DOMPurify before passing it to the prop',
@@ -882,7 +882,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Accessibility',
     subtopic: 'ARIA live regions',
     type: 'mcq',
-    prompt: 'What is `aria-live="assertive"` used for?',
+    prompt: 'What is ```jsx\n aria-live="assertive"``` used for?',
     options: [
       'Making an element\'s content read immediately, interrupting the current screen reader output',
       'Making a region interactive for keyboard users',
@@ -1000,7 +1000,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Web APIs',
     subtopic: 'ResizeObserver',
     type: 'mcq',
-    prompt: 'Why should you use `ResizeObserver` instead of `window.resize` to track element size?',
+    prompt: 'Why should you use```jsx\n ResizeObserver``` instead of```jsx\n window.resize``` to track element size?',
     options: [
       'window.resize has been deprecated',
       'ResizeObserver observes individual element dimensions and fires only when those elements change, avoiding global event overhead',
@@ -1038,7 +1038,7 @@ export const reactSeniorQuestions: QuestionSeed[] = [
     topic: 'Code Quality',
     subtopic: 'Dependency array correctness',
     type: 'mcq',
-    prompt: 'ESLint\'s `exhaustive-deps` rule warns when useEffect/useMemo/useCallback dependencies are incomplete. Why is this important?',
+    prompt: 'ESLint\'s ```jsx\n exhaustive-deps``` rule warns when useEffect/useMemo/useCallback dependencies are incomplete. Why is this important?',
     options: [
       'Missing deps cause the hook to never re-run even when values change, creating stale closure bugs',
       'Missing deps cause excessive re-runs, hurting performance',

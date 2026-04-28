@@ -90,7 +90,7 @@ function SearchArea() {
 
 - Context is not a performance solution — every consumer re-renders when value changes
 - Split contexts by update frequency: frequent updates → separate context
-- `useMemo` the context value to prevent unnecessary re-renders from parent
+- ```jsx useMemo``` the context value to prevent unnecessary re-renders from parent
 - Don't use Context for state that changes very frequently (keyboard input, mouse position)
 - URL/search params are also "state" — consider them for shareable/bookmarkable state
 

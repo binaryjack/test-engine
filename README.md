@@ -152,12 +152,12 @@ The test machine provides a complete environment to practice real-world React de
 
 | # | Topic | Key Concepts |
 |---|-------|--------------|
-| 01 | [Hooks Deep Dive](./mid/src/challenges/01-hooks/README.md) | `useState`, `useEffect`, `useRef`, `useReducer`, `useContext`, `useMemo`, `useCallback` |
+| 01 | [Hooks Deep Dive](./mid/src/challenges/01-hooks/README.md) | `useState`, `useEffect`, ```jsx useRef```, ```jsx useReducer```, `useContext`, ```jsx useMemo```, ```jsx useCallback``` |
 | 02 | [Component Patterns](./mid/src/challenges/02-component-patterns/README.md) | Compound, Render Props, HOC, Controlled vs Uncontrolled |
-| 03 | [Performance Optimization](./mid/src/challenges/03-performance/README.md) | `memo`, `useMemo`, `useCallback`, `lazy`, code splitting |
+| 03 | [Performance Optimization](./mid/src/challenges/03-performance/README.md) | `memo`, ```jsx useMemo```, ```jsx useCallback```, `lazy`, code splitting |
 | 04 | [Error Handling](./mid/src/challenges/04-error-handling/README.md) | Error Boundaries, Suspense fallbacks |
 | 05 | [Forms](./mid/src/challenges/05-forms/README.md) | Controlled, uncontrolled, validation patterns |
-| 06 | [Context & State Management](./mid/src/challenges/06-context-state/README.md) | Context API, `useReducer`, state lifting |
+| 06 | [Context & State Management](./mid/src/challenges/06-context-state/README.md) | Context API, ```jsx useReducer```, state lifting |
 
 ---
 

@@ -23,7 +23,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Basic Types',
     subtopic: 'unknown vs any',
     type: 'mcq',
-    prompt: 'What is the key difference between `any` and `unknown`?',
+    prompt: 'What is the key difference between ```jsx\n any``` and ```jsx\n unknown```?',
     options: [
       'unknown is the same as any but marks deprecated APIs',
       'any disables type checking; unknown is type-safe — you must narrow it before using it',
@@ -41,7 +41,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Basic Types',
     subtopic: 'Type assertions',
     type: 'mcq',
-    prompt: 'When should you use a type assertion (`value as Type`)?',
+    prompt: 'When should you use a type assertion (```jsx\n value as Type```)?',
     options: [
       'Whenever TypeScript infers the wrong type',
       'When you have more information than TypeScript about a value\'s type and the assertion is safe',
@@ -79,7 +79,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Interfaces',
     subtopic: 'Interface vs Type alias',
     type: 'mcq',
-    prompt: 'What can `interface` do that a `type` alias cannot?',
+    prompt: 'What can ```jsx\n interface``` do that a ```jsx\n type``` alias cannot?',
     options: [
       'Describe union types',
       'Use generics',
@@ -171,7 +171,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Generics',
     subtopic: 'Infer keyword',
     type: 'mcq',
-    prompt: 'What does `infer` do in a conditional type like the following?\n```ts\ntype UnpackPromise<T> = T extends Promise<infer U> ? U : T\n```',
+    prompt: 'What does ```jsx\n infer``` do in a conditional type like the following?\n```ts\ntype UnpackPromise<T> = T extends Promise<infer U> ? U : T\n```',
     options: [
       'Forces TypeScript to infer the type at runtime',
       'Extracts a type from within a conditional type pattern — U is inferred from the structure of T',
@@ -191,7 +191,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'Partial and Required',
     type: 'mcq',
-    prompt: 'What does `Partial<User>` produce if User is defined as follows?\n```ts\ntype User = { name: string; age: number }\n```',
+    prompt: 'What does```jsx\n Partial<User>``` produce if User is defined as follows?\n```ts\ntype User = { name: string; age: number }\n```',
     options: [
       '```ts\n{ name?: string; age?: number }\n```',
       '```ts\n{ name: string | undefined; age: number | undefined }\n```',
@@ -227,7 +227,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'Record',
     type: 'mcq',
-    prompt: 'What does `Record<string, number>` describe?',
+    prompt: 'What does```jsx\n Record<string, number>``` describe?',
     options: [
       'A tuple of [string, number]',
       'An object type where all keys are strings and all values are numbers',
@@ -237,7 +237,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     answer: 'An object type where all keys are strings and all values are numbers',
     difficulty: 'easy',
     estimatedTime: 30,
-    explanation: '`Record<K, V>` is equivalent to `{ [key in K]: V }`. `Record<string, number>` describes an object like `{ a: 1, b: 2 }`. Often used for dictionaries/maps with consistent value types.',
+    explanation: '`Record<K, V>` is equivalent to `{ [key in K]: V }`.```jsx\n Record<string, number>``` describes an object like `{ a: 1, b: 2 }`. Often used for dictionaries/maps with consistent value types.',
     references: ['https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type']
   },
   {
@@ -245,7 +245,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'Readonly',
     type: 'mcq',
-    prompt: 'What does `Readonly<T>` do?',
+    prompt: 'What does```jsx\n Readonly<T>``` do?',
     options: [
       'Freezes the object at runtime',
       'Makes all properties read-only at the type level — TypeScript will error on assignment',
@@ -263,7 +263,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'ReturnType and Parameters',
     type: 'mcq',
-    prompt: 'What does `ReturnType<typeof fetch>` give you?',
+    prompt: 'What does```jsx\n ReturnType<typeof fetch>``` give you?',
     options: [
       'The type of the fetch function itself',
       'The return type of the fetch function — `Promise<Response>`',
@@ -281,7 +281,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'Exclude and Extract',
     type: 'mcq',
-    prompt: 'Given `type Status = "active" | "inactive" | "pending"`, what is `Exclude<Status, "inactive" | "pending">`?',
+    prompt: 'Given```jsx\n type Status = "active" | "inactive" | "pending"```, what is```jsx\n Exclude<Status, "inactive" | "pending">```?',
     options: [
       '"inactive" | "pending"',
       '"active"',
@@ -299,7 +299,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Utility Types',
     subtopic: 'NonNullable',
     type: 'mcq',
-    prompt: 'What does `NonNullable<string | null | undefined>` produce?',
+    prompt: 'What does```jsx\n NonNullable<string | null | undefined>``` produce?',
     options: [
       'string | null',
       'string',
@@ -416,14 +416,14 @@ export const typescriptQuestions: QuestionSeed[] = [
     prompt: 'What does this mapped type produce?\n```ts\ntype Optional<T> = { [K in keyof T]?: T[K] }\n```',
     options: [
       'A type where all properties are required',
-      'A type where all properties of T are made optional — equivalent to `Partial<T>`',
+      'A type where all properties of T are made optional — equivalent to```jsx\n Partial<T>```',
       'A type where all property values are union with undefined',
       'A type that only includes properties with optional values'
     ],
-    answer: 'A type where all properties of T are made optional — equivalent to `Partial<T>`',
+    answer: 'A type where all properties of T are made optional — equivalent to```jsx\n Partial<T>```',
     difficulty: 'medium',
     estimatedTime: 60,
-    explanation: '`[K in keyof T]` iterates over all keys of T. Adding ? makes each property optional. This is exactly how `Partial<T>` is implemented in TypeScript\'s lib.',
+    explanation: '`[K in keyof T]` iterates over all keys of T. Adding ? makes each property optional. This is exactly how```jsx\n Partial<T>``` is implemented in TypeScript\'s lib.',
     references: ['https://www.typescriptlang.org/docs/handbook/2/mapped-types.html']
   },
   {
@@ -487,7 +487,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'TypeScript + React',
     subtopic: 'FC type',
     type: 'mcq',
-    prompt: 'Should you use `React.FC<Props>` to type function components in modern React TypeScript?',
+    prompt: 'Should you use```jsx\n React.FC<Props>``` to type function components in modern React TypeScript?',
     options: [
       'Yes — it is the official recommended way',
       'No — it is increasingly discouraged; prefer directly typing props and return type',
@@ -505,7 +505,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'TypeScript + React',
     subtopic: 'useState with types',
     type: 'mcq',
-    prompt: 'How do you type `useState` when the initial value is null but will later be a `User` object?',
+    prompt: 'How do you type ```jsx\n useState``` when the initial value is null but will later be a `User` object?',
     options: [
       '```tsx\nconst [user, setUser] = useState(null)\n```',
       '```tsx\nconst [user, setUser] = useState<User | null>(null)\n```',
@@ -541,7 +541,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'TypeScript + React',
     subtopic: 'Event handlers',
     type: 'mcq',
-    prompt: 'What is the correct type for a React `onKeyDown` handler prop?',
+    prompt: 'What is the correct type for a React```jsx\n onKeyDown``` handler prop?',
     options: [
       'React.KeyDownHandler',
       '```ts\nReact.KeyboardEventHandler<HTMLInputElement>\n```',
@@ -582,7 +582,7 @@ export const typescriptQuestions: QuestionSeed[] = [
       '```tsx\nconst Ctx = createContext(null)\n```',
       'Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error("Must be inside Provider")\n```',
       'Use `createContext<T>()` with no default value',
-      'Type the context as `Readonly<T>`'
+      'Type the context as```jsx\n Readonly<T>```'
     ],
     answer: 'Create a custom hook that wraps useContext and throws if the value is undefined:\n```tsx\nif (!ctx) throw new Error("Must be inside Provider")\n```',
     difficulty: 'hard',
@@ -597,7 +597,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'tsconfig',
     subtopic: 'Strict mode',
     type: 'mcq',
-    prompt: 'What does `"strict": true` in tsconfig.json enable?',
+    prompt: 'What does```jsx\n "strict": true``` in tsconfig.json enable?',
     options: [
       'Only strict null checks',
       'A bundle of strict checks: strictNullChecks, noImplicitAny, strictFunctionTypes, strictBindCallApply, and more',
@@ -615,7 +615,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'tsconfig',
     subtopic: 'Module resolution',
     type: 'mcq',
-    prompt: 'What does the `paths` option in tsconfig.json do?',
+    prompt: 'What does the```jsx\n paths``` option in tsconfig.json do?',
     options: [
       'Specifies which files TypeScript should compile',
       'Maps import paths to file system locations — enables path aliases like `@/components`',
@@ -653,7 +653,7 @@ export const typescriptQuestions: QuestionSeed[] = [
     topic: 'Declaration Files',
     subtopic: 'DefinitelyTyped',
     type: 'mcq',
-    prompt: 'What is `@types/*` and when do you need it?',
+    prompt: 'What is ```jsx\n @types/*``` and when do you need it?',
     options: [
       'TypeScript\'s built-in type definitions for the web platform',
       'Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don\'t ship their own types',

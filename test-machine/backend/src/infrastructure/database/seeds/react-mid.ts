@@ -11,7 +11,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useState',
     type: 'mcq',
-    prompt: 'What does `useState` return?',
+    prompt: 'What does ```jsx\n useState``` return?',
     options: [
       'A single state value',
       'A tuple of [currentState, updaterFunction]',
@@ -65,7 +65,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useState',
     type: 'mcq',
-    prompt: 'Which statement about `setState` in a functional component is TRUE?',
+    prompt: 'Which statement about ```jsx\n setState``` in a functional component is TRUE?',
     options: [
       'Calling setState always causes an immediate synchronous re-render',
       'Setting state to the same value as current state always causes a re-render',
@@ -85,7 +85,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useEffect',
     type: 'mcq',
-    prompt: 'What is the purpose of the cleanup function returned by `useEffect`?',
+    prompt: 'What is the purpose of the cleanup function returned by ```jsx\n useEffect```?',
     options: [
       'To reset state to its initial value',
       'To cancel or undo side effects before the next effect runs or the component unmounts',
@@ -103,7 +103,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useEffect',
     type: 'mcq',
-    prompt: 'A `useEffect` with an empty dependency array `[]` runs:',
+    prompt: 'A ```jsx\n useEffect``` with an empty dependency array ```jsx\n []``` runs:',
     options: [
       'On every render',
       'Only on mount and unmount',
@@ -159,7 +159,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useMemo',
     type: 'mcq',
-    prompt: 'What does `useMemo` return?',
+    prompt: 'What does ```jsx useMemo``` return?',
     options: [
       'A memoized callback function',
       'The memoized result of a computation',
@@ -177,7 +177,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useCallback',
     type: 'mcq',
-    prompt: 'When is `useCallback` MOST useful?',
+    prompt: 'When is ```jsx useCallback``` MOST useful?',
     options: [
       'Whenever you define a function inside a component',
       'When passing a stable callback reference to a memoized child to prevent unnecessary re-renders',
@@ -197,7 +197,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useRef',
     type: 'mcq',
-    prompt: 'Which of the following is a valid use case for `useRef`?',
+    prompt: 'Which of the following is a valid use case for ```jsx useRef```?',
     options: [
       'Storing data that should trigger a re-render when changed',
       'Replacing useState for simpler state management',
@@ -215,7 +215,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useRef',
     type: 'mcq',
-    prompt: 'When can you safely read or write to a DOM ref created with `useRef`?',
+    prompt: 'When can you safely read or write to a DOM ref created with ```jsx useRef```?',
     options: [
       'During render',
       'In the component function body before the return statement',
@@ -235,7 +235,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useContext',
     type: 'mcq',
-    prompt: 'A component using `useContext(ThemeContext)` will re-render when:',
+    prompt: 'A component using ```jsx\n useContext(ThemeContext)``` will re-render when:',
     options: [
       'Any state in the app changes',
       'The nearest ThemeContext.Provider re-renders, regardless of value change',
@@ -273,7 +273,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useReducer',
     type: 'mcq',
-    prompt: 'When should you prefer `useReducer` over `useState`?',
+    prompt: 'When should you prefer ```jsx useReducer``` over ```jsx\n useState```?',
     options: [
       'When state is a primitive value like a number or string',
       'When next state depends on the previous state and involves multiple sub-values',
@@ -329,7 +329,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Component Patterns',
     subtopic: 'Composition',
     type: 'mcq',
-    prompt: 'What is the `children` prop in React?',
+    prompt: 'What is the ```jsx\n children``` prop in React?',
     options: [
       'A lifecycle method for child components',
       'A special prop containing JSX elements passed between the opening and closing tags of a component',
@@ -347,7 +347,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Component Patterns',
     subtopic: 'React.memo',
     type: 'mcq',
-    prompt: 'What does `React.memo` do?',
+    prompt: 'What does ```jsx\n React.memo``` do?',
     options: [
       'Memoizes the result of an expensive calculation inside a component',
       'Prevents a functional component from re-rendering if its props have not changed (shallow comparison)',
@@ -365,7 +365,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Component Patterns',
     subtopic: 'Forwarding Refs',
     type: 'mcq',
-    prompt: 'Why would you use `React.forwardRef`?',
+    prompt: 'Why would you use ```jsx\n React.forwardRef```?',
     options: [
       'To share state between parent and child components',
       'To allow a parent to access a DOM node inside a child component via a ref',
@@ -515,7 +515,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Rendering',
     subtopic: 'Lists',
     type: 'mcq',
-    prompt: 'What does React render when a component returns `null`?',
+    prompt: 'What does React render when a component returns```jsx\n null```?',
     options: [
       'An empty div element',
       'The text "null"',
@@ -665,7 +665,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'State Management',
     subtopic: 'Derived state',
     type: 'mcq',
-    prompt: 'You have `items` in state and need to show filtered items. What is the best approach?',
+    prompt: 'You have```jsx\n items``` in state and need to show filtered items. What is the best approach?',
     options: [
       'Store filtered items in a separate state variable and sync with useEffect',
       'Compute filtered items directly during render from the items state',
@@ -819,7 +819,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'React 18+',
     subtopic: 'useId',
     type: 'mcq',
-    prompt: 'What is `useId` used for?',
+    prompt: 'What is```jsx\n useId``` used for?',
     options: [
       'Generating unique user authentication IDs',
       'Generating stable, unique IDs for accessibility attributes like aria-labelledby',
@@ -893,7 +893,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Testing',
     subtopic: 'Mocking',
     type: 'mcq',
-    prompt: 'You want to test a component that calls `fetch`. What is the best approach?',
+    prompt: 'You want to test a component that calls```jsx\n fetch```. What is the best approach?',
     options: [
       'Make real network calls in tests for accuracy',
       'Mock the global fetch function or use MSW (Mock Service Worker) to intercept requests',
@@ -931,7 +931,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'JSX',
     subtopic: 'Fragments',
     type: 'mcq',
-    prompt: 'When would you use a React Fragment (`<>...</>`) instead of a `<div>`?',
+    prompt: 'When would you use a React Fragment (```jsx\n <>...</>```) instead of a ```jsx\n <div>```?',
     options: [
       'When you need to apply CSS styles to the wrapper element',
       'When you need to group multiple elements without adding an extra DOM node',
@@ -1027,7 +1027,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'TypeScript',
     subtopic: 'Component props',
     type: 'mcq',
-    prompt: 'How do you type the `children` prop in a React TypeScript component?',
+    prompt: 'How do you type the ```jsx\n children``` prop in a React TypeScript component?',
     options: [
       'children: JSX.Element',
       'children: React.ReactNode',
@@ -1141,7 +1141,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'use hook',
     type: 'mcq',
-    prompt: 'In React 19, the `use` hook can be called:',
+    prompt: 'In React 19, the```jsx\n use``` hook can be called:',
     options: [
       'Only at the top level of a component like all other hooks',
       'Inside conditionals, loops, and after early returns — it is not a hook in the traditional sense',
@@ -1159,7 +1159,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'Actions',
     type: 'mcq',
-    prompt: 'What are React 19 "Actions" and `useActionState`?',
+    prompt: 'What are React 19 "Actions" and```jsx\n useActionState```?',
     options: [
       'Redux action creators integrated into React core',
       'A pattern for handling async transitions from form submissions, with built-in pending/error state management',
@@ -1177,7 +1177,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'React 19',
     subtopic: 'useOptimistic',
     type: 'mcq',
-    prompt: 'What does `useOptimistic` do in React 19?',
+    prompt: 'What does```jsx\n useOptimistic``` do in React 19?',
     options: [
       'Speeds up rendering by skipping non-critical updates',
       'Allows showing an optimistic UI immediately while an async operation is in progress, then reverts if it fails',
@@ -1403,7 +1403,7 @@ export const reactMidQuestions: QuestionSeed[] = [
     topic: 'Hooks',
     subtopic: 'useLayoutEffect',
     type: 'mcq',
-    prompt: 'What is the difference between `useEffect` and `useLayoutEffect`?',
+    prompt: 'What is the difference between ```jsx\n useEffect``` and ```jsx\n useLayoutEffect```?',
     options: [
       'useLayoutEffect runs asynchronously after paint; useEffect runs synchronously before paint',
       'useLayoutEffect fires synchronously after DOM mutations but before the browser paints; useEffect fires after paint',

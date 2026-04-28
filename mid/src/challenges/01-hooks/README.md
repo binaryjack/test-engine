@@ -87,7 +87,7 @@ const timerRef = useRef<number | null>(null);
 **Exam traps:**
 - `ref.current` is not available during the render phase (only in effects/handlers)
 - Don't read/write `ref.current` during rendering
-- `useRef` vs `useState`: if the value change should update the UI → use `useState`
+- ```jsx useRef``` vs `useState`: if the value change should update the UI → use `useState`
 
 ---
 
@@ -114,10 +114,10 @@ const [count, dispatch] = useReducer(reducer, 0);
 dispatch({ type: 'increment' });
 ```
 
-**When to use `useReducer` vs `useState`:**
-- Multiple related pieces of state → `useReducer`
-- Next state depends on previous in complex ways → `useReducer`
-- State update logic needs to be testable in isolation → `useReducer`
+**When to use ```jsx useReducer``` vs `useState`:**
+- Multiple related pieces of state → ```jsx useReducer```
+- Next state depends on previous in complex ways → ```jsx useReducer```
+- State update logic needs to be testable in isolation → ```jsx useReducer```
 - Simple toggle or single value → `useState`
 
 ---
@@ -184,7 +184,7 @@ const handleClick = useCallback((id: string) => {
 - Passing callbacks to memoized child components (`React.memo`)
 - Callbacks used as dependencies in `useEffect`
 
-**Key insight:** Without `useCallback`, a new function reference is created every render, breaking `memo` optimization.
+**Key insight:** Without ```jsx useCallback```, a new function reference is created every render, breaking `memo` optimization.
 
 ---
 
@@ -221,11 +221,11 @@ function useWindowSize() {
 | Hook | Triggers re-render? | Use for |
 |------|---------------------|---------|
 | `useState` | Yes | UI state |
-| `useReducer` | Yes | Complex UI state |
+| ```jsx useReducer``` | Yes | Complex UI state |
 | `useContext` | Yes (when value changes) | Shared state |
-| `useRef` | No | DOM refs, mutable values |
-| `useMemo` | No (memoizes result) | Expensive calculations |
-| `useCallback` | No (memoizes function) | Stable function references |
+| ```jsx useRef``` | No | DOM refs, mutable values |
+| ```jsx useMemo``` | No (memoizes result) | Expensive calculations |
+| ```jsx useCallback``` | No (memoizes function) | Stable function references |
 | `useEffect` | No (side effects only) | External sync |
 
 ---
