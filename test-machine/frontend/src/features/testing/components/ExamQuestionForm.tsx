@@ -40,21 +40,27 @@ export function ExamQuestionForm({ question, currentAnswer, onAnswer }: ExamQues
       <div className="flex-1 overflow-y-auto custom-scrollbar pr-1">
         {isMcq && question.options && (
           <div className="space-y-2 pb-4">
-            {shuffleArray(question.options, question.id).map((opt, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => onAnswer(opt)}
-                className={`w-full text-left px-4 py-3 rounded border transition-colors text-sm flex items-start ${
-                  currentAnswer === opt
-                    ? 'border-primary-500 bg-primary-900/40 text-white'
-                    : 'border-slate-600 text-slate-300 hover:border-slate-500 hover:text-white'
-                }`}
-              >
-                <span className="font-mono mr-2 text-slate-500 shrink-0">{String.fromCharCode(65 + i)}.</span>
-                <MarkdownContent content={opt} className="flex-1" />
-              </button>
-            ))}
+            {shuffleArray(question.options, question.id).map((opt, i) => {
+              const match = opt.match(/^(\d+),\s*(.*)/s);
+              const id = match ? match[1] : opt;
+              const text = match ? match[2] : opt;
+
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => onAnswer(id)}
+                  className={`w-full text-left px-4 py-3 rounded border transition-colors text-sm flex items-start ${
+                    currentAnswer === id
+                      ? 'border-primary-500 bg-primary-900/40 text-white'
+                      : 'border-slate-600 text-slate-300 hover:border-slate-500 hover:text-white'
+                  }`}
+                >
+                  <span className="font-mono mr-2 text-slate-500 shrink-0">{String.fromCharCode(65 + i)}.</span>
+                  <MarkdownContent content={text} className="flex-1" />
+                </button>
+              );
+            })}
           </div>
         )}
 

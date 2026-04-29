@@ -1,10 +1,10 @@
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
 import { v4 as uuidv4 } from 'uuid'
-import { setupTestDb, teardownTestDb } from './__helpers__/db.js'
-import { generateExam, submitExam, getSession, getUserSessions } from '../domain/exam/exam.service.js'
-import { createQuestion } from '../domain/question/question.service.js'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { register } from '../domain/auth/auth.service.js'
+import { generateExam, getSession, getUserSessions, submitExam } from '../domain/exam/exam.service.js'
+import { createQuestion } from '../domain/question/question.service.js'
 import * as connection from '../infrastructure/database/connection.js'
+import { setupTestDb, teardownTestDb } from './__helpers__/db.js'
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -32,8 +32,8 @@ function seedTechAndQuestions(count: number): string[] {
       topic: i < Math.ceil(count / 2) ? 'Hooks' : 'Performance',
       type: 'mcq',
       prompt: `Question ${i + 1}: Which hook re-runs when deps change?`,
-      options: ['useState', 'useEffect', 'useRef', 'useId'],
-      answer: 'useEffect',
+      options: ['0, useState', '1, useEffect', '2, useRef', '3, useId'],
+      answer: '1',
       difficulty: 3,
       estimatedTime: 60,
     })
@@ -73,7 +73,7 @@ describe('exam.service', () => {
 
   describe('generateExam()', () => {
     it('creates a session with the requested number of questions', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 42 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 42, mode: 1 })
 
       expect(session.userId).toBe(userId)
       expect(session.technologyId).toBe(TECH_ID)
@@ -84,26 +84,26 @@ describe('exam.service', () => {
     })
 
     it('defaults to 20 questions when count is not provided', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', seed: 1 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', seed: 1, mode: 1 })
       expect(session.questionIds).toHaveLength(20)
     })
 
     it('caps at available question count when count > pool size', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 999, seed: 1 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 999, seed: 1, mode: 1 })
       expect(session.questionIds.length).toBeLessThanOrEqual(25)
     })
 
     it('is deterministic with the same seed', () => {
-      const a = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 99 })
+      const a = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 99, mode: 1 })
       // Clear sessions, regenerate with same seed
       runSql('DELETE FROM exam_sessions')
-      const b = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 99 })
+      const b = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 99, mode: 1 })
       expect(a.questionIds).toEqual(b.questionIds)
     })
 
     it('throws 422 when no questions exist for that level', () => {
       expect(() =>
-        generateExam({ userId, technologyId: TECH_ID, level: 'SENIOR', count: 5, seed: 1 })
+        generateExam({ userId, technologyId: TECH_ID, level: 'SENIOR', count: 5, seed: 1, mode: 1 })
       ).toThrow(expect.objectContaining({ status: 422 }))
     })
   })
@@ -112,7 +112,7 @@ describe('exam.service', () => {
 
   describe('getSession()', () => {
     it('returns a session by id', () => {
-      const created = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 7 })
+      const created = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 7, mode: 1 })
       const fetched = getSession(created.id)
       expect(fetched?.id).toBe(created.id)
     })
@@ -126,8 +126,8 @@ describe('exam.service', () => {
 
   describe('getUserSessions()', () => {
     it('returns all sessions for a user', () => {
-      generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 1 })
-      generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 2 })
+      generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 1, mode: 1 })
+      generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 2, mode: 1 })
       const sessions = getUserSessions(userId)
       expect(sessions).toHaveLength(2)
       sessions.forEach(s => expect(s.userId).toBe(userId))
@@ -147,10 +147,10 @@ describe('exam.service', () => {
 
   describe('submitExam()', () => {
     it('scores 100% when all answers are correct', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 10 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 10, mode: 1 })
       const answers = session.questionIds.map(qId => ({
         questionId: qId,
-        userAnswer: 'useEffect', // the correct answer seeded above
+        userAnswer: '1', // the correct answer ID seeded above
         timeSpent: 30,
       }))
 
@@ -161,10 +161,10 @@ describe('exam.service', () => {
     })
 
     it('scores 0% when all answers are wrong', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 11 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 5, seed: 11, mode: 1 })
       const answers = session.questionIds.map(qId => ({
         questionId: qId,
-        userAnswer: 'useState', // wrong answer
+        userAnswer: '0', // wrong answer ID
         timeSpent: 15,
       }))
 
@@ -174,10 +174,10 @@ describe('exam.service', () => {
     })
 
     it('produces per-topic breakdown', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 20 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 10, seed: 20, mode: 1 })
       const answers = session.questionIds.map(qId => ({
         questionId: qId,
-        userAnswer: 'useEffect',
+        userAnswer: '1',
       }))
       const result = submitExam(session.id, userId, { answers })
 
@@ -192,7 +192,7 @@ describe('exam.service', () => {
     })
 
     it('persists submittedAt and score on the session', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 3, seed: 30 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 3, seed: 30, mode: 1 })
       submitExam(session.id, userId, { answers: [] }) // no answers = 0%
 
       const updated = getSession(session.id)
@@ -201,7 +201,7 @@ describe('exam.service', () => {
     })
 
     it('throws 409 when exam already submitted', () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 3, seed: 31 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 3, seed: 31, mode: 1 })
       submitExam(session.id, userId, { answers: [] })
 
       expect(() =>
@@ -210,7 +210,7 @@ describe('exam.service', () => {
     })
 
     it('throws 403 when a different user tries to submit', async () => {
-      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 3, seed: 32 })
+      const session = generateExam({ userId, technologyId: TECH_ID, level: 'MID', count: 3, seed: 32, mode: 1 })
       const { user: attacker } = await register({
         email: 'attacker@example.com',
         password: 'Attack99!',

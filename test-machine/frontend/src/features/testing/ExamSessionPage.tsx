@@ -60,12 +60,6 @@ export function ExamSessionPage() {
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
-      
-      // If we are unmounting and haven't submitted yet (and we're in Exam mode), auto-submit
-      // We check !result to avoid double submission when navigating to results page
-      if (session?.mode === 2 && !result) {
-        dispatch(submitRequest())
-      }
     }
   }, [session, result, dispatch])
 

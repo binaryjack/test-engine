@@ -15,6 +15,7 @@ export function ExamSetupPage() {
   const [selectedLevel, setSelectedLevel] = React.useState('')
   const [count, setCount] = React.useState(20)
   const [mode, setMode] = React.useState(1)
+  const [isGenerating, setIsGenerating] = React.useState(false)
 
   // Clear any lingering exam state/errors when entering the setup page
   React.useEffect(() => {
@@ -30,14 +31,18 @@ export function ExamSetupPage() {
 
   // Navigate to session once generated
   React.useEffect(() => {
-    if (session && !loading) navigate(`/exam/session/${session.id}`)
-  }, [session, loading, navigate])
+    if (isGenerating && session && !loading) {
+      setIsGenerating(false)
+      navigate(`/exam/session/${session.id}`)
+    }
+  }, [isGenerating, session, loading, navigate])
 
   const handleStart = () => {
     if (selectedTechs.length === 0 || !selectedLevel) return
     const payload = selectedTechs.length > 1
       ? { technologyIds: selectedTechs, level: selectedLevel, count, mode }
       : { technologyId: selectedTechs[0], level: selectedLevel, count, mode }
+    setIsGenerating(true)
     dispatch(generateRequest(payload as any))
   }
 

@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react'
+import { SuspenseFallback } from './SuspenseFallback'
 
 /**
  * @description Wraps a component that might be asynchronously loaded or slow to render.
@@ -14,7 +15,7 @@ export const SuspenseWrapper: React.FC<{ Component: React.ComponentType<any>; fa
 }) => {
   return (
     <div className={`relative ${className}`}>
-      <Suspense fallback={<SuspenseFallback />}>
+      <Suspense fallback={<SuspenseFallback children={ <>...loading</>} />}>
         <Component />
       </Suspense>
     </div>

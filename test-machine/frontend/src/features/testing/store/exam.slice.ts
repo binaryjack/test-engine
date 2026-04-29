@@ -44,6 +44,11 @@ const examSlice = createSlice({
       state.loading = false
       state.session = action.payload.session
       state.questions = action.payload.questions
+      state.result = null
+      state.currentIndex = 0
+      state.answers = {}
+      state.timings = {}
+      state.error = null
     },
     examFailure(state, action: PayloadAction<string>) {
       state.loading = false
@@ -107,8 +112,8 @@ const examSlice = createSlice({
     calculateAvailableCountSuccess(state, action: PayloadAction<number>) {
       state.availableCount = action.payload
     },
-    clearExam(state) {
-      Object.assign(state, initialState)
+    clearExam() {
+      return initialState
     }
   }
 })

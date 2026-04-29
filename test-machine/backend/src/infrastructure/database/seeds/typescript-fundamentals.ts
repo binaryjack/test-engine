@@ -19,93 +19,99 @@ export const typescriptFundamentalsQuestions = [
     .inherits(basicTypes)
     .setSubtopic('Primitives')
     .setPrompt('Which TypeScript type describes a value that can never occur?')
-    .setOptions(['unknown', 'void', 'never', 'undefined'])
-    .setAnswer('never')
+    .setOptions(['0, ```ts\nunknown\n```', '1, ```ts\nvoid\n```', '2, ```ts\nnever\n```', '3, ```ts\nundefined\n```'])
+    .setAnswer('2')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('`never` represents values that never occur — e.g., the return type of a function that always throws or has an infinite loop.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type']),
+    .setExplanation('```ts\nnever\n``` represents values that never occur — e.g., the return type of a function that always throws or has an infinite loop.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(basicTypes)
     .setSubtopic('unknown vs any')
-    .setPrompt('What is the key difference between any and unknown?')
+    .setPrompt('What is the key difference between ```ts\nany\n``` and ```ts\nunknown\n```?')
     .setOptions([
-      'unknown is the same as any but marks deprecated APIs',
-      'any disables type checking; unknown is type-safe — you must narrow it before using it',
-      'unknown can only hold primitive values; any can hold anything',
-      'They are identical — unknown is just an alias for any'
+      '0, ```ts\nunknown\n``` is the same as ```ts\nany\n``` but marks deprecated APIs',
+      '1, ```ts\nany\n``` disables type checking; ```ts\nunknown\n``` is type-safe — you must narrow it before using it',
+      '2, ```ts\nunknown\n``` can only hold primitive values; ```ts\nany\n``` can hold anything',
+      '3, They are identical — ```ts\nunknown\n``` is just an alias for ```ts\nany\n```'
     ])
-    .setAnswer('any disables type checking; unknown is type-safe — you must narrow it before using it')
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('unknown is the type-safe counterpart to any. You can assign anything to unknown, but you cannot use it without narrowing.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown']),
+    .setExplanation('```ts\nunknown\n``` is the type-safe counterpart to ```ts\nany\n```. You can assign anything to ```ts\nunknown\n```, but you cannot use it without narrowing.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(basicTypes)
     .setSubtopic('Type assertions')
-    .setPrompt('When should you use a type assertion (value as Type)?')
+    .setPrompt('When should you use a type assertion (```ts\nvalue as Type\n```)?')
     .setOptions([
-      'Whenever TypeScript infers the wrong type',
-      'When you have more information than TypeScript about a value\'s type and the assertion is safe',
-      'As a replacement for proper typing — it\'s faster than writing interfaces',
-      'To convert between incompatible types (e.g., string to number)'
+      '0, Whenever TypeScript infers the wrong type',
+      "1, When you have more information than TypeScript about a value's type and the assertion is safe",
+      "2, As a replacement for proper typing — it's faster than writing interfaces",
+      '3, To convert between incompatible types (e.g., ```ts\nstring\n``` to ```ts\nnumber\n```)'
     ])
-    .setAnswer('When you have more information than TypeScript about a value\'s type and the assertion is safe')
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
     .setExplanation('Type assertions tell TypeScript "trust me, I know what this is." Use them sparingly and only when you are certain.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions']),
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(basicTypes)
     .setSubtopic('Literal types')
     .setPrompt('What does the following declaration do?\n```ts\nconst direction = "north" as const\n```')
     .setOptions([
-      'Casts the string to a constant number',
-      'Narrows the type from `string` to the literal type `"north"`',
-      'Makes the variable immutable at runtime',
-      'Prevents TypeScript from widening the type to string'
+      '0, Casts the string to a constant number',
+      '1, Narrows the type from ```ts\nstring\n``` to the literal type ```ts\n"north"\n```',
+      '2, Makes the variable immutable at runtime',
+      '3, Prevents TypeScript from widening the type to ```ts\nstring\n```'
     ])
-    .setAnswer('Narrows the type from `string` to the literal type `"north"`')
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('`as const` tells TypeScript to infer the most specific literal type rather than widening.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types']),
+    .setExplanation('```ts\nas const\n``` tells TypeScript to infer the most specific literal type rather than widening.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types'])
+    .build(),
 
   // Interfaces
   new QuestionBuilder()
     .inherits(interfaces)
     .setSubtopic('Interface vs Type alias')
-    .setPrompt('What can interface do that a type alias cannot?')
+    .setPrompt('What can ```ts\ninterface\n``` do that a ```ts\ntype\n``` alias cannot?')
     .setOptions([
-      'Describe union types',
-      'Use generics',
-      'Declaration merging — multiple interface declarations with the same name are merged',
-      'Extend other types'
+      '0, Describe union types',
+      '1, Use generics',
+      '2, Declaration merging — multiple ```ts\ninterface\n``` declarations with the same name are merged',
+      '3, Extend other types'
     ])
-    .setAnswer('Declaration merging — multiple interface declarations with the same name are merged')
+    .setAnswer('2')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('Declaration merging allows multiple `interface Foo { ... }` declarations to automatically merge into one.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces']),
+    .setExplanation('Declaration merging allows multiple ```ts\ninterface Foo { ... }\n``` declarations to automatically merge into one.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(interfaces)
     .setSubtopic('Extending')
-    .setPrompt('Consider the following interfaces:\n```ts\ninterface A { x: number }\ninterface B extends A { y: string }\n```\nWhat properties does B have?')
+    .setPrompt('Consider the following interfaces:\n```ts\ninterface A { x: number }\ninterface B extends A { y: string }\n```\nWhat properties does ```ts\nB\n``` have?')
     .setOptions([
-      'Only y: string',
-      'x: number and y: string',
-      'A union of x or y',
-      'TypeScript error — interfaces cannot extend interfaces'
+      '0, Only ```ts\ny: string\n```',
+      '1, ```ts\nx: number\n``` and ```ts\ny: string\n```',
+      '2, A union of ```ts\nx\n``` or ```ts\ny\n```',
+      '3, TypeScript error — interfaces cannot extend interfaces'
     ])
-    .setAnswer('x: number and y: string')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('interface B extends A means B inherits all properties from A and adds its own.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/objects.html#extending-types']),
+    .setExplanation('```ts\ninterface B extends A\n``` means ```ts\nB\n``` inherits all properties from ```ts\nA\n``` and adds its own.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/objects.html#extending-types'])
+    .build(),
 
   // Generics
   new QuestionBuilder()
@@ -113,113 +119,120 @@ export const typescriptFundamentalsQuestions = [
     .setSubtopic('Basic generics')
     .setPrompt('What does this function signature mean?\n```ts\nfunction identity<T>(value: T): T\n```')
     .setOptions([
-      'The function takes and returns any type, but loses type information',
-      'The function is generic — it takes a value of type T and returns the same type T, preserving type information',
-      'T must be an object type — primitives are not allowed',
-      'The function can only be called with explicitly provided type arguments'
+      '0, The function takes and returns ```ts\nany\n``` type, but loses type information',
+      '1, The function is generic — it takes a value of type ```ts\nT\n``` and returns the same type ```ts\nT\n```, preserving type information',
+      '2, ```ts\nT\n``` must be an object type — primitives are not allowed',
+      '3, The function can only be called with explicitly provided type arguments'
     ])
-    .setAnswer('The function is generic — it takes a value of type T and returns the same type T, preserving type information')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('Generics are type parameters. TypeScript infers T from the argument, preserving type safety.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/generics.html']),
+    .setExplanation('Generics are type parameters. TypeScript infers ```ts\nT\n``` from the argument, preserving type safety.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/generics.html'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(generics)
     .setSubtopic('Constraints')
     .setPrompt('What does the following generic constraint mean?\n```ts\n<T extends { length: number }>\n```')
     .setOptions([
-      'T must be a string or array',
-      'T can be any type that has a length property of type number',
-      'T cannot exceed a length of a number',
-      'T extends the Number class'
+      '0, ```ts\nT\n``` must be a ```ts\nstring\n``` or ```ts\narray\n```',
+      '1, ```ts\nT\n``` can be any type that has a ```ts\nlength\n``` property of type ```ts\nnumber\n```',
+      '2, ```ts\nT\n``` cannot exceed a length of a number',
+      '3, ```ts\nT\n``` extends the ```ts\nNumber\n``` class'
     ])
-    .setAnswer('T can be any type that has a length property of type number')
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('Generic constraints (extends) restrict what types T can be.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints']),
+    .setExplanation('Generic constraints (```ts\nextends\n```) restrict what types ```ts\nT\n``` can be.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints'])
+    .build(),
 
   // Utility Types
   new QuestionBuilder()
     .inherits(utilityTypes)
     .setSubtopic('Partial and Required')
-    .setPrompt('What does Partial<User> produce if User is defined as follows?\n```ts\ntype User = { name: string; age: number }\n```')
+    .setPrompt('What does ```ts\nPartial<User>\n``` produce if ```ts\nUser\n``` is defined as follows?\n```ts\ntype User = { name: string; age: number }\n```')
     .setOptions([
-      '```ts\n{ name?: string; age?: number }\n```',
-      '```ts\n{ name: string | undefined; age: number | undefined }\n```',
-      '```ts\n{ name: string; age?: number }\n```',
-      'Removes optional properties, leaving only required ones'
+      '0, ```ts\n{ name?: string; age?: number }\n```',
+      '1, ```ts\n{ name: string | undefined; age: number | undefined }\n```',
+      '2, ```ts\n{ name: string; age?: number }\n```',
+      '3, Removes optional properties, leaving only required ones'
     ])
-    .setAnswer('```ts\n{ name?: string; age?: number }\n```')
+    .setAnswer('0')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('`Partial<T>` makes all properties of T optional.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype']),
+    .setExplanation('```ts\nPartial<T>\n``` makes all properties of ```ts\nT\n``` optional.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(utilityTypes)
     .setSubtopic('Partial')
-    .setPrompt('What does Partial<T> do to a type T?')
+    .setPrompt('What does ```ts\nPartial<T>\n``` do to a type ```ts\nT\n```?')
     .setOptions([
-      'Makes all properties required',
-      'Makes all properties optional',
-      'Removes index signatures',
-      'Converts properties to readonly'
+      '0, Makes all properties required',
+      '1, Makes all properties optional',
+      '2, Removes index signatures',
+      '3, Converts properties to readonly'
     ])
-    .setAnswer('Makes all properties optional')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('`Partial<T>` constructs a type with all properties of T set to optional.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype']),
+    .setExplanation('```ts\nPartial<T>\n``` constructs a type with all properties of ```ts\nT\n``` set to optional.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(utilityTypes)
     .setSubtopic('Pick and Omit')
-    .setPrompt('Given the following type:\n```ts\ntype User = { id: number; name: string; password: string }\n```\nHow do you create a type with only `id` and `name`?')
+    .setPrompt('Given the following type:\n```ts\ntype User = { id: number; name: string; password: string }\n```\nHow do you create a type with only ```ts\nid\n``` and ```ts\nname\n```?')
     .setOptions([
-      '`Pick<User, "id" | "name">`',
-      '`Omit<User, "id" | "name">`',
-      '`Extract<User, "id" | "name">`',
-      '`Select<User, "id" | "name">`'
+      '0, ```ts\nPick<User, "id" | "name">\n```',
+      '1, ```ts\nOmit<User, "id" | "name">\n```',
+      '2, ```ts\nExtract<User, "id" | "name">\n```',
+      '3, ```ts\nSelect<User, "id" | "name">\n```'
     ])
-    .setAnswer('`Pick<User, "id" | "name">`')
+    .setAnswer('0')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('`Pick<T, Keys>` constructs a type with only the specified keys.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys']),
+    .setExplanation('```ts\nPick<T, Keys>\n``` constructs a type with only the specified keys.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(utilityTypes)
     .setSubtopic('Record')
-    .setPrompt('What does Record<string, number> describe?')
+    .setPrompt('What does ```ts\nRecord<string, number>\n``` describe?')
     .setOptions([
-      'A tuple of [string, number]',
-      'An object type where all keys are strings and all values are numbers',
-      'A Map with string keys and number values',
-      'An array of string-number pairs'
+      '0, A tuple of ```ts\n[string, number]\n```',
+      '1, An object type where all keys are ```ts\nstring\n```s and all values are ```ts\nnumber\n```s',
+      '2, A ```ts\nMap\n``` with ```ts\nstring\n``` keys and ```ts\nnumber\n``` values',
+      '3, An array of string-number pairs'
     ])
-    .setAnswer('An object type where all keys are strings and all values are numbers')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('`Record<K, V>` is equivalent to `{ [key in K]: V }`.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type']),
+    .setExplanation('```ts\nRecord<K, V>\n``` is equivalent to ```ts\n{ [key in K]: V }\n```.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeys-type'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(utilityTypes)
     .setSubtopic('Readonly')
-    .setPrompt('What does Readonly<T> do?')
+    .setPrompt('What does ```ts\nReadonly<T>\n``` do?')
     .setOptions([
-      'Freezes the object at runtime',
-      'Makes all properties read-only at the type level — TypeScript will error on assignment',
-      'Removes all methods from the type, leaving only data properties',
-      'Makes all properties optional'
+      '0, Freezes the object at runtime',
+      '1, Makes all properties read-only at the type level — TypeScript will error on assignment',
+      '2, Removes all methods from the type, leaving only data properties',
+      '3, Makes all properties optional'
     ])
-    .setAnswer('Makes all properties read-only at the type level — TypeScript will error on assignment')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('`Readonly<T>` adds the readonly modifier to all properties.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype']),
+    .setExplanation('```ts\nReadonly<T>\n``` adds the readonly modifier to all properties.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype'])
+    .build(),
 
   // Type Algebra
   new QuestionBuilder()
@@ -227,142 +240,151 @@ export const typescriptFundamentalsQuestions = [
     .setSubtopic('Union types')
     .setPrompt('What is a union type in TypeScript?')
     .setOptions([
-      'A type that must satisfy all members simultaneously',
-      'A type that can be one of several types — the value is any one of them',
-      'A set of types that are combined via inheritance',
-      'A type that represents the intersection of two objects'
+      '0, A type that must satisfy all members simultaneously',
+      '1, A type that can be one of several types — the value is any one of them',
+      '2, A set of types that are combined via inheritance',
+      '3, A type that represents the intersection of two objects'
     ])
-    .setAnswer('A type that can be one of several types — the value is any one of them')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('A union type (A | B) means the value is either A or B.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types']),
+    .setExplanation('A union type (```ts\nA | B\n```) means the value is either ```ts\nA\n``` or ```ts\nB\n```.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(typeAlgebra)
     .setSubtopic('Intersection types')
-    .setPrompt('What does `type AB = A & B` mean when `A` and `B` are defined as:\n```ts\ntype A = { x: number }\ntype B = { y: string }\n```')
+    .setPrompt('What does ```ts\ntype AB = A & B\n``` mean when ```ts\nA\n``` and ```ts\nB\n``` are defined as:\n```ts\ntype A = { x: number }\ntype B = { y: string }\n```')
     .setOptions([
-      'A value that is either { x: number } or { y: string }',
-      'A value that has both x: number AND y: string — must satisfy both shapes',
-      'An error — TypeScript does not support & on object types',
-      'A value that can have x or y but not both'
+      '0, A value that is either ```ts\n{ x: number }\n``` or ```ts\n{ y: string }\n```',
+      '1, A value that has both ```ts\nx: number\n``` AND ```ts\ny: string\n``` — must satisfy both shapes',
+      '2, An error — TypeScript does not support ```ts\n&\n``` on object types',
+      '3, A value that can have ```ts\nx\n``` or ```ts\ny\n``` but not both'
     ])
-    .setAnswer('A value that has both x: number AND y: string — must satisfy both shapes')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('Intersection types (A & B) combine multiple types — the result must satisfy all of them.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types']),
+    .setExplanation('Intersection types (```ts\nA & B\n```) combine multiple types — the result must satisfy all of them.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/objects.html#intersection-types'])
+    .build(),
 
   // Type Narrowing
   new QuestionBuilder()
     .inherits(typeNarrowing)
     .setSubtopic('typeof narrowing')
-    .setPrompt('Inside the following block, what is the type of `value`?\n```ts\nif (typeof value === "string") { ... }\n```')
+    .setPrompt('Inside the following block, what is the type of ```ts\nvalue\n```?\n```ts\nif (typeof value === "string") { ... }\n```')
     .setOptions([
-      'string | undefined',
-      'string',
-      'unknown',
-      'The original type of value'
+      '0, ```ts\nstring | undefined\n```',
+      '1, ```ts\nstring\n```',
+      '2, ```ts\nunknown\n```',
+      '3, The original type of ```ts\nvalue\n```'
     ])
-    .setAnswer('string')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
-    .setExplanation('TypeScript\'s control flow analysis narrows types based on conditions.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards']),
+    .setExplanation("TypeScript's control flow analysis narrows types based on conditions.")
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#typeof-type-guards'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(typeNarrowing)
     .setSubtopic('User-defined type guards')
     .setPrompt('What is a user-defined type guard in TypeScript?')
     .setOptions([
-      'A runtime validation library integration',
-      'A function that returns `value is Type` — TypeScript uses the return as a type narrowing signal',
-      'A class with a protected constructor',
-      'A generic constraint that checks the type at compile time'
+      '0, A runtime validation library integration',
+      '1, A function that returns ```ts\nvalue is Type\n``` — TypeScript uses the return as a type narrowing signal',
+      '2, A class with a protected constructor',
+      '3, A generic constraint that checks the type at compile time'
     ])
-    .setAnswer('A function that returns `value is Type` — TypeScript uses the return as a type narrowing signal')
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('A user-defined type guard has a return type of the form `paramName is Type`.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates']),
+    .setExplanation('A user-defined type guard has a return type of the form ```ts\nparamName is Type\n```.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates'])
+    .build(),
 
   new QuestionBuilder()
     .inherits(typeNarrowing)
     .setSubtopic('keyof')
-    .setPrompt('What does the keyof operator produce for a type T?')
-    .setOptions(['A runtime list of keys', 'A union type of the property names of T', 'The type of values in T', 'An error'])
-    .setAnswer('A union type of the property names of T')
+    .setPrompt('What does the ```ts\nkeyof\n``` operator produce for a type ```ts\nT\n```?')
+    .setOptions(['0, A runtime list of keys', '1, A union type of the property names of ```ts\nT\n```', '2, The type of values in ```ts\nT\n```', '3, An error'])
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('`keyof T` produces a union of the keys of T.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/keyof-types.html']),
+    .setExplanation('```ts\nkeyof T\n``` produces a union of the keys of ```ts\nT\n```.')
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/keyof-types.html'])
+    .build(),
 
   // TS + React
   new QuestionBuilder()
     .inherits(tsReact)
     .setSubtopic('useState with types')
-    .setPrompt('How do you type useState when the initial value is null but will later be a User object?')
+    .setPrompt('How do you type ```ts\nuseState\n``` when the initial value is ```ts\nnull\n``` but will later be a ```ts\nUser\n``` object?')
     .setOptions([
-      '```tsx\nconst [user, setUser] = useState(null)\n```',
-      '```tsx\nconst [user, setUser] = useState<User | null>(null)\n```',
-      '```tsx\nconst [user, setUser] = useState<User>(null)\n```',
-      '```tsx\nconst [user, setUser] = useState<User>({})\n```'
+      '0, ```tsx\nconst [user, setUser] = useState(null)\n```',
+      '1, ```tsx\nconst [user, setUser] = useState<User | null>(null)\n```',
+      '2, ```tsx\nconst [user, setUser] = useState<User>(null)\n```',
+      '3, ```tsx\nconst [user, setUser] = useState<User>({})\n```'
     ])
-    .setAnswer('```tsx\nconst [user, setUser] = useState<User | null>(null)\n```')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
     .setExplanation('Provide the generic type argument explicitly when TypeScript cannot infer from the initial value.')
-    .setReferences(['https://react.dev/learn/typescript#typing-usestate']),
+    .setReferences(['https://react.dev/learn/typescript#typing-usestate'])
+    .build(),
 
   // tsconfig
   new QuestionBuilder()
     .inherits(tsconfig)
     .setSubtopic('Strict mode')
-    .setPrompt('What does "strict": true in tsconfig.json enable?')
+    .setPrompt('What does ```ts\n"strict": true\n``` in ```ts\ntsconfig.json\n``` enable?')
     .setOptions([
-      'Only strict null checks',
-      'A bundle of strict checks: strictNullChecks, noImplicitAny, strictFunctionTypes, and more',
-      'Runtime type checking',
-      'Prevents the use of any type'
+      '0, Only strict null checks',
+      '1, A bundle of strict checks: ```ts\nstrictNullChecks\n```, ```ts\nnoImplicitAny\n```, ```ts\nstrictFunctionTypes\n```, and more',
+      '2, Runtime type checking',
+      '3, Prevents the use of ```ts\nany\n``` type'
     ])
-    .setAnswer('A bundle of strict checks: strictNullChecks, noImplicitAny, strictFunctionTypes, and more')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
     .setExplanation('"strict" is a shorthand for enabling a group of strict type checking options.')
-    .setReferences(['https://www.typescriptlang.org/tsconfig/#strict']),
+    .setReferences(['https://www.typescriptlang.org/tsconfig/#strict'])
+    .build(),
 
   // Declaration Files
   new QuestionBuilder()
     .inherits(declarationFiles)
     .setSubtopic('DefinitelyTyped')
-    .setPrompt('What is @types/* and when do you need it?')
+    .setPrompt('What is ```ts\n@types/*\n``` and when do you need it?')
     .setOptions([
-      'TypeScript\'s built-in type definitions for the web platform',
-      'Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don\'t ship their own types',
-      'Custom type definition files generated during build',
-      'ESLint type checking plugins'
+      "0, TypeScript's built-in type definitions for the web platform",
+      "1, Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don't ship their own types",
+      '2, Custom type definition files generated during build',
+      '3, ESLint type checking plugins'
     ])
-    .setAnswer('Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries that don\'t ship their own types')
+    .setAnswer('1')
     .setDifficulty(2)
     .setEstimatedTime(30)
     .setExplanation('Community-maintained type definitions (DefinitelyTyped) for JavaScript libraries.')
-    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/type-declarations.html#definitelytyped--types']),
+    .setReferences(['https://www.typescriptlang.org/docs/handbook/2/type-declarations.html#definitelytyped--types'])
+    .build(),
 
   // Enums
   new QuestionBuilder()
     .inherits(enums)
     .setSubtopic('const enum vs enum')
-    .setPrompt('What is the difference between enum and const enum in TypeScript?')
+    .setPrompt('What is the difference between ```ts\nenum\n``` and ```ts\nconst enum\n``` in TypeScript?')
     .setOptions([
-      'const enum has constant default values; enum values are dynamic',
-      'const enum is inlined at compile time; enum generates a JavaScript object at runtime',
-      'enum can be used in conditional types; const enum cannot',
-      'They are identical'
+      '0, ```ts\nconst enum\n``` has constant default values; ```ts\nenum\n``` values are dynamic',
+      '1, ```ts\nconst enum\n``` is inlined at compile time; ```ts\nenum\n``` generates a JavaScript object at runtime',
+      '2, ```ts\nenum\n``` can be used in conditional types; ```ts\nconst enum\n``` cannot',
+      '3, They are identical'
     ])
-    .setAnswer('const enum is inlined at compile time; enum generates a JavaScript object at runtime')
+    .setAnswer('1')
     .setDifficulty(3)
     .setEstimatedTime(60)
-    .setExplanation('Regular enums compile to a JavaScript object. const enums are completely erased and their values are inlined.')
+    .setExplanation('Regular ```ts\nenum\n```s compile to a JavaScript object. ```ts\nconst enum\n```s are completely erased and their values are inlined.')
     .setReferences(['https://www.typescriptlang.org/docs/handbook/enums.html#const-enums'])
+    .build(),
 ];

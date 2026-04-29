@@ -3,14 +3,6 @@ import { getDb, persistDb, queryOneSql } from '../connection.js'
 import { migrate } from '../schema.js'
 import { seed } from '../seed.js'
 import { QuestionBuilder } from '../utils/question-builder.js'
-import { nextjsFundamentalsQuestions } from './nextjs-fundamentals.js'
-import { nextjsMidQuestions } from './nextjs-mid.js'
-import { nextjsSeniorQuestions } from './nextjs-senior.js'
-import { reactFundamentalsQuestions } from './react-fundamentals.js'
-import { reactMidQuestions } from './react-mid.js'
-import { reactSeniorQuestions } from './react-senior.js'
-import { typescriptAdvancedQuestions } from './typescript-advanced.js'
-import { typescriptFundamentalsQuestions } from './typescript-fundamentals.js'
 
 async function seedBuilders(builders: QuestionBuilder[], technologyId: string, level: string) {
   console.log(`[seed-questions] Seeding ${builders.length} ${level} questions...`)
@@ -53,21 +45,21 @@ async function main() {
 
   // Clear existing questions for clean re-seed
   const db = await getDb()
-  db.run(`DELETE FROM questions`);
+  db.run(`DELETE FROM questions`,[]);
   persistDb();
   console.log('[seed-questions] Cleared all existing questions for re-seed...')
 
-  // Seed all questions
-  await seedBuilders(reactFundamentalsQuestions, reactId, 'React FUNDAMENTALS');
-  await seedBuilders(reactMidQuestions, reactId, 'React MID');
-  await seedBuilders(reactSeniorQuestions, reactId, 'React SENIOR');
+  // // Seed all questions
+  // await seedBuilders(reactFundamentalsQuestions, reactId, 'React FUNDAMENTALS');
+  // await seedBuilders(reactMidQuestions, reactId, 'React MID');
+  // await seedBuilders(reactSeniorQuestions, reactId, 'React SENIOR');
 
-  await seedBuilders(typescriptFundamentalsQuestions, tsId, 'TypeScript FUNDAMENTALS');
-  await seedBuilders(typescriptAdvancedQuestions, tsId, 'TypeScript ADVANCED');
+  // await seedBuilders(typescriptFundamentalsQuestions, tsId, 'TypeScript FUNDAMENTALS');
+  // await seedBuilders(typescriptAdvancedQuestions, tsId, 'TypeScript ADVANCED');
 
-  await seedBuilders(nextjsFundamentalsQuestions, nextjsId, 'Next.js FUNDAMENTALS');
-  await seedBuilders(nextjsMidQuestions, nextjsId, 'Next.js MID');
-  await seedBuilders(nextjsSeniorQuestions, nextjsId, 'Next.js SENIOR');
+  // await seedBuilders(nextjsFundamentalsQuestions, nextjsId, 'Next.js FUNDAMENTALS');
+  // await seedBuilders(nextjsMidQuestions, nextjsId, 'Next.js MID');
+  // await seedBuilders(nextjsSeniorQuestions, nextjsId, 'Next.js SENIOR');
 
   // ── Final summary ────────────────────────────────────────────────────────
   const total = queryOneSql<{ cnt: number }>(`SELECT COUNT(*) as cnt FROM questions`)

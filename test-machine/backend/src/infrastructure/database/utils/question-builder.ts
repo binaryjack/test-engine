@@ -83,6 +83,6 @@ public inherits(builder: QuestionBuilder) {
    * @throws {ZodError} If constraints are not met
    */
   public build(): QuestionInput {
-    return QuestionSchema.parse(this.data);
+    return QuestionSchema.omit({ technologyId: true }).parse(this.data) as QuestionInput;
   }
 }

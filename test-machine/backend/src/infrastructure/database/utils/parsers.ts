@@ -1,13 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { extraReactQuestions, extraTypescriptQuestions } from '../seeds/extra-questions'
-import { reactExtraSeniorQuestions } from '../seeds/react-extra-senior'
-import { reactFundamentalsQuestions } from '../seeds/react-fundamentals'
-import { reactMidQuestions } from '../seeds/react-mid'
-import { reactNextjsQuestions } from '../seeds/react-nextjs'
-import { reactSeniorQuestions } from '../seeds/react-senior'
-import { typescriptQuestions } from '../seeds/typescript'
+
 
 // Recreate __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -16,6 +10,13 @@ const __dirname = path.dirname(__filename);
 
 import { QuestionInput } from "@/domain/question/question.schema"
 import { getDb, queryOneSql } from '../connection'
+import { extraReactQuestions, extraTypescriptQuestions } from '../seeds/archive/extra-questions'
+import { reactExtraSeniorQuestions } from '../seeds/archive/react-extra-senior'
+import { reactNextjsQuestions } from '../seeds/archive/react-nextjs'
+import { typescriptQuestions } from '../seeds/archive/typescript'
+import { reactFundamentalsQuestions } from '../seeds/react-fundamentals'
+import { reactMidQuestions } from '../seeds/react-mid'
+import { reactSeniorQuestions } from '../seeds/react-senior'
 
 
 type Difficulty = 'easy' | 'medium' | 'hard'
@@ -138,14 +139,14 @@ export const ExecuteParsing = async  () => {
     ]
     
     
-    const parsedQuestionsPhase1 = formatCodeBlocks('react',...seedReactList )
+    const parsedQuestionsPhase1 = formatCodeBlocks('react',...seedReactList as QuestionSeed[])
     const parsedQuestionsPhase2 = optionsAnswersMatching(...parsedQuestionsPhase1)
         sortQuestions(...parsedQuestionsPhase2)
         
 
 
             
-    const parsedTSQuestionsPhase1 = formatCodeBlocks('typescript',...seedTSList)
+    const parsedTSQuestionsPhase1 = formatCodeBlocks('typescript',...seedTSList as QuestionSeed[])
     const parsedTSQuestionsPhase2 = optionsAnswersMatching(...parsedTSQuestionsPhase1)
     sortQuestions(...parsedTSQuestionsPhase2)
     } catch (e) {

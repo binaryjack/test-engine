@@ -183,7 +183,16 @@ export function submitExam(sessionId: string, userId: string, input: SubmitInput
 
     const submitted = input.answers.find(a => a.questionId === qId)
     const userAnswer = submitted?.userAnswer ?? ''
-    const isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(question.answer)
+    
+    let isCorrect = false
+    if (question.type === 'mcq') {
+      // For MCQs, we compare by ID. userAnswer might be just the ID or the full "ID, Text" string
+      const userSelectedId = userAnswer.includes(',') ? userAnswer.split(',')[0].trim() : userAnswer.trim()
+      isCorrect = userSelectedId === question.answer
+    } else {
+      isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(question.answer)
+    }
+
     if (isCorrect) correct++
 
     const topic = question.topic

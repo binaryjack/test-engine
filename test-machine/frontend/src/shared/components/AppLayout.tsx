@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../hooks/useStore.js'
 import { logout } from '../../features/auth/store/auth.slice.js'
+import { submitRequest } from '../../features/testing/store/exam.slice.js'
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch()
@@ -9,9 +10,23 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation()
   const { user } = useAppSelector(s => s.auth)
 
+  const isExamSession = location.pathname.startsWith('/exam/session')
+
   const handleLogout = () => {
     dispatch(logout())
     navigate('/login')
+  }
+
+  const handleCancelExam = () => {
+    if (confirm('Are you sure you want to cancel the exam? This will abandon your session.')) {
+      navigate('/dashboard')
+    }
+  }
+
+  const handleSubmitExam = () => {
+    if (confirm('Are you sure you want to submit the exam?')) {
+      dispatch(submitRequest())
+    }
   }
 
   const navLink = (to: string, label: string) => (
@@ -34,21 +49,34 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2">
             <span className="text-primary-400 font-bold text-lg">Test Machine</span>
           </div>
-          <nav className="flex items-center gap-1">
-            {navLink('/dashboard', 'Dashboard')}
-            {navLink('/exam', 'Take Exam')}
-            {navLink('/profile', 'Profile')}
-            {user?.role === 'admin' && navLink('/admin', 'Admin')}
-          </nav>
-          <div className="flex items-center gap-3">
-            <span className="text-slate-400 text-sm">{user?.displayName ?? user?.email}</span>
-            <button
-              onClick={handleLogout}
-              className="btn-secondary text-sm"
-            >
-              Logout
-            </button>
-          </div>
+          {isExamSession ? (
+            <div className="flex items-center gap-3">
+              <button onClick={handleCancelExam} className="btn-secondary text-sm">
+                Cancel
+              </button>
+              <button onClick={handleSubmitExam} className="btn-primary text-sm bg-primary-600 hover:bg-primary-500 text-white px-3 py-1.5 rounded transition-colors font-medium">
+                Submit
+              </button>
+            </div>
+          ) : (
+            <>
+              <nav className="flex items-center gap-1">
+                {navLink('/dashboard', 'Dashboard')}
+                {navLink('/exam', 'Take Exam')}
+                {navLink('/profile', 'Profile')}
+                {user?.role === 'admin' && navLink('/admin', 'Admin')}
+              </nav>
+              <div className="flex items-center gap-3">
+                <span className="text-slate-400 text-sm">{user?.displayName ?? user?.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="btn-secondary text-sm"
+                >
+                  Logout
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </header>
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">

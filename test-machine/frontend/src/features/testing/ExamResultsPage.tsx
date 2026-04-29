@@ -31,11 +31,11 @@ export function ExamResultsPage() {
 
   // If result was deleted, navigate away
   React.useEffect(() => {
-    if (!result && !loading && id) {
-      // If we were viewing a result but it's gone from state, go to dashboard
+    if (!result && !session && !loading && id) {
+      // If we were viewing a result but it's gone from state (and no new session), go to dashboard
       navigate('/dashboard')
     }
-  }, [result, loading, navigate, id])
+  }, [result, session, loading, navigate, id])
 
   // Show error toast/alert if there's an error but we still have a result
   React.useEffect(() => {

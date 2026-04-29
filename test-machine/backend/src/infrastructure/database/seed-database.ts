@@ -5,13 +5,14 @@ import { recreateDbTables } from './schema.js'
 import { seed as seedBaseData } from './seed.js'
 
 // Import seed data
-import { extraReactQuestions, extraTypescriptQuestions } from './seeds/extra-questions.js'
-import { reactExtraSeniorQuestions } from './seeds/react-extra-senior.js'
+import { nextjsFundamentalsQuestions } from './seeds/nextjs-fundamentals.js'
+import { nextjsMidQuestions } from './seeds/nextjs-mid.js'
+import { nextjsSeniorQuestions } from './seeds/nextjs-senior.js'
 import { reactFundamentalsQuestions } from './seeds/react-fundamentals.js'
 import { reactMidQuestions } from './seeds/react-mid.js'
-import { reactNextjsQuestions } from './seeds/react-nextjs.js'
 import { reactSeniorQuestions } from './seeds/react-senior.js'
-import { typescriptQuestions } from './seeds/typescript.js'
+import { typescriptAdvancedQuestions } from './seeds/typescript-advanced.js'
+import { typescriptFundamentalsQuestions } from './seeds/typescript-fundamentals.js'
 
 const DIFFICULTY_MAP: Record<string, number> = { easy: 2, medium: 3, hard: 5 }
 
@@ -21,6 +22,12 @@ function normalise(q: any): QuestionInput {
     difficulty: typeof q.difficulty === 'string' ? DIFFICULTY_MAP[q.difficulty] ?? 3 : q.difficulty 
   } as QuestionInput
 }
+
+
+interface QuestionsList {
+   techId: string, questions: QuestionInput[], label: string
+}
+
 
 /**
  * Main seeding engine. 
@@ -43,17 +50,22 @@ export async function runFullSeed() {
     throw new Error('[seed-engine] Base technologies not found after base seed')
   }
 
+
+
+
   // 4. Central Seed List - Developers only need to add new question sets here
-  const seedList = [
-    { techId: reactTech.id, questions: reactFundamentalsQuestions, label: 'React Fundamentals' },
-    { techId: reactTech.id, questions: reactMidQuestions, label: 'React Mid' },
-    { techId: reactTech.id, questions: reactSeniorQuestions, label: 'React Senior' },
-    { techId: reactTech.id, questions: reactExtraSeniorQuestions, label: 'React Extra Senior' },
-    { techId: reactTech.id, questions: reactNextjsQuestions, label: 'React Next.js' },
-    { techId: reactTech.id, questions: extraReactQuestions, label: 'Extra React' },
-    { techId: tsTech.id, questions: typescriptQuestions, label: 'TypeScript Fundamentals' },
-    { techId: tsTech.id, questions: extraTypescriptQuestions, label: 'Extra TypeScript' },
+  const seedList:QuestionsList [] = [
+    { techId: reactTech.id, questions: nextjsMidQuestions, label: 'nextjsMidQuestions' },
+    { techId: reactTech.id, questions: nextjsFundamentalsQuestions, label: 'nextjsFundamentalsQuestions' },
+    { techId: reactTech.id, questions: nextjsSeniorQuestions, label: 'nextjsSeniorQuestions' },
+    { techId: reactTech.id, questions: reactFundamentalsQuestions, label: 'reactFundamentalsQuestions' },
+    { techId: reactTech.id, questions: reactMidQuestions, label: 'reactMidQuestions' },
+    { techId: reactTech.id, questions: reactSeniorQuestions, label: 'reactSeniorQuestions' },
+    { techId: tsTech.id, questions: typescriptAdvancedQuestions, label: 'typescriptAdvancedQuestions' },
+    { techId: tsTech.id, questions: typescriptFundamentalsQuestions, label: 'typescriptFundamentalsQuestions' },
   ]
+
+
 
   // 5. Execution Loop
   let totalInserted = 0

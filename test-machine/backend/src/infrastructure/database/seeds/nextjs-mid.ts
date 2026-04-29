@@ -12,62 +12,63 @@ export const nextjsMidQuestions = [
         .setSubtopic('getStaticProps')
         .setPrompt('What is the purpose of `getStaticProps` in the Next.js `pages` router?')
         .setOptions([
-            'Fetch data on every incoming request',
-            'Fetch data once at build time and provide it as props',
-            'Fetch data only on the client after hydration',
-            'Replace API routes for server code'
+            '0, Fetch data on every incoming request',
+            '1, Fetch data once at build time and provide it as props',
+            '2, Fetch data only on the client after hydration',
+            '3, Replace API routes for server code'
         ])
-        .setAnswer('Fetch data once at build time and provide it as props')
+        .setAnswer('1')
         .setDifficulty(3)
         .setEstimatedTime(60)
         .setExplanation('`getStaticProps` runs at build time and produces static HTML.')
-        .setReferences(['https://nextjs.org/docs/basic-features/data-fetching/get-static-props']),
+        .setReferences(['https://nextjs.org/docs/basic-features/data-fetching/get-static-props'])
+        .build(),
 
     new QuestionBuilder()
         .inherits(isr)
         .setSubtopic('Revalidation')
         .setPrompt('What does Incremental Static Regeneration (ISR) allow you to do in Next.js?')
         .setOptions([
-            'Always render pages on the client only',
-            'Regenerate static pages on-demand or after a specified interval',
-            'Disable caching for static assets',
-            'Run serverless functions on every page load'
+            '0, Always render pages on the client only',
+            '1, Regenerate static pages on-demand or after a specified interval',
+            '2, Disable caching for static assets',
+            '3, Run serverless functions on every page load'
         ])
-        .setAnswer('Regenerate static pages on-demand or after a specified interval')
+        .setAnswer('1')
         .setDifficulty(3)
         .setEstimatedTime(60)
         .setExplanation('ISR lets you keep benefits of static pages while allowing updates.')
-        .setReferences(['https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration']),
+        .setReferences(['https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration']) .build(),
 
     new QuestionBuilder()
         .inherits(api)
         .setSubtopic('API Routes')
         .setPrompt('Where do API routes live in a Next.js `pages`-based project and what are they used for?')
         .setOptions([
-            'In `pages/api/*` and used to implement server endpoints',
-            'In `public/api/*` and used to serve static JSON',
-            'In `components/api/*` and used by client components',
-            'In the root `api` folder'
+            '0, In `pages/api/*` and used to implement server endpoints',
+            '1, In `public/api/*` and used to serve static JSON',
+            '2, In `components/api/*` and used by client components',
+            '3, In the root `api` folder'
         ])
-        .setAnswer('In `pages/api/*` and used to implement server endpoints (serverless functions)')
+        .setAnswer('0')
         .setDifficulty(3)
         .setEstimatedTime(60)
         .setExplanation('API routes under `pages/api` provide server-side endpoints.')
-        .setReferences(['https://nextjs.org/docs/api-routes/introduction']),
+        .setReferences(['https://nextjs.org/docs/api-routes/introduction']) .build(),
 
     new QuestionBuilder()
         .inherits(routing)
         .setSubtopic('Dynamic routes')
         .setPrompt('How do you create a dynamic route in Next.js to handle paths like `/posts/123`?')
         .setOptions([
-            'Create `pages/posts/[id].js` or `app/posts/[id]/page.js`',
-            'Use query parameters only',
-            'Define routes in next.config.js',
-            'Use `pages/posts/:id.js` syntax'
+            "0, Create `pages/posts/[id].js` or `app/posts/[id]/page.js`",
+            '1, Use query parameters only',
+            "2, Define routes in `next.config.js`",
+            "3, Use `pages/posts/:id.js` syntax"
         ])
-        .setAnswer('Create `pages/posts/[id].js` or `app/posts/[id]/page.js`')
+        .setAnswer('0')
         .setDifficulty(3)
         .setEstimatedTime(60)
-        .setExplanation('Square-bracket filenames create dynamic route segments.')
-        .setReferences(['https://nextjs.org/docs/routing/dynamic-routes']),
+        .setExplanation('`Square-bracket` filenames create dynamic route segments.')
+        .setReferences(['https://nextjs.org/docs/routing/dynamic-routes']) .build(),
 ];
