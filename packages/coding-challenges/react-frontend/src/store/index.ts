@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
-import challengeReducer from '../pages/challenge-view/store/challenge.slice';
 import { challengeSaga } from '../pages/challenge-view/store/challenge.saga';
+import challengeReducer from '../pages/challenge-view/store/challenge.slice';
 
 const sagaMiddleware = createSagaMiddleware();
 

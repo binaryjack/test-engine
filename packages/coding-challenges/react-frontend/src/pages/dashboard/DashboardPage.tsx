@@ -1,5 +1,5 @@
-import { ChallengeSelect } from './components/challenge-select';
 import { Sparkles } from 'lucide-react';
+import { ChallengeSelect } from './components/challenge-select';
 
 export default function DashboardPage() {
   return (

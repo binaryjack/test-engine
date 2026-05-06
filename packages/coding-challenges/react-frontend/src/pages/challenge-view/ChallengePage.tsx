@@ -1,12 +1,11 @@
+import { AlertTriangle, ChevronLeft, Info } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { challengeRegistry } from '../../challenges';
 import { ChallengeViewport } from '../../components/challenge-viewport';
 import { Requirements } from '../../components/requirements';
 import { loadChallenge } from './store/challenge.slice';
-import { RootState } from '../../store';
-import { ChevronLeft, Info, AlertTriangle } from 'lucide-react';
-import { challengeRegistry } from '../../challenges';
 
 export default function ChallengePage() {
   const { id } = useParams<{ id: string }>();

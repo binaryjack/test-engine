@@ -1,8 +1,8 @@
+import clsx from 'clsx';
 import { CheckCircle2, Circle } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleRequirement } from '../pages/challenge-view/store/challenge.slice';
 import { RootState } from '../store';
-import clsx from 'clsx';
 
 export function Requirements() {
   const { requirements } = useSelector((state: RootState) => state.challenge);

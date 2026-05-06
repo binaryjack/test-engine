@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, Code, CheckCircle2 } from 'lucide-react';
 import clsx from 'clsx';
+import { ArrowRight, CheckCircle2, Code } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ChallengeItemProps {
   challenge: any;

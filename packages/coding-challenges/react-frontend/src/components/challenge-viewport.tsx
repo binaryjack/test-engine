@@ -1,5 +1,5 @@
-import React, { Suspense, useMemo } from 'react';
 import { Loader2 } from 'lucide-react';
+import React, { Suspense, useMemo } from 'react';
 
 interface ChallengeViewportProps {
   level: string;

@@ -1,5 +1,5 @@
+import { Code2, Layout, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Layout, Code2, Trophy } from 'lucide-react';
 
 export function Navigation() {
   return (
