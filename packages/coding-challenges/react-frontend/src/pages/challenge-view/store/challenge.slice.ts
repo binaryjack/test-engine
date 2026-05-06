@@ -13,6 +13,8 @@ interface ChallengeState {
   isExamMode: boolean;
   examTimeLeft: number; // in seconds
   isExamFinished: boolean;
+  isVerifying: boolean;
+  testResults: Record<string, { passed: boolean; error?: string }>;
 }
 
 const initialState: ChallengeState = {
@@ -22,6 +24,8 @@ const initialState: ChallengeState = {
   isExamMode: false,
   examTimeLeft: 0,
   isExamFinished: false,
+  isVerifying: false,
+  testResults: {},
 };
 
 export const challengeSlice = createSlice({
@@ -71,6 +75,26 @@ export const challengeSlice = createSlice({
     closeExamModal: (state) => {
       state.isExamFinished = false;
     },
+    restoreExam: (state, action: PayloadAction<number>) => {
+      state.examTimeLeft = action.payload;
+      state.isExamMode = true;
+    },
+    runVerification: (state) => {
+      state.isVerifying = true;
+      state.testResults = {};
+    },
+    setTestResults: (state, action: PayloadAction<Record<string, { passed: boolean; error?: string }>>) => {
+      state.testResults = action.payload;
+      state.isVerifying = false;
+      
+      // Auto-update requirements completion based on test results
+      Object.entries(action.payload).forEach(([reqId, result]) => {
+        const req = state.requirements.find(r => r.id === reqId);
+        if (req && result.passed) {
+          req.completed = true;
+        }
+      });
+    },
   },
 });
 
@@ -83,6 +107,9 @@ export const {
   startExam,
   stopExam,
   tickExam,
-  closeExamModal 
+  closeExamModal,
+  restoreExam,
+  runVerification,
+  setTestResults
 } = challengeSlice.actions;
 export default challengeSlice.reducer;

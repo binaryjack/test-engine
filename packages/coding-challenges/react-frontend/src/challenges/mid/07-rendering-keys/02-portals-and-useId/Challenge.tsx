@@ -32,20 +32,24 @@ interface ToastProps {
   message: string;
   onDismiss: () => void;
 }
-
-// TODO 1: Implement Toast component
-// - Renders into a portal (document.body child div)
-// - Fixed position bottom-right, z-index: 9999
-// - Auto-dismisses after 3000ms (cleanup the timeout!)
 function Toast({ message, onDismiss }: ToastProps) {
-  const portalRef = useRef<HTMLDivElement | null>(null);
-
-  // TODO: create a div, append to body in useEffect (cleanup: remove from body)
-  // TODO: auto-dismiss after 3s
-
-  // TODO: return createPortal(<div style={...}>{message} <button>✕</button></div>, portalRef.current!)
-  // For now (placeholder):
-  return <div>{message}</div>;
+    
+  const [portal, setPortal] = useState<HTMLDivElement | null>()
+  // const element = document.getElementById('portal-root') as HTMLDivElement
+  
+  useEffect(() => {   
+        console.log('on message')   
+    const t = setTimeout(() => {    
+      console.log('closed')
+      onDismiss?.()
+    }, 3000)    
+const el = document.getElementById('portal-root') as HTMLDivElement
+  if(el) setPortal(el)    
+    return() => clearTimeout(t); // Proper cleanup
+  }, [ onDismiss])
+  
+  return portal ? createPortal(
+    <div>{message}</div>, portal)  : null
 }
 
 function ToastDemo() {
@@ -84,26 +88,23 @@ interface TextInputProps {
 }
 
 // TODO 2: Implement TextInput
-// - Call useId() inside the component
-// - Use it for: id on <input>, htmlFor on <label>, aria-describedby on <input> (for hint)
-// - DO NOT pass id as a prop — generate it internally with useId()
+
 function TextInput({ label, value, onChange, hint }: TextInputProps) {
-  // const id = useId();
-  // const hintId = `${id}-hint`;
+  const id = useId();
+  const hintId = `${id}-hint`;
 
   return (
     <div style={{ marginBottom: 12 }}>
-      {/* TODO: <label htmlFor={id}>{label}</label> */}
-      <label>{label}</label>
-      {/* TODO: add id={id} and aria-describedby={hint ? hintId : undefined} */}
+      <label htmlFor={id}>{label}</label>    
       <input
+        id={id} 
+        aria-describedby={hint ? hintId : undefined}
         value={value}
         onChange={e => onChange(e.target.value)}
         style={{ display: 'block', marginTop: 4 }}
       />
       {hint && (
-        // TODO: add id={hintId}
-        <span style={{ fontSize: 12, color: '#888' }}>{hint}</span>
+        <span id={hintId} style={{ fontSize: 12, color: '#888' }}>{hint}</span>
       )}
     </div>
   );
@@ -113,8 +114,8 @@ function AccessibleFormDemo() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  return (
-    <section>
+  return (   
+    <section style={{ display: 'flex', position: 'relative', flexDirection: 'column'}}>
       <h2>Part 2 — Accessible Form with useId</h2>
       <p>Inspect the DOM — each label should be linked to its input via matching id/htmlFor.</p>
       <form onSubmit={e => e.preventDefault()}>
@@ -137,9 +138,30 @@ function AccessibleFormDemo() {
 
 // ─── App ──────────────────────────────────────────────────────────────────────
 
+const childPortalStyle = { display: 'flex', alignItems: 'end', justifyItems: 'end', position:
+    'fixed', right:'10px', bottom: '10px', zIndex: 99, flex: '1' }
+const portalId = 'portal-root'
 export default function App() {
+  
+  useEffect(() => {
+    const ele = document.getElementById('portalId')
+    if(ele) return
+    const portalElement = document.createElement('div')
+    portalElement.id = portalId
+    portalElement.style.display = 'flex'
+    portalElement.style.bottom = '10px'
+    portalElement.style.right = '10px'
+    portalElement.style.zIndex = '99'
+    portalElement.style.alignItems = 'end'
+    portalElement.style.justifyItems = 'end'
+    portalElement.style.position = 'fixed'
+    document.body.appendChild(portalElement)
+    return () => {
+      document.body.removeChild(portalElement)
+    }  
+  }, [])
   return (
-    <div style={{ padding: 24, fontFamily: 'sans-serif', maxWidth: 600 }}>
+    <div style={{ padding: 24, fontFamily: 'sans-serif', maxWidth: 600, position: 'relative' }}>
       <h1>Portals & useId</h1>
       <ToastDemo />
       <hr />

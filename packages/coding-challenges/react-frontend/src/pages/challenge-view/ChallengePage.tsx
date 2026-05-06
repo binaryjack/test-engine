@@ -13,7 +13,8 @@ import { closeExamModal, loadChallenge } from './store/challenge.slice.js';
 export default function ChallengePage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
-  const { isExamMode, isExamFinished } = useSelector((state: RootState) => state.challenge);
+  const isExamMode = useSelector((state: RootState) => state.challenge.isExamMode);
+  const isExamFinished = useSelector((state: RootState) => state.challenge.isExamFinished);
   
   const challenge = useMemo(() => 
     challengeRegistry.find(c => c.id === id), 
@@ -107,8 +108,8 @@ export default function ChallengePage() {
         <div className="lg:col-span-8 space-y-6">
           <ChallengeViewport 
             level={challenge.level} 
-            category={challenge.path.split('/')[1]} 
-            id={challenge.path.split('/')[2]} 
+            category={challenge.category} 
+            path={challenge.path} 
           />
           
           <div className="bg-slate-900/50 rounded-xl border border-slate-800 p-6">
@@ -127,7 +128,7 @@ export default function ChallengePage() {
         {/* Right: Requirements Panel */}
         <div className="lg:col-span-4 sticky top-24 space-y-6">
           <ExamTimer />
-          <Requirements />
+          <Requirements hasTests={challenge.hasTests} />
         </div>
       </div>
     </div>

@@ -1,17 +1,21 @@
 import { Loader2 } from 'lucide-react';
-import React, { Suspense, useMemo } from 'react';
+import React, { memo, Suspense, useMemo } from 'react';
+import { loadChallengeComponent } from '../utils/tester/ChallengeLoader';
 
 interface ChallengeViewportProps {
   level: string;
   category: string;
-  id: string;
+  path: string;
 }
 
-export function ChallengeViewport({ level, category, id }: ChallengeViewportProps) {
-  // Use React.lazy to dynamically import the Challenge component
+export const ChallengeViewport = memo(function ChallengeViewport({ path }: ChallengeViewportProps) {
+  // Use React.lazy with our centralized loader to satisfy Vite's static analysis
   const ChallengeComponent = useMemo(() => {
-    return React.lazy(() => import(`../challenges/${level}/${category}/${id}/Challenge.tsx`));
-  }, [level, category, id]);
+    return React.lazy(async () => {
+      const component = await loadChallengeComponent(path);
+      return { default: component };
+    });
+  }, [path]);
 
   return (
     <div className="bg-slate-900 rounded-xl border border-slate-800 p-6 shadow-2xl min-h-[400px]">
@@ -25,4 +29,4 @@ export function ChallengeViewport({ level, category, id }: ChallengeViewportProp
       </Suspense>
     </div>
   );
-}
+});

@@ -5,7 +5,8 @@ import { RootState } from '../../../store';
 import { startExam, stopExam } from '../store/challenge.slice';
 
 export function ExamTimer() {
-  const { examTimeLeft, isExamMode } = useSelector((state: RootState) => state.challenge);
+  const examTimeLeft = useSelector((state: RootState) => state.challenge.examTimeLeft);
+  const isExamMode = useSelector((state: RootState) => state.challenge.isExamMode);
   const dispatch = useDispatch();
 
   const minutes = Math.floor(examTimeLeft / 60);

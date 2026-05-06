@@ -6,6 +6,7 @@ export interface ChallengeMetadata {
   requirements: { id: string; text: string; completed: boolean }[];
   path: string;
   estimatedTime: number; // in minutes
+  hasTests?: boolean;
 }
 
 export const challengeRegistry: ChallengeMetadata[] = [
@@ -16,6 +17,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "category": "Rendering Keys",
     "path": "mid/07-rendering-keys/02-portals-and-useId",
     "estimatedTime": 45,
+    "hasTests": true,
     "requirements": [
       { "id": "req-1", "text": "Build a ToastContainer that renders outside the React root via createPortal", "completed": false },
       { "id": "req-2", "text": "The toast should appear at the bottom-right of the viewport (fixed position)", "completed": false },
@@ -450,6 +452,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "category": "Hooks",
     "path": "mid/01-hooks/01-useState-form",
     "estimatedTime": 30,
+    "hasTests": true,
     "requirements": [
       { "id": "req-1", "text": "Fields: name, email, password, confirmPassword", "completed": false },
       { "id": "req-2", "text": "Show a character count under the name field (max 50 chars)", "completed": false },
