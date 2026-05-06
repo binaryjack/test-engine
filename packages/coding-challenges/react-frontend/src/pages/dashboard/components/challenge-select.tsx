@@ -1,7 +1,7 @@
+import { challengeRegistry } from '@/challenges/index.js';
 import { Filter, Search } from 'lucide-react';
 import { useState } from 'react';
-import { challengeRegistry } from '../../../challenges';
-import { ChallengeItem } from './challenge-item';
+import { ChallengeItem } from './challenge-item.js';
 
 export function ChallengeSelect() {
   const [search, setSearch] = useState('');

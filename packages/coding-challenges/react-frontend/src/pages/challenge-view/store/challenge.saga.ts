@@ -1,6 +1,7 @@
+import { RootState } from '@/store/index.js';
 import { put, select, takeLatest } from 'redux-saga/effects';
-import { RootState } from '../../../store';
-import { loadChallenge, Requirement, setRequirements, toggleRequirement } from './challenge.slice';
+import { loadChallenge, Requirement, setRequirements, toggleRequirement } from './challenge.slice.js';
+
 
 const STORAGE_KEY = 'challenge_progress';
 
