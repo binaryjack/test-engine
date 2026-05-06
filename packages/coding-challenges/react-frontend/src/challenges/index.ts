@@ -5,6 +5,7 @@ export interface ChallengeMetadata {
   category: string;
   requirements: { id: string; text: string; completed: boolean }[];
   path: string;
+  estimatedTime: number; // in minutes
 }
 
 export const challengeRegistry: ChallengeMetadata[] = [
@@ -14,6 +15,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Rendering Keys",
     "path": "mid/07-rendering-keys/02-portals-and-useId",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Build a ToastContainer that renders outside the React root via createPortal", "completed": false },
       { "id": "req-2", "text": "The toast should appear at the bottom-right of the viewport (fixed position)", "completed": false },
@@ -33,6 +35,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Refs and Errors",
     "path": "senior/08-refs-and-errors/01-error-boundary-reset",
+    "estimatedTime": 60,
     "requirements": [
       { "id": "req-1", "text": "Implement ErrorBoundary class component with state: { hasError: boolean; error: Error | null }", "completed": false },
       { "id": "req-2", "text": "Implement getDerivedStateFromError to return hasError: true", "completed": false },
@@ -51,6 +54,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Rendering Keys",
     "path": "mid/07-rendering-keys/01-keys-and-rendering",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Fix the todo list key bug by replacing array index with item.id", "completed": false },
       { "id": "req-2", "text": "Fix the 0 && rendering bug so nothing renders when count is 0", "completed": false },
@@ -63,6 +67,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Testing",
     "path": "senior/07-testing/02-test-async-component",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Mock global.fetch or vi.mock the api module", "completed": false },
       { "id": "req-2", "text": "Test that loading state shows while fetch is in progress", "completed": false },
@@ -79,6 +84,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Context and State",
     "path": "mid/06-context-state/01-auth-context",
+    "estimatedTime": 60,
     "requirements": [
       { "id": "req-1", "text": "AuthProvider manages auth state (user, isLoggedIn) using useReducer", "completed": false },
       { "id": "req-2", "text": "Split state and dispatch into SEPARATE contexts for performance", "completed": false },
@@ -94,6 +100,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Testing",
     "path": "senior/07-testing/01-test-counter-hook",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Test that initial count equals the argument", "completed": false },
       { "id": "req-2", "text": "Test that increment() increases count by 1", "completed": false },
@@ -111,6 +118,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Forms",
     "path": "mid/05-forms/01-controlled-form",
+    "estimatedTime": 40,
     "requirements": [
       { "id": "req-1", "text": "Fields: name (required), email (required, valid), message (required, min 20 chars)", "completed": false },
       { "id": "req-2", "text": "Validation happens on blur (when user leaves a field)", "completed": false },
@@ -125,6 +133,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Accessibility",
     "path": "senior/06-accessibility/01-accessible-modal",
+    "estimatedTime": 60,
     "requirements": [
       { "id": "req-1", "text": "Add role=\"dialog\", aria-modal=\"true\", and aria-labelledby", "completed": false },
       { "id": "req-2", "text": "Move focus to first focusable element when modal opens", "completed": false },
@@ -140,6 +149,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/07-custom-hooks",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Implement useLocalStorage with generic T, JSON serialization, and fallback", "completed": false },
       { "id": "req-2", "text": "Keep localStorage in sync when the value changes", "completed": false },
@@ -153,6 +163,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/06-useMemo-useCallback",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Memoize the filtered list calculation with useMemo", "completed": false },
       { "id": "req-2", "text": "Memoize the onDelete handler with useCallback", "completed": false },
@@ -166,6 +177,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "React 19",
     "path": "senior/03-use-api/03-use-api",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Implement fetchUser(id) function returning a Promise<User>", "completed": false },
       { "id": "req-2", "text": "Use the use() hook in UserCard to read userPromise data", "completed": false },
@@ -180,6 +192,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Error Handling",
     "path": "mid/04-error-handling/01-error-boundary",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Implement ErrorBoundary class component with custom fallback and onReset props", "completed": false },
       { "id": "req-2", "text": "Build BuggyCounter that throws when count reaches 3", "completed": false },
@@ -193,6 +206,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "React 19",
     "path": "senior/02-useOptimistic/02-useOptimistic",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Clicking Like updates count IMMEDIATELY using useOptimistic", "completed": false },
       { "id": "req-2", "text": "Perform API call with 1s delay in background", "completed": false },
@@ -207,6 +221,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/05-useContext-theme",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Create ThemeContext providing theme ('light'|'dark') and toggleTheme()", "completed": false },
       { "id": "req-2", "text": "Implement ThemeProvider with managed state", "completed": false },
@@ -221,6 +236,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Advanced Patterns",
     "path": "senior/05-advanced-patterns/03-useImperativeHandle",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Implement ValidatedInput using forwardRef and useImperativeHandle", "completed": false },
       { "id": "req-2", "text": "Expose focus(), validate(), and reset() methods through the ref", "completed": false },
@@ -235,6 +251,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Advanced Patterns",
     "path": "senior/05-advanced-patterns/01-compound-tabs",
+    "estimatedTime": 60,
     "requirements": [
       { "id": "req-1", "text": "Implement Tabs root component with Context for state management", "completed": false },
       { "id": "req-2", "text": "Implement Tabs.List with role=\"tablist\"", "completed": false },
@@ -249,6 +266,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Advanced Patterns",
     "path": "senior/05-advanced-patterns/02-generic-table",
+    "estimatedTime": 90,
     "requirements": [
       { "id": "req-1", "text": "Build a generic DataTable<T> with typed columns and accessors", "completed": false },
       { "id": "req-2", "text": "Implement column sorting (asc/desc) with visual indicators", "completed": false },
@@ -263,6 +281,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/04-useReducer-cart",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Implement ADD_ITEM (increase quantity if exists)", "completed": false },
       { "id": "req-2", "text": "Implement REMOVE_ITEM (remove completely)", "completed": false },
@@ -277,6 +296,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Performance",
     "path": "mid/03-performance/02-lazy-loading",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Convert page components to use React.lazy() imports", "completed": false },
       { "id": "req-2", "text": "Wrap routes with Suspense and a 'Loading page...' fallback", "completed": false },
@@ -290,6 +310,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Performance",
     "path": "mid/03-performance/01-memo-optimization",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Wrap ProductCard and FilterBar with React.memo", "completed": false },
       { "id": "req-2", "text": "Memoize onAddToCart and onFilterChange callbacks with useCallback", "completed": false },
@@ -303,6 +324,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Concurrent Features",
     "path": "senior/02-concurrent-features/03-suspense-parallel",
+    "estimatedTime": 60,
     "requirements": [
       { "id": "req-1", "text": "Wrap each dashboard section in its OWN Suspense boundary", "completed": false },
       { "id": "req-2", "text": "Use the use() hook to read promise results in child components", "completed": false },
@@ -317,6 +339,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/03-useRef-focus",
+    "estimatedTime": 20,
     "requirements": [
       { "id": "req-1", "text": "Implement clear button that clears input and returns focus", "completed": false },
       { "id": "req-2", "text": "Implement external 'Focus Search' button focusing the input via ref", "completed": false },
@@ -330,6 +353,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Concurrent Features",
     "path": "senior/02-concurrent-features/02-useDeferredValue",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Use useDeferredValue for search results to avoid blocking input", "completed": false },
       { "id": "req-2", "text": "Show a 'stale' indicator (reduced opacity) when results lag behind query", "completed": false },
@@ -342,6 +366,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "Concurrent Features",
     "path": "senior/02-concurrent-features/01-useTransition",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Wrap expensive tab changes in startTransition", "completed": false },
       { "id": "req-2", "text": "Use isPending to show a visual indicator on active tab", "completed": false },
@@ -355,6 +380,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Component Patterns",
     "path": "mid/02-component-patterns/02-render-props",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Accept url string and render function prop", "completed": false },
       { "id": "req-2", "text": "Fetch data from URL and handle loading/error states", "completed": false },
@@ -368,6 +394,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "React 19",
     "path": "senior/04-react-compiler/01-auto-memoization",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Apply manual memoization (React.memo, useMemo, useCallback) to slow component", "completed": false },
       { "id": "req-2", "text": "Identify and fix hidden Rules of React violation", "completed": false },
@@ -380,6 +407,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "senior",
     "category": "React 19",
     "path": "senior/01-useActionState/01-useActionState",
+    "estimatedTime": 45,
     "requirements": [
       { "id": "req-1", "text": "Build 'Create Post' form with title and body validation", "completed": false },
       { "id": "req-2", "text": "Use useActionState to manage async submission and errors", "completed": false },
@@ -393,6 +421,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Component Patterns",
     "path": "mid/02-component-patterns/01-compound-components",
+    "estimatedTime": 60,
     "requirements": [
       { "id": "req-1", "text": "Implement Accordion ensuring only one panel is open at a time", "completed": false },
       { "id": "req-2", "text": "Manage active panel state at Accordion level using Context", "completed": false },
@@ -406,6 +435,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/02-useEffect-data-fetching",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Fetch user data from API based on userId prop", "completed": false },
       { "id": "req-2", "text": "Implement loading and error states for the fetch", "completed": false },
@@ -419,6 +449,7 @@ export const challengeRegistry: ChallengeMetadata[] = [
     "level": "mid",
     "category": "Hooks",
     "path": "mid/01-hooks/01-useState-form",
+    "estimatedTime": 30,
     "requirements": [
       { "id": "req-1", "text": "Fields: name, email, password, confirmPassword", "completed": false },
       { "id": "req-2", "text": "Show a character count under the name field (max 50 chars)", "completed": false },

@@ -9,7 +9,8 @@
     "dev:challenges": "pnpm --filter @test-engine/coding-challenges-frontend dev",
     "dev": "pnpm dev:backend & pnpm dev:challenges",
     "install:all": "pnpm install",
-    "build:all": "pnpm recursive run build"
+    "build:all": "pnpm recursive run build",
+    "challenges:reset": "node scripts/reset-challenges.js"
   },
   "scripts:help": {
     "dev": "Start both backend and frontend in parallel (recommended way to start!)",

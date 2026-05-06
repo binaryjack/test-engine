@@ -1,20 +1,37 @@
 import clsx from 'clsx';
-import { CheckCircle2, Circle } from 'lucide-react';
+import { CheckCircle2, Circle, RotateCcw } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleRequirement } from '../pages/challenge-view/store/challenge.slice';
-import { RootState } from '../store';
+import { resetChallenge, toggleRequirement } from '../pages/challenge-view/store/challenge.slice.js';
+import { RootState } from '../store/index.js';
 
 export function Requirements() {
   const { requirements } = useSelector((state: RootState) => state.challenge);
+  const dispatch = useDispatch();
+
+  const handleReset = () => {
+    if (window.confirm("Are you sure you want to reset your progress for this challenge? This cannot be undone.")) {
+      dispatch(resetChallenge());
+    }
+  };
   
   return (
     <div className="bg-slate-900 rounded-xl border border-slate-800 p-6 shadow-xl h-full">
-      <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-        <span className="bg-blue-500/10 text-blue-400 p-1 rounded-md">
-          <CheckCircle2 className="w-5 h-5" />
-        </span>
-        Project Requirements
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-semibold flex items-center gap-2">
+          <span className="bg-blue-500/10 text-blue-400 p-1 rounded-md">
+            <CheckCircle2 className="w-5 h-5" />
+          </span>
+          Project Requirements
+        </h2>
+        
+        <button 
+          onClick={handleReset}
+          className="text-slate-500 hover:text-red-400 transition-colors p-1 rounded-md hover:bg-red-500/10"
+          title="Reset progress"
+        >
+          <RotateCcw className="w-4 h-4" />
+        </button>
+      </div>
       
       <div className="space-y-3">
         {requirements.map((req) => (

@@ -1,7 +1,11 @@
 import { RootState } from '@/store/index.js';
-import { put, select, takeLatest } from 'redux-saga/effects';
-import { loadChallenge, Requirement, setRequirements, toggleRequirement } from './challenge.slice.js';
-
+import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import {
+    startExam,
+    stopExam,
+    tickExam
+} from './challenge.slice';
+import { loadChallenge, Requirement, resetAllChallenges, resetChallenge, setRequirements, toggleRequirement } from './challenge.slice.js';
 
 const STORAGE_KEY = 'challenge_progress';
 
@@ -39,7 +43,50 @@ function* handlePersistence() {
   }
 }
 
+function* handleResetChallenge() {
+  const state: RootState = yield select((state: RootState) => state);
+  const { currentChallengeId } = state.challenge;
+  
+  if (currentChallengeId) {
+    localStorage.removeItem(`${STORAGE_KEY}_${currentChallengeId}`);
+  }
+}
+
+function* handleResetAllChallenges() {
+  // Find all keys in localStorage that start with our prefix
+  const keys = Object.keys(localStorage);
+  keys.forEach(key => {
+    if (key.startsWith(STORAGE_KEY)) {
+      localStorage.removeItem(key);
+    }
+  });
+  console.log('All challenge progress cleared from local storage.');
+}
+
+function* watchExamTimer() {
+  while (true) {
+    yield take(startExam.type);
+    
+    yield race({
+      timer: (function* () {
+        while (true) {
+          yield delay(1000);
+          yield put(tickExam());
+          
+          const state: RootState = yield select((state: RootState) => state);
+          if (state.challenge.examTimeLeft <= 0) break;
+        }
+      })(),
+      cancel: take(stopExam.type),
+      newChallenge: take(loadChallenge.type) // Reset timer if user switches challenge
+    });
+  }
+}
+
 export function* challengeSaga() {
   yield takeLatest(loadChallenge.type, handleLoadChallenge);
   yield takeLatest(toggleRequirement.type, handlePersistence);
+  yield takeLatest(resetChallenge.type, handleResetChallenge);
+  yield takeLatest(resetAllChallenges.type, handleResetAllChallenges);
+  yield watchExamTimer();
 }
