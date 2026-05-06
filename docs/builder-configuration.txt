@@ -1,0 +1,113 @@
+0:'FUNDAMENTALS', 
+1:'BEGINER',
+2:'MID', 
+3:'SENIOR', 
+4:'ADVANCED', 
+5:'ARCHITECT'
+
+
+export const MCQ_FUNDAMENTALS = new QuestionBuilder()
+  .setLevel('FUNDAMENTALS')
+  .setType('mcq');
+
+export const MCQ_MID = new QuestionBuilder()
+  .setLevel('MID')
+  .setType('mcq');
+
+export const MCQ_SENIOR = new QuestionBuilder()
+  .setLevel('SENIOR')
+  .setType('mcq');
+
+export const MCQ_ADVANCED = new QuestionBuilder()
+  .setLevel('ADVANCED')
+  .setType('mcq');
+
+export const CODING_MID = new QuestionBuilder()
+  .setLevel('MID')
+  .setType('coding');
+
+export const CODING_SENIOR = new QuestionBuilder()
+  .setLevel('SENIOR')
+  .setType('coding');
+
+
+inheritance topic presets variables
+
+a11y
+advancedGenerics
+advancedHooks
+advancedNarrowing
+advancedTsReact
+advancedTypes
+advancedUtilityTypes
+advancedEnums
+api
+appRouter
+architecture
+assets
+basicTypes
+CODING_MID
+CODING_SENIOR
+components
+concurrent
+conditionalRendering
+customHooks
+dataFetching
+declarationFiles
+decorators
+devops
+edge
+enums
+errorHandling
+events
+forms
+fragments
+generics
+hooks
+i18n
+interfaces
+internals
+jsx
+lists
+MCQ_ADVANCED
+MCQ_FUNDAMENTALS
+MCQ_MID
+MCQ_SENIOR
+navigation
+observability
+optimisticUI
+patterns
+performance
+portals
+prefetching
+props
+react19
+rendering
+routing
+security
+serverComponents
+ssr
+state
+stateManagement
+streamingSSR
+suspense
+testing
+tooling
+tsReact
+tsconfig
+typescript
+useCallbackPreset
+useContextPreset
+useEffectPreset
+useMemoPreset
+useReducerPreset
+useRefPreset
+useStatePreset
+utilityTypes
+webAPIs
+
+
+Questions Schema Reference is: 
+    - inherits|subtopic|prompt|options|answer|difficulty|estimatedTime|explanation|references
+
+options and references are ARRAYs
